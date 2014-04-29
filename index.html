@@ -100,15 +100,18 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 
             // 背景スクロール
             scene.addEventListener(Event.ENTER_FRAME, function(){
-                var LOOP_SPEED = 5;
-                loop.x -= LOOP_SPEED;
+                // 遠景
+                var LOOP_SPEED_DIST = 1;
+                loop.x -= LOOP_SPEED_DIST;
                 if(loop.x <= -320){
                     loop.x = 320;
                 }
-                loop2.x -= LOOP_SPEED;
+                loop2.x -= LOOP_SPEED_DIST;
                 if(loop2.x <= -320){
                     loop2.x = 320;
                 }
+                // 地面
+                var LOOP_SPEED = 5;
                 ground.x -= LOOP_SPEED;
                 if(ground.x <= -320){
                     ground.x = 320;
