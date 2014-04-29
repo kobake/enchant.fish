@@ -1,5 +1,9 @@
 <!doctype html>
-<html><head><script src="enchant/enchant.js"></script></head>
+<html>
+    <title>enchant.fish</title>
+    <head><script src="enchant/enchant.js"></script>
+    <head><script src="underscore/underscore.js"></script>
+</head>
 <body style="margin:0; padding: 0; background-color: #888;">
 <!--
 基本
@@ -10,11 +14,92 @@ http://www.openspc2.org/reibun/enchant.js/v0.4.3/label/0004/index.html
 http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 -->
 <script>
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    // 地面
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    Ground = function(scene, x){
+        // 参照
+        this.scene = scene;
+        
+        // 位置
+        this.x = x;
+        this.y = 240 - 32;
+        
+        // 高さは 1～5
+        this.height = 1 + Math.floor(Math.random() * 5);
+        
+        // 高さ分だけスプライトを作る
+        this.sprites = [];
+        for(var i = 0; i < this.height; i++){
+            var sprite = new Sprite(32, 32);
+            sprite.image = game.assets['img/ground32x32.gif'];
+            sprite.x = this.x + 100;
+            sprite.y = this.y - (i * 32);
+            console.log("this.x = " + this.x + ", this.y = " + this.y);
+            console.log("sprite.x = " + sprite.x + ", sprite.y = " + sprite.y);
+            // シーンに追加
+            scene.groups['bg'].addChild(sprite);
+            // thisに追加
+            this.sprites.push(sprite);
+        }
+
+        // フレーム処理。
+        // 戻り値0: 通常
+        // 戻り値0以外: オブジェクト削除
+        this.frame = function(){
+            var LOOP_SPEED = 4;
+            this.x -= LOOP_SPEED;
+            if(this.x <= -32){
+                return 1; // 削除
+            }
+            // スプライト更新
+            var this_x = this.x;
+            _.each(this.sprites, function(sprite){
+                sprite.x = this_x;
+            });
+            return 0; // 継続
+        };
+        
+        // 削除
+        var scene = this.scene;
+        this.dispose = function(){
+            _.each(this.sprites, function(sprite){
+                scene.removeChild(sprite);
+            });
+            this.sprites = [];
+        };
+    };
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    // シーン作成
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    function GenerateScene(){
+        var scene = new Scene();
+
+        // グループ
+        var bggroup = new Group(); // 背景用グループ
+        scene.addChild(bggroup);
+        var chgroup = new Group(); // キャラ用グループ
+        scene.addChild(chgroup);
+
+        // グループには名前でアクセスできるようにしておく
+        scene.groups = {
+            bg: bggroup,
+            ch: chgroup
+        };
+        
+        return scene;
+    }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    // 処理開始
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
     enchant(); // initialize
+    
     // 基本設定
     var game = new Core(320, 240); // game stage // 画面サイズ
     game.scale = 1; // 拡大率
-    game.fps = 20;
+    game.fps = 20; // 20fps
     
     // リソース準備
     game.preload('img/chara1.png'); // preload image
@@ -24,17 +109,18 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
     game.preload('img/start.png'); // START 236x48
     game.preload('img/fishkun37x24.gif'); // ふぃっしゅくん
     game.preload('img/ground32x32.gif'); // 地面
+    game.preload('img/groundb32x32.gif'); // 地面（緑）
     game.preload('img/ground320x32.gif'); // 地面（長い版）
 
     game.onload = function(){
         // タイトルシーン
         var createTitleScene = function(){
-            var scene = new Scene();
+            var scene = GenerateScene();
             
             // タイトル背景画像
             var back = new Sprite(320, 240);
             back.image = game.assets['img/title.png'];
-            scene.addChild(back);
+            scene.groups['bg'].addChild(back);
 
             // ラベル
             //var label = new Label('Welcome the enchant.fish world!');
@@ -46,7 +132,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
             start.y = (240 - 48) / 2;
             start.textAlign = 'center';
             start.image = game.assets['img/start.png'];
-            scene.addChild(start);
+            scene.groups['ch'].addChild(start);
             
             // スタート画像は点滅させる
             start.addEventListener(Event.ENTER_FRAME, function(){
@@ -65,7 +151,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
         
         // ゲームシーン
         var createGameScene = function(){
-            var scene = new Scene();
+            var scene = GenerateScene();
             
             // ゲーム背景画像
             //var back = new Sprite(320, 240);
@@ -80,26 +166,40 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
             var loop = new Sprite(320, 50);
             loop.image = game.assets['img/gameloop.png'];
             loop.y = 240 - 32 - 50;
-            scene.addChild(loop);
+            scene.groups['bg'].addChild(loop);
             var loop2 = new Sprite(320, 50);
             loop2.image = game.assets['img/gameloop.png'];
             loop2.x = 320;
             loop2.y = 240 - 32 - 50;
-            scene.addChild(loop2);
+            scene.groups['bg'].addChild(loop2);
             
+            // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
             // 地面
-            var ground = new Sprite(320, 32);
-            ground.image = game.assets['img/ground320x32.gif'];
-            ground.y = 240 - 32;
-            scene.addChild(ground);
+            // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+            // 地面作成
+            /*
+            var ground1 = new Sprite(320, 32);
+            ground1.image = game.assets['img/ground320x32.gif'];
+            ground1.y = 240 - 32;
+            scene.addChild(ground1);
             var ground2 = new Sprite(320, 32);
             ground2.image = game.assets['img/ground320x32.gif'];
             ground2.x = 320;
             ground2.y = 240 - 32;
             scene.addChild(ground2);
+            */
+            // 地面リスト
+            var grounds = [];
+            for(var i = 0; i < 11; i++){
+                var ground = new Ground(scene, i * 32);
+                grounds.push(ground);
+                //scene.addChild(ground.sprite);
+            }
 
-            // 背景スクロール
+            // 背景のフレーム処理
+            var ground_counter = 0;
             scene.addEventListener(Event.ENTER_FRAME, function(){
+                // -- -- 背景スクロール -- -- //
                 // 遠景
                 var LOOP_SPEED_DIST = 1;
                 loop.x -= LOOP_SPEED_DIST;
@@ -111,14 +211,20 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
                     loop2.x = 320;
                 }
                 // 地面
-                var LOOP_SPEED = 5;
-                ground.x -= LOOP_SPEED;
-                if(ground.x <= -320){
-                    ground.x = 320;
+                for(var i = 0; i < grounds.length; i++){
+                    var ground = grounds[i];
+                    var ret = ground.frame();
+                    if(ret != 0){
+                        // ground削除
+                        ground.dispose();
+                        grounds.splice(i, 1);
+                        i--;
+                    }
                 }
-                ground2.x -= LOOP_SPEED;
-                if(ground2.x <= -320){
-                    ground2.x = 320;
+                // 地面が減っていたらもう1個足す
+                if(grounds.length <= 10){
+                    var ground = new Ground(scene, 320);
+                    grounds.push(ground);
                 }
             });
             scene.backgroundColor = 'rgb(0, 107, 247)';
@@ -132,7 +238,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
                 .moveBy(-288, 0, 90)     // move left
                 .scaleTo(1, 1, 10)       // turn right
                 .loop();                 // loop it
-            scene.addChild(bear);
+            scene.groups['ch'].addChild(bear);
 
             // キャラ（さかな）
             var LIMIT_Y = 186;
@@ -145,13 +251,14 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
                 .moveBy(-288, 0, 90)     // move left
                 .scaleTo(1, 1, 10)       // turn right
                 .loop();                 // loop it
-            scene.addChild(fish);
+            scene.groups['ch'].addChild(fish);
             fish.my = 0;
             fish.jump = function(){
                 // 上方向への速度を設定
                 fish.my = -8;
                 console.log("jump");
             };
+            
             // さかなさんのフレーム処理
             fish.addEventListener(Event.ENTER_FRAME, function(e){
                 // 加速度による速度計算
@@ -177,12 +284,14 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
                 game.pushScene(createGameoverScene());
             });
             */
+            
+            // 盛り上がる地面・迫りくる壁・燃え尽きるハート・震えるビート
             return scene;
         };
         
         // ゲームオーバーシーン
         var createGameoverScene = function(){
-            var scene = new Scene();
+            var scene = GenerateScene();
             var label = new Label('You died');
             label.x = 0;
             label.y = 20;
