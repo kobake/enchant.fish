@@ -26,7 +26,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
         this.y = 240 - 32;
         
         // 高さは 1～5
-        this.height = 1 + Math.floor(Math.random() * 5);
+        this.height = 1; + Math.floor(Math.random() * 5);
         
         // 高さ分だけスプライトを作る
         this.sprites = [];
@@ -156,30 +156,129 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
     };
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    // 牛乳パック
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    // Usage: milk = new Milk(group, 10);
+    Milk = function(group, x){
+        // 参照
+        this.group = group;
+        
+        // スプライト
+        this.sprite = new Sprite(64, 80);
+        this.sprite.image = game.assets['img/milk64x80.gif'];
+        this.sprite.x = x;
+        this.sprite.y = 240 - 32 - 80;
+        group.addChild(this.sprite);
+
+        // フレーム処理。
+        // 戻り値0: 通常
+        // 戻り値0以外: オブジェクト削除
+        this.frame = function(){
+            var LOOP_SPEED = 4;
+            this.sprite.x -= LOOP_SPEED;
+            if(this.sprite.x <= -32){
+                return 1; // 削除
+            }
+            return 0; // 継続
+        };
+        
+        // 削除
+        this.dispose = function(){
+            this.group.removeChild(this.sprite);
+            delete this.sprite; // 変数をアンセット
+        };
+    };
+    
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    // 背景
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    Background = function(group, imagefilepath, width, height, speed){
+        // 参照
+        this.group = group;
+        
+        // 属性
+        this.width = width;
+        this.height = height;
+        this.speed = speed;
+        
+        // 必要な数だけスプライトを作る
+        this.image_count = Math.floor(640 / width) + 1;
+        this.sprites = [];
+        for(var i = 0; i < this.image_count; i++){
+            var sprite = new Sprite(width, height);
+            sprite.image = game.assets[imagefilepath];
+            sprite.x = width * i;
+            sprite.y = 0;
+            group.addChild(sprite);
+            this.sprites.push(sprite);
+        }
+        
+        // フレーム処理
+        var this_width = this.width;
+        var this_speed = this.speed;
+        this.frame = function(){
+            _.each(this.sprites, function(sprite){
+                sprite.x -= this_speed;
+                if(sprite.x <= -this_width){
+                    sprite.x = 320; // 一番右端に移動
+                }
+            });
+        };
+
+        // 削除
+        var group = this.group;
+        this.dispose = function(){
+            _.each(this.sprites, function(sprite){
+                group.removeChild(sprite);
+            });
+            this.sprites = [];
+        };
+    };
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
     // シーン作成
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
     function GenerateScene(){
         var scene = new Scene();
 
-        // グループ
+        // 背景用グループ
         var bggroup = new Group(); // 背景用グループ
         scene.addChild(bggroup);
         var bggroup_back = new Group(); // 背景用グループ（奥）
-        scene.addChild(bggroup_back);
+        bggroup.addChild(bggroup_back);
         var bggroup_front = new Group(); // 背景用グループ（手前）
-        scene.addChild(bggroup_front);
+        bggroup.addChild(bggroup_front);
+        
+        // キャラ用グループ
         var chgroup = new Group(); // キャラ用グループ
         scene.addChild(chgroup);
+        var chgroup_back = new Group();
+        chgroup.addChild(chgroup_back);
+        var chgroup_front = new Group();
+        chgroup.addChild(chgroup_front);
 
         // グループには名前でアクセスできるようにしておく
         scene.groups = {
-            bg: bggroup,
+            bg:  bggroup,
             bgb: bggroup_back,
             bgf: bggroup_front,
-            ch: chgroup
+            ch:  chgroup,
+            chb: chgroup_back,
+            chf: chgroup_front
         };
         
         return scene;
+    }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    // 抽選関数
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    /* @param {Number} percent 確率（パーセント）
+     * @return {Boolean} 当選したかどうか
+     */
+    function CalcLottery(percent){
+        return percent >= Math.random() * 100;
     }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -268,6 +367,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 
         // 背景のフレーム処理
         var ground_counter = 0;
+        var milks = [];
         scene.addEventListener(Event.ENTER_FRAME, function(){
             // 地面
             for(var i = 0; i < grounds.length; i++){
@@ -284,6 +384,25 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
             if(grounds.length <= 10){
                 var ground = new Ground(scene, 320);
                 grounds.push(ground);
+                // このタイミングでミルクの抽選を行う
+                if(CalcLottery(10)){
+                    console.log("new milk");
+                    var milk = new Milk(scene.groups['chb'], 320);
+                    milks.push(milk);
+                }
+            }
+            
+            // 牛乳フレーム処理
+            for(var i = 0; i < milks.length; i++){
+                var milk = milks[i];
+                var ret = milk.frame();
+                if(ret != 0){
+                    // milk削除
+                    console.log("delete milk");
+                    milk.dispose();
+                    milks.splice(i, 1);
+                    i--;
+                }
             }
         });
         scene.backgroundColor = 'rgb(0, 107, 247)';

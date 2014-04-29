@@ -17,6 +17,72 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="index.php" />
+    <Folder Include="enchant" />
+    <Folder Include="enchant\plugins" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="chara1.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\avatar.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\box2d.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\collada.gl.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\extendMap.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\gl.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\memory.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\mixing.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\mmd.gl.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\nineleap.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\physics.gl.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\primitive.gl.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\socket.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\tl.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\twitter.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\ui.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\util.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\widget.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="enchant\plugins\wiiu.enchant.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="index.html">
+      <SubType>Content</SubType>
+    </Content>
   </ItemGroup>
 </Project>
