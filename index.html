@@ -1,16 +1,23 @@
 <!doctype html>
 <html><head><script src="enchant/enchant.js"></script></head>
-<body style="margin:0; padding: 0;">
+<body style="margin:0; padding: 0; background-color: #888;">
 <script>
     enchant(); // initialize
-    var game = new Core(320, 320); // game stage
-    game.preload('chara1.png'); // preload image
+    // 基本設定
+    var game = new Core(320, 240); // game stage // 画面サイズ
+    game.scale = 1; // 拡大率
     game.fps = 20;
+    
+    // リソース準備
+    game.preload('img/chara1.png'); // preload image
 
     game.onload = function(){
+        // キャラ
         var bear = new Sprite(32, 32);
-        bear.image = game.assets['chara1.png'];
+        // 
+        bear.image = game.assets['img/chara1.png'];
         game.rootScene.addChild(bear);
+        game.rootScene.backgroundColor = '#00f'; // 背景色
         bear.frame = [6, 6, 7, 7];   // select sprite frame
         
         bear.tl.moveBy(288, 0, 90)   // move right
