@@ -2,8 +2,10 @@
 <html><head><script src="enchant/enchant.js"></script></head>
 <body style="margin:0; padding: 0; background-color: #888;">
 <!--
-参考
+基本
 http://www.atmarkit.co.jp/ait/articles/1304/01/news034_3.html
+点滅
+http://www.openspc2.org/reibun/enchant.js/v0.4.3/label/0004/index.html
 -->
 <script>
     enchant(); // initialize
@@ -16,21 +18,35 @@ http://www.atmarkit.co.jp/ait/articles/1304/01/news034_3.html
     game.preload('img/chara1.png'); // preload image
     game.preload('img/title.png'); // タイトル背景
     game.preload('img/game.png'); // ゲーム背景
+    game.preload('img/start.png'); // START 236x48
 
     game.onload = function(){
         // タイトルシーン
         var createTitleScene = function(){
             var scene = new Scene();
-            var label = new Label('Welcome the enchant.fish world!');
             
             // タイトル背景画像
             var back = new Sprite(320, 240);
             back.image = game.assets['img/title.png'];
-
-            // オブジェクト追加
             scene.addChild(back);
-            scene.addChild(label);
-            scene.backgroundColor = '#ff0';
+
+            // ラベル
+            //var label = new Label('Welcome the enchant.fish world!');
+            //scene.addChild(label);
+
+            // スタート画像
+            var start = new Sprite(236, 48);
+            start.x = (320 - 236) / 2;
+            start.y = (240 - 48) / 2;
+            start.textAlign = 'center';
+            start.image = game.assets['img/start.png'];
+            scene.addChild(start);
+            
+            // スタート画像は点滅させる
+            start.addEventListener(Event.ENTER_FRAME, function(){
+               start.opacity = (new Date()).getMilliseconds() > 500 ? 1 : 0;
+            });
+            
 
             // タッチイベント
             scene.addEventListener(Event.TOUCH_START, function(e){
