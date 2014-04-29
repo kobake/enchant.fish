@@ -1,6 +1,10 @@
 <!doctype html>
 <html><head><script src="enchant/enchant.js"></script></head>
 <body style="margin:0; padding: 0; background-color: #888;">
+<!--
+参考
+http://www.atmarkit.co.jp/ait/articles/1304/01/news034_3.html
+-->
 <script>
     enchant(); // initialize
     // 基本設定
@@ -11,27 +15,81 @@
     // リソース準備
     game.preload('img/chara1.png'); // preload image
     game.preload('img/title.png'); // タイトル背景
+    game.preload('img/game.png'); // ゲーム背景
 
     game.onload = function(){
-        // 背景
-        var back = new Sprite(320, 240);
-        back.image = game.assets['img/title.png'];
+        // タイトルシーン
+        var createTitleScene = function(){
+            var scene = new Scene();
+            var label = new Label('Welcome the enchant.fish world!');
+            
+            // タイトル背景画像
+            var back = new Sprite(320, 240);
+            back.image = game.assets['img/title.png'];
+
+            // オブジェクト追加
+            scene.addChild(back);
+            scene.addChild(label);
+            scene.backgroundColor = '#ff0';
+
+            // タッチイベント
+            scene.addEventListener(Event.TOUCH_START, function(e){
+                // ゲームシーンに切り替え
+                game.replaceScene(createGameScene());
+            });
+
+            // 作成されたシーンを返す
+            return scene;
+        };
         
-        // キャラ
-        var bear = new Sprite(32, 32);
-        bear.image = game.assets['img/chara1.png'];
+        // ゲームシーン
+        var createGameScene = function(){
+            var scene = new Scene();
+            var label = new Label('Go go go!!!');
+            
+            // ゲーム背景画像
+            var back = new Sprite(320, 240);
+            back.image = game.assets['img/game.png'];
+            
+            // キャラ
+            var bear = new Sprite(32, 32); // 1キャラのサイズ
+            bear.image = game.assets['img/chara1.png'];
+            bear.frame = [6, 6, 7, 7];   // select sprite frame
+            bear.tl.moveBy(288, 0, 90)   // move right
+                .scaleTo(-1, 1, 10)      // turn left
+                .moveBy(-288, 0, 90)     // move left
+                .scaleTo(1, 1, 10)       // turn right
+                .loop();                 // loop it
+
+            // シーンへのオブジェクト追加
+            scene.addChild(back);
+            scene.addChild(label);
+            scene.addChild(bear);
+
+            // イベント
+            scene.addEventListener(Event.TOUCH_START, function(e){
+                // 今のシーンの上に重ねてシーンを乗せる
+                game.pushScene(createGameoverScene());
+            });
+            return scene;
+        };
         
-        // ルートシーンにスプライトを追加する
-        game.rootScene.addChild(back);
-        game.rootScene.addChild(bear);
-        game.rootScene.backgroundColor = '#00f'; // 背景色
-        bear.frame = [6, 6, 7, 7];   // select sprite frame
+        // ゲームオーバーシーン
+        var createGameoverScene = function(){
+            var scene = new Scene();
+            var label = new Label('You died');
+            label.x = 0;
+            label.y = 20;
+            scene.addChild(label);
+            scene.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // 半透明な黒
+            scene.addEventListener(Event.TOUCH_START, function(e){
+                game.popScene();
+            });
+            return scene;
+        };
         
-        bear.tl.moveBy(288, 0, 90)   // move right
-            .scaleTo(-1, 1, 10)      // turn left
-            .moveBy(-288, 0, 90)     // move left
-            .scaleTo(1, 1, 10)       // turn right
-            .loop();                 // loop it
+        // 最初のシーン（タイトル）
+        game.replaceScene(createTitleScene());
     };
 
     game.start(); // start your game!
