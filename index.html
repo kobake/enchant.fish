@@ -35,8 +35,6 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
             sprite.image = game.assets['img/ground32x32.gif'];
             sprite.x = this.x + 100;
             sprite.y = this.y - (i * 32);
-            console.log("this.x = " + this.x + ", this.y = " + this.y);
-            console.log("sprite.x = " + sprite.x + ", sprite.y = " + sprite.y);
             // シーンに追加
             scene.groups['bg'].addChild(sprite);
             // thisに追加
@@ -70,6 +68,53 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
         };
     };
     
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    // 背景
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    Background = function(group, imagefilepath, width, height, speed){
+        // 参照
+        this.group = group;
+        
+        // 属性
+        this.width = width;
+        this.height = height;
+        this.speed = speed;
+        
+        // 必要な数だけスプライトを作る
+        this.image_count = Math.floor(640 / width) + 1;
+        this.sprites = [];
+        for(var i = 0; i < this.image_count; i++){
+            var sprite = new Sprite(width, height);
+            sprite.image = game.assets[imagefilepath];
+            sprite.x = width * i;
+            sprite.y = 0;
+            group.addChild(sprite);
+            this.sprites.push(sprite);
+        }
+        
+        // フレーム処理
+        var this_width = this.width;
+        var this_speed = this.speed;
+        this.frame = function(){
+            _.each(this.sprites, function(sprite){
+                sprite.x -= this_speed;
+                if(sprite.x <= -this_width){
+                    sprite.x = 320; // 一番右端に移動
+                }
+            });
+        };
+
+        // 削除
+        var group = this.group;
+        this.dispose = function(){
+            _.each(this.sprites, function(sprite){
+                group.removeChild(sprite);
+            });
+            this.sprites = [];
+        };
+    };
+
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
     // アニメーション用配列の生成
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -119,12 +164,18 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
         // グループ
         var bggroup = new Group(); // 背景用グループ
         scene.addChild(bggroup);
+        var bggroup_back = new Group(); // 背景用グループ（奥）
+        scene.addChild(bggroup_back);
+        var bggroup_front = new Group(); // 背景用グループ（手前）
+        scene.addChild(bggroup_front);
         var chgroup = new Group(); // キャラ用グループ
         scene.addChild(chgroup);
 
         // グループには名前でアクセスできるようにしておく
         scene.groups = {
             bg: bggroup,
+            bgb: bggroup_back,
+            bgf: bggroup_front,
             ch: chgroup
         };
         
@@ -145,6 +196,8 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
     game.preload('img/chara1.png'); // preload image
     game.preload('img/title.png'); // タイトル背景
     game.preload('img/game.png'); // ゲーム背景
+    game.preload('img/bg-back.gif'); // ゲーム背景（奥）
+    game.preload('img/bg-front.gif'); // ゲーム背景（手前）
     game.preload('img/gameloop.png'); // ゲーム背景ループ 320x50
     game.preload('img/start.png'); // START 236x48
     game.preload('img/fishkun37x24.gif'); // ふぃっしゅくん
@@ -204,31 +257,16 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
             scene.addChild(label);
             
             // ゲームループ背景画像
-            var loop = new Sprite(320, 50);
-            loop.image = game.assets['img/gameloop.png'];
-            loop.y = 240 - 32 - 50;
-            scene.groups['bg'].addChild(loop);
-            var loop2 = new Sprite(320, 50);
-            loop2.image = game.assets['img/gameloop.png'];
-            loop2.x = 320;
-            loop2.y = 240 - 32 - 50;
-            scene.groups['bg'].addChild(loop2);
-            
+            var bg1 = new Background(scene.groups['bgb'], 'img/bg-back.gif', 160, 240, 0.5);
+            var bg2 = new Background(scene.groups['bgf'], 'img/bg-front.gif', 160, 240, 1);
+            scene.addEventListener(Event.ENTER_FRAME, function(){
+                bg1.frame();
+                bg2.frame();
+            });
+
             // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
             // 地面
             // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-            // 地面作成
-            /*
-            var ground1 = new Sprite(320, 32);
-            ground1.image = game.assets['img/ground320x32.gif'];
-            ground1.y = 240 - 32;
-            scene.addChild(ground1);
-            var ground2 = new Sprite(320, 32);
-            ground2.image = game.assets['img/ground320x32.gif'];
-            ground2.x = 320;
-            ground2.y = 240 - 32;
-            scene.addChild(ground2);
-            */
             // 地面リスト
             var grounds = [];
             for(var i = 0; i < 11; i++){
@@ -240,17 +278,6 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
             // 背景のフレーム処理
             var ground_counter = 0;
             scene.addEventListener(Event.ENTER_FRAME, function(){
-                // -- -- 背景スクロール -- -- //
-                // 遠景
-                var LOOP_SPEED_DIST = 1;
-                loop.x -= LOOP_SPEED_DIST;
-                if(loop.x <= -320){
-                    loop.x = 320;
-                }
-                loop2.x -= LOOP_SPEED_DIST;
-                if(loop2.x <= -320){
-                    loop2.x = 320;
-                }
                 // 地面
                 for(var i = 0; i < grounds.length; i++){
                     var ground = grounds[i];
