@@ -205,161 +205,164 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
     game.preload('img/groundb32x32.gif'); // 地面（緑）
     game.preload('img/ground320x32.gif'); // 地面（長い版）
     game.preload('img/tichan96x208.gif'); // ちーちゃん（左端）
+    game.preload('img/milk64x80.gif'); // ぎゅうにゅう
 
-    game.onload = function(){
-        // タイトルシーン
-        var createTitleScene = function(){
-            var scene = GenerateScene();
-            
-            // タイトル背景画像
-            var back = new Sprite(320, 240);
-            back.image = game.assets['img/title.png'];
-            scene.groups['bg'].addChild(back);
+    // タイトルシーン
+    var createTitleScene = function(){
+        var scene = GenerateScene();
 
-            // ラベル
-            //var label = new Label('Welcome the enchant.fish world!');
-            //scene.addChild(label);
+        // タイトル背景画像
+        var back = new Sprite(320, 240);
+        back.image = game.assets['img/title.png'];
+        scene.groups['bg'].addChild(back);
 
-            // スタート画像
-            var start = new Sprite(236, 48);
-            start.x = (320 - 236) / 2;
-            start.y = (240 - 48) / 2;
-            start.textAlign = 'center';
-            start.image = game.assets['img/start.png'];
-            scene.groups['ch'].addChild(start);
-            
-            // スタート画像は点滅させる
-            start.addEventListener(Event.ENTER_FRAME, function(){
-               start.opacity = (new Date()).getMilliseconds() > 500 ? 1 : 0;
-            });
-            
-            // タッチイベント
-            scene.addEventListener(Event.TOUCH_START, function(e){
-                // ゲームシーンに切り替え
-                game.replaceScene(createGameScene());
-            });
+        // ラベル
+        //var label = new Label('Welcome the enchant.fish world!');
+        //scene.addChild(label);
 
-            // 作成されたシーンを返す
-            return scene;
-        };
-        
-        // ゲームシーン
-        var createGameScene = function(){
-            var scene = GenerateScene();
-                        
-            // ゲームループ背景画像
-            var bg1 = new Background(scene.groups['bgb'], 'img/bg-back.gif', 160, 240, 0.5);
-            var bg2 = new Background(scene.groups['bgf'], 'img/bg-front.gif', 160, 240, 1);
-            scene.addEventListener(Event.ENTER_FRAME, function(){
-                bg1.frame();
-                bg2.frame();
-            });
+        // スタート画像
+        var start = new Sprite(236, 48);
+        start.x = (320 - 236) / 2;
+        start.y = (240 - 48) / 2;
+        start.textAlign = 'center';
+        start.image = game.assets['img/start.png'];
+        scene.groups['ch'].addChild(start);
 
-            // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+        // スタート画像は点滅させる
+        start.addEventListener(Event.ENTER_FRAME, function(){
+           start.opacity = (new Date()).getMilliseconds() > 500 ? 1 : 0;
+        });
+
+        // タッチイベント
+        scene.addEventListener(Event.TOUCH_START, function(e){
+            // ゲームシーンに切り替え
+            game.replaceScene(createGameScene());
+        });
+
+        // 作成されたシーンを返す
+        return scene;
+    };
+
+    // ゲームシーン
+    var createGameScene = function(){
+        var scene = GenerateScene();
+
+        // ゲームループ背景画像
+        var bg1 = new Background(scene.groups['bgb'], 'img/bg-back.gif', 160, 240, 0.5);
+        var bg2 = new Background(scene.groups['bgf'], 'img/bg-front.gif', 160, 240, 1);
+        scene.addEventListener(Event.ENTER_FRAME, function(){
+            bg1.frame();
+            bg2.frame();
+        });
+
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+        // 地面
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+        // 地面リスト
+        var grounds = [];
+        for(var i = 0; i < 11; i++){
+            var ground = new Ground(scene, i * 32);
+            grounds.push(ground);
+            //scene.addChild(ground.sprite);
+        }
+
+        // 背景のフレーム処理
+        var ground_counter = 0;
+        scene.addEventListener(Event.ENTER_FRAME, function(){
             // 地面
-            // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-            // 地面リスト
-            var grounds = [];
-            for(var i = 0; i < 11; i++){
-                var ground = new Ground(scene, i * 32);
-                grounds.push(ground);
-                //scene.addChild(ground.sprite);
+            for(var i = 0; i < grounds.length; i++){
+                var ground = grounds[i];
+                var ret = ground.frame();
+                if(ret != 0){
+                    // ground削除
+                    ground.dispose();
+                    grounds.splice(i, 1);
+                    i--;
+                }
             }
+            // 地面が減っていたらもう1個足す
+            if(grounds.length <= 10){
+                var ground = new Ground(scene, 320);
+                grounds.push(ground);
+            }
+        });
+        scene.backgroundColor = 'rgb(0, 107, 247)';
 
-            // 背景のフレーム処理
-            var ground_counter = 0;
-            scene.addEventListener(Event.ENTER_FRAME, function(){
-                // 地面
-                for(var i = 0; i < grounds.length; i++){
-                    var ground = grounds[i];
-                    var ret = ground.frame();
-                    if(ret != 0){
-                        // ground削除
-                        ground.dispose();
-                        grounds.splice(i, 1);
-                        i--;
-                    }
-                }
-                // 地面が減っていたらもう1個足す
-                if(grounds.length <= 10){
-                    var ground = new Ground(scene, 320);
-                    grounds.push(ground);
-                }
-            });
-            scene.backgroundColor = 'rgb(0, 107, 247)';
-            
-            // キャラ（さかな）
-            var LIMIT_Y = 186;
-            var fish = new Sprite(37, 24); // 1キャラのサイズ
-            fish.y = LIMIT_Y;
-            fish.image = game.assets['img/fishkun37x24.gif'];
-            fish.frame = [0, 1, 2, 3, 4, 5];   // select sprite frame
-            fish.tl.moveBy(288, 0, 90)   // move right
-                .scaleTo(-1, 1, 10)      // turn left
-                .moveBy(-288, 0, 90)     // move left
-                .scaleTo(1, 1, 10)       // turn right
-                .loop();                 // loop it
-            scene.groups['ch'].addChild(fish);
-            fish.my = 0;
-            fish.jump = function(){
-                // 上方向への速度を設定
-                fish.my = -8;
-                console.log("jump");
-            };
-            
-            // さかなさんのフレーム処理
-            fish.addEventListener(Event.ENTER_FRAME, function(e){
-                // 加速度による速度計算
-                fish.my += 0.9;
-                if(fish.my >= 100)fish.my = 0;
-                
-                // 速度による位置計算
-                fish.y += fish.my;
-                
-                // 位置制限
-                if(fish.y >= LIMIT_Y)fish.y = LIMIT_Y;
-            });
+        // キャラ（さかな）
+        var LIMIT_Y = 186;
+        var fish = new Sprite(37, 24); // 1キャラのサイズ
+        fish.y = LIMIT_Y;
+        fish.image = game.assets['img/fishkun37x24.gif'];
+        fish.frame = [0, 1, 2, 3, 4, 5];   // select sprite frame
+        fish.tl.moveBy(288, 0, 90)   // move right
+            .scaleTo(-1, 1, 10)      // turn left
+            .moveBy(-288, 0, 90)     // move left
+            .scaleTo(1, 1, 10)       // turn right
+            .loop();                 // loop it
+        scene.groups['ch'].addChild(fish);
+        fish.my = 0;
+        fish.jump = function(){
+            // 上方向への速度を設定
+            fish.my = -8;
+            console.log("jump");
+        };
 
-            // タッチしたらジャンプ
-            scene.addEventListener(Event.TOUCH_START, function(e){
-                fish.jump();
-            });
-            
-            // ちーちゃん
-            var tichan = new Tichan(scene);
-            
-            
-            // イベント（タッチしたらゲームオーバー）
-            /*
-            scene.addEventListener(Event.TOUCH_START, function(e){
-                // 今のシーンの上に重ねてシーンを乗せる
-                game.pushScene(createGameoverScene());
-            });
-            */
-            
-            // 盛り上がる地面・迫りくる壁・燃え尽きるハート・震えるビート
-            return scene;
-        };
-        
-        // ゲームオーバーシーン
-        var createGameoverScene = function(){
-            var scene = GenerateScene();
-            var label = new Label('You died');
-            label.x = 0;
-            label.y = 20;
-            scene.addChild(label);
-            scene.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // 半透明な黒
-            scene.addEventListener(Event.TOUCH_START, function(e){
-                game.popScene();
-            });
-            return scene;
-        };
-        
+        // さかなさんのフレーム処理
+        fish.addEventListener(Event.ENTER_FRAME, function(e){
+            // 加速度による速度計算
+            fish.my += 0.9;
+            if(fish.my >= 100)fish.my = 0;
+
+            // 速度による位置計算
+            fish.y += fish.my;
+
+            // 位置制限
+            if(fish.y >= LIMIT_Y)fish.y = LIMIT_Y;
+        });
+
+        // タッチしたらジャンプ
+        scene.addEventListener(Event.TOUCH_START, function(e){
+            fish.jump();
+        });
+
+        // ちーちゃん
+        var tichan = new Tichan(scene);
+
+
+        // イベント（タッチしたらゲームオーバー）
+        /*
+        scene.addEventListener(Event.TOUCH_START, function(e){
+            // 今のシーンの上に重ねてシーンを乗せる
+            game.pushScene(createGameoverScene());
+        });
+        */
+
+        // 盛り上がる地面・迫りくる壁・燃え尽きるハート・震えるビート
+        return scene;
+    };
+
+    // ゲームオーバーシーン
+    var createGameoverScene = function(){
+        var scene = GenerateScene();
+        var label = new Label('You died');
+        label.x = 0;
+        label.y = 20;
+        scene.addChild(label);
+        scene.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // 半透明な黒
+        scene.addEventListener(Event.TOUCH_START, function(e){
+            game.popScene();
+        });
+        return scene;
+    };
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    // シーン開始
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    game.onload = function(){
         // 最初のシーン（タイトル）
         //game.replaceScene(createTitleScene());
         game.replaceScene(createGameScene());
     };
-
     game.start(); // start your game!
 </script>
 </body>
