@@ -246,16 +246,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
         // ゲームシーン
         var createGameScene = function(){
             var scene = GenerateScene();
-            
-            // ゲーム背景画像
-            //var back = new Sprite(320, 240);
-            //back.image = game.assets['img/game.png'];
-            //scene.addChild(back);
-            
-            // ラベル
-            var label = new Label('Go go go!!!');
-            scene.addChild(label);
-            
+                        
             // ゲームループ背景画像
             var bg1 = new Background(scene.groups['bgb'], 'img/bg-back.gif', 160, 240, 0.5);
             var bg2 = new Background(scene.groups['bgf'], 'img/bg-front.gif', 160, 240, 1);
@@ -297,17 +288,6 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
             });
             scene.backgroundColor = 'rgb(0, 107, 247)';
             
-            // キャラ（くま）
-            var bear = new Sprite(32, 32); // 1キャラのサイズ
-            bear.image = game.assets['img/chara1.png'];
-            bear.frame = [6, 6, 7, 7];   // select sprite frame
-            bear.tl.moveBy(288, 0, 90)   // move right
-                .scaleTo(-1, 1, 10)      // turn left
-                .moveBy(-288, 0, 90)     // move left
-                .scaleTo(1, 1, 10)       // turn right
-                .loop();                 // loop it
-            scene.groups['ch'].addChild(bear);
-
             // キャラ（さかな）
             var LIMIT_Y = 186;
             var fish = new Sprite(37, 24); // 1キャラのサイズ
