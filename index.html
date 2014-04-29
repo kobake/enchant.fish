@@ -23,6 +23,8 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
     game.preload('img/gameloop.png'); // ゲーム背景ループ 320x50
     game.preload('img/start.png'); // START 236x48
     game.preload('img/fishkun37x24.gif'); // ふぃっしゅくん
+    game.preload('img/ground32x32.gif'); // 地面
+    game.preload('img/ground320x32.gif'); // 地面（長い版）
 
     game.onload = function(){
         // タイトルシーン
@@ -77,14 +79,25 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
             // ゲームループ背景画像
             var loop = new Sprite(320, 50);
             loop.image = game.assets['img/gameloop.png'];
-            loop.y = 240 - 50;
+            loop.y = 240 - 32 - 50;
             scene.addChild(loop);
             var loop2 = new Sprite(320, 50);
             loop2.image = game.assets['img/gameloop.png'];
             loop2.x = 320;
-            loop2.y = 240 - 50;
+            loop2.y = 240 - 32 - 50;
             scene.addChild(loop2);
             
+            // 地面
+            var ground = new Sprite(320, 32);
+            ground.image = game.assets['img/ground320x32.gif'];
+            ground.y = 240 - 32;
+            scene.addChild(ground);
+            var ground2 = new Sprite(320, 32);
+            ground2.image = game.assets['img/ground320x32.gif'];
+            ground2.x = 320;
+            ground2.y = 240 - 32;
+            scene.addChild(ground2);
+
             // 背景スクロール
             scene.addEventListener(Event.ENTER_FRAME, function(){
                 var LOOP_SPEED = 5;
@@ -95,6 +108,14 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
                 loop2.x -= LOOP_SPEED;
                 if(loop2.x <= -320){
                     loop2.x = 320;
+                }
+                ground.x -= LOOP_SPEED;
+                if(ground.x <= -320){
+                    ground.x = 320;
+                }
+                ground2.x -= LOOP_SPEED;
+                if(ground2.x <= -320){
+                    ground2.x = 320;
                 }
             });
             scene.backgroundColor = 'rgb(0, 107, 247)';
@@ -112,7 +133,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 
             // キャラ（さかな）
             var fish = new Sprite(37, 24); // 1キャラのサイズ
-            fish.y = 200;
+            fish.y = 186;
             fish.image = game.assets['img/fishkun37x24.gif'];
             fish.frame = [0, 1, 2, 3, 4, 5];   // select sprite frame
             fish.tl.moveBy(288, 0, 90)   // move right
