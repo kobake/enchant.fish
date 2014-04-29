@@ -6,6 +6,8 @@
 http://www.atmarkit.co.jp/ait/articles/1304/01/news034_3.html
 点滅
 http://www.openspc2.org/reibun/enchant.js/v0.4.3/label/0004/index.html
+背景スクロール
+http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 -->
 <script>
     enchant(); // initialize
@@ -18,7 +20,9 @@ http://www.openspc2.org/reibun/enchant.js/v0.4.3/label/0004/index.html
     game.preload('img/chara1.png'); // preload image
     game.preload('img/title.png'); // タイトル背景
     game.preload('img/game.png'); // ゲーム背景
+    game.preload('img/gameloop.png'); // ゲーム背景ループ 320x50
     game.preload('img/start.png'); // START 236x48
+    game.preload('img/fishkun37x24.gif'); // ふぃっしゅくん
 
     game.onload = function(){
         // タイトルシーン
@@ -47,7 +51,6 @@ http://www.openspc2.org/reibun/enchant.js/v0.4.3/label/0004/index.html
                start.opacity = (new Date()).getMilliseconds() > 500 ? 1 : 0;
             });
             
-
             // タッチイベント
             scene.addEventListener(Event.TOUCH_START, function(e){
                 // ゲームシーンに切り替え
@@ -61,11 +64,40 @@ http://www.openspc2.org/reibun/enchant.js/v0.4.3/label/0004/index.html
         // ゲームシーン
         var createGameScene = function(){
             var scene = new Scene();
-            var label = new Label('Go go go!!!');
             
             // ゲーム背景画像
-            var back = new Sprite(320, 240);
-            back.image = game.assets['img/game.png'];
+            //var back = new Sprite(320, 240);
+            //back.image = game.assets['img/game.png'];
+            //scene.addChild(back);
+            
+            // ラベル
+            var label = new Label('Go go go!!!');
+            scene.addChild(label);
+            
+            // ゲームループ背景画像
+            var loop = new Sprite(320, 50);
+            loop.image = game.assets['img/gameloop.png'];
+            loop.y = 240 - 50;
+            scene.addChild(loop);
+            var loop2 = new Sprite(320, 50);
+            loop2.image = game.assets['img/gameloop.png'];
+            loop2.x = 320;
+            loop2.y = 240 - 50;
+            scene.addChild(loop2);
+            
+            // 背景スクロール
+            scene.addEventListener(Event.ENTER_FRAME, function(){
+                var LOOP_SPEED = 5;
+                loop.x -= LOOP_SPEED;
+                if(loop.x <= -320){
+                    loop.x = 320;
+                }
+                loop2.x -= LOOP_SPEED;
+                if(loop2.x <= -320){
+                    loop2.x = 320;
+                }
+            });
+            scene.backgroundColor = 'rgb(0, 107, 247)';
             
             // キャラ
             var bear = new Sprite(32, 32); // 1キャラのサイズ
@@ -76,10 +108,6 @@ http://www.openspc2.org/reibun/enchant.js/v0.4.3/label/0004/index.html
                 .moveBy(-288, 0, 90)     // move left
                 .scaleTo(1, 1, 10)       // turn right
                 .loop();                 // loop it
-
-            // シーンへのオブジェクト追加
-            scene.addChild(back);
-            scene.addChild(label);
             scene.addChild(bear);
 
             // イベント
@@ -105,7 +133,8 @@ http://www.openspc2.org/reibun/enchant.js/v0.4.3/label/0004/index.html
         };
         
         // 最初のシーン（タイトル）
-        game.replaceScene(createTitleScene());
+        //game.replaceScene(createTitleScene());
+        game.replaceScene(createGameScene());
     };
 
     game.start(); // start your game!
