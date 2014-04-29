@@ -99,7 +99,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
             });
             scene.backgroundColor = 'rgb(0, 107, 247)';
             
-            // キャラ
+            // キャラ（くま）
             var bear = new Sprite(32, 32); // 1キャラのサイズ
             bear.image = game.assets['img/chara1.png'];
             bear.frame = [6, 6, 7, 7];   // select sprite frame
@@ -109,6 +109,18 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
                 .scaleTo(1, 1, 10)       // turn right
                 .loop();                 // loop it
             scene.addChild(bear);
+
+            // キャラ（さかな）
+            var fish = new Sprite(37, 24); // 1キャラのサイズ
+            fish.y = 200;
+            fish.image = game.assets['img/fishkun37x24.gif'];
+            fish.frame = [0, 1, 2, 3, 4, 5];   // select sprite frame
+            fish.tl.moveBy(288, 0, 90)   // move right
+                .scaleTo(-1, 1, 10)      // turn left
+                .moveBy(-288, 0, 90)     // move left
+                .scaleTo(1, 1, 10)       // turn right
+                .loop();                 // loop it
+            scene.addChild(fish);
 
             // イベント
             scene.addEventListener(Event.TOUCH_START, function(e){
