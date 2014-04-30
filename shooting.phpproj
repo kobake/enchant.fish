@@ -150,6 +150,9 @@
     <Content Include="scenes\game.js">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="score.js">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="start.js">
       <SubType>Content</SubType>
     </Content>

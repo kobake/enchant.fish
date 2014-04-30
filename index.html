@@ -13,6 +13,7 @@
 		<script type="text/javascript" src="background.js"></script>
 		<script type="text/javascript" src="fish.js"></script>
 		<script type="text/javascript" src="start.js"></script>
+		<script type="text/javascript" src="score.js"></script>
 		<!-- シーン -->
 		<script type="text/javascript" src="scenes/game.js"></script>
 	</script>
@@ -38,7 +39,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 	game.fps = 20; // 20fps
 
 	// リソース準備
-	PreloadImages(game, [Background, Fish, Ground, Milk, Tichan]);
+	PreloadImages(game, [Background, Fish, Ground, Milk, Tichan, Start, Score]);
 
 	// タイトルシーン
 	var createTitleScene = function(){
@@ -99,6 +100,16 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 			//scene.addChild(ground.sprite);
 		}
 
+		// メインキャラ
+		var fish = new Fish(scene); 	// さかなくんさん
+		var tichan = new Tichan(scene); // ちーちゃん
+
+		// オブジェクト
+		var start = new Start(scene);
+
+		// スコア
+		var score = new Score(scene);
+
 		// 背景のフレーム処理
 		var ground_counter = 0;
 		var milkManager = new MilkManager(scene);
@@ -122,17 +133,12 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 				milkManager.lottery();
 			}
 
-			// 牛乳フレーム処理
-			milkManager.frame();
+			// 各種フレーム処理
+			milkManager.frame(); // 牛乳群
+			score.frame(); // スコア
 		});
 		scene.backgroundColor = 'rgb(0, 107, 247)';
 
-		// メインキャラ
-		var fish = new Fish(scene); 	// さかなくんさん
-		var tichan = new Tichan(scene); // ちーちゃん
-
-		// オブジェクト
-		var start = new Start(scene);
 
 
 		// イベント（タッチしたらゲームオーバー）

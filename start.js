@@ -15,3 +15,7 @@ Start = function (scene) {
 		}
 	});
 };
+
+// 画像リスト
+Start.images = [
+];
