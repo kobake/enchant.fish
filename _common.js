@@ -19,9 +19,18 @@ function PreloadImages(game, classlist) {
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 function GenerateFrameArray(from, to, framecount) {
 	var a = [];
-	for (var i = from; i <= to; i++) {
-		for (var j = 0; j < framecount; j++) {
-			a.push(i);
+	if (from < to) {
+		for (var i = from; i <= to; i++) {
+			for (var j = 0; j < framecount; j++) {
+				a.push(i);
+			}
+		}
+	}
+	else {
+		for (var i = from; i >= to; i--) {
+			for (var j = 0; j < framecount; j++) {
+				a.push(i);
+			}
 		}
 	}
 	return a;
