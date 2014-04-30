@@ -45,6 +45,14 @@ Score = function (scene) {
 	// 戻り値0: 通常
 	// 戻り値0以外: オブジェクト削除
 	this.frame = function () {
+		// スタート中は何もしない
+		if (window.g_start) {
+			return;
+		}
+		// さかなくんが死んでる場合は何もしない
+		if (window.g_fish.deadFlag >= 1) {
+			return;
+		}
 		// 距離を進める（ピクセル）
 		this.score += LOOP_SPEED;
 		// スプライトへの反映

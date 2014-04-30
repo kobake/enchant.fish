@@ -8,6 +8,16 @@
 
 	// 抽選
 	this.lottery = function () {
+		// スタート中は何もしない
+		if (window.g_start) {
+			return;
+		}
+
+		// ゲームオーバー中は何もしない
+		if (window.g_fish.deadFlag >= 1) {
+			return;
+		}
+
 		//var hit = CalcLottery(30);
 		var hit = false;
 		// 8回に1回

@@ -14,6 +14,7 @@
 		<script type="text/javascript" src="fish.js"></script>
 		<script type="text/javascript" src="start.js"></script>
 		<script type="text/javascript" src="score.js"></script>
+		<script type="text/javascript" src="gameover.js"></script>
 		<!-- シーン -->
 		<script type="text/javascript" src="scenes/game.js"></script>
 	</script>
@@ -53,7 +54,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 	game.fps = 20; // 20fps→15
 
 	// リソース準備
-	PreloadImages(game, [Background, Fish, Ground, Milk, Tichan, Start, Score]);
+	PreloadImages(game, [Background, Fish, Ground, Milk, Tichan, Start, Score, Gameover]);
 
 	// タイトルシーン
 	var createTitleScene = function(){
@@ -116,6 +117,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 
 		// メインキャラ
 		var fish = new Fish(scene); 	// さかなくんさん
+		window.g_fish = fish; // グローバルアクセス
 		var tichan = new Tichan(scene); // ちーちゃん
 
 		// オブジェクト
@@ -150,6 +152,29 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 			// 各種フレーム処理
 			milkManager.frame(); // 牛乳群
 			score.frame(); // スコア
+
+			// さかなくんが死んでたらゲームオーバー表示
+			if (fish.deadFlag == 1) {
+				fish.deadFlag = 2;
+				//game.pushScene(window.createGameoverScene());
+
+				// 死に演出
+				window.g_gameover = new Gameover(scene);
+
+				// タッチしたら死に演出は削除してゲームリトライ
+				Retry = function (e) {
+					// さかなくん復活
+					fish.reset();
+
+					// 死に演出削除
+					window.g_gameover.dispose();
+					delete window.g_gameover;
+
+					// コールバック削除
+					scene.removeEventListener(Event.TOUCH_START, Retry);
+				};
+				scene.addEventListener(Event.TOUCH_START, Retry);
+			}
 		});
 		scene.backgroundColor = 'rgb(0, 107, 247)';
 
@@ -168,7 +193,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 	};
 
 	// ゲームオーバーシーン
-	var createGameoverScene = function(){
+	window.createGameoverScene = function () {
 		var scene = GenerateScene();
 		var label = new Label('You died');
 		label.x = 0;

@@ -90,6 +90,9 @@
     <Content Include="fish.js">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="gameover.js">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="ground.js">
       <SubType>Content</SubType>
     </Content>

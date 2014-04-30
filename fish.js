@@ -6,11 +6,15 @@ var FIRST_X = (320 - 64) / 2;
 FIRST_X = (320 - 64) / 2 + 100;
 
 // 自動で進む限界位置
-var AUTO_RIGHT_LIMIT = (320 - 64) / 2 + 50;
+var AUTO_X_LIMIT = (320 - 64) / 2 + 50;
+
+// 死ぬ位置
+var DEAD_X = 31;
 
 // クラス定義
 Fish = function (scene) {
 	this.scene = scene;
+	this.deadFlag = 0; // 死にフラグ(0:初期 1:死んだ 2:死に演出中)
 	group = scene.groups[4];
 	this.group = group;
 	// this.sprite = new Sprite(37, 24); // 1キャラのサイズ
@@ -74,10 +78,10 @@ Fish = function (scene) {
 
 		// 自動進行
 		if (!x_hit) {
-			if (t.sprite.x < AUTO_RIGHT_LIMIT) {
+			if (t.sprite.x < AUTO_X_LIMIT) {
 				t.sprite.x += 1;
-				if (t.sprite.x > AUTO_RIGHT_LIMIT) {
-					t.sprite.x = AUTO_RIGHT_LIMIT;
+				if (t.sprite.x > AUTO_X_LIMIT) {
+					t.sprite.x = AUTO_X_LIMIT;
 				}
 			}
 		}
@@ -88,6 +92,13 @@ Fish = function (scene) {
 		if (milk) {
 			// ミルクとの足場判定
 			t.calcPositionByUnderMilk(milk);
+		}
+
+		// 死に判定
+		if (t.sprite.x <= DEAD_X) {
+			if (t.deadFlag == 0) {
+				t.deadFlag = 1;
+			}
 		}
 	});
 
@@ -152,6 +163,11 @@ Fish = function (scene) {
 		if (this.getRight() <= obj.getLeft()) return false; // 自分が左側にあるケース
 		if (obj.getRight() <= this.getLeft()) return false; // 自分が右側にあるケース
 		return true; // それ以外はどこかしら重なってる
+	};
+	// さかなくん復活
+	this.reset = function () {
+		this.deadFlag = 0;
+		this.sprite.x = FIRST_X;
 	};
 };
 
