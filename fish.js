@@ -5,6 +5,9 @@ var LIMIT_Y = 240 - 32 - 64 + 12;
 var FIRST_X = (320 - 64) / 2;
 FIRST_X = (320 - 64) / 2 + 100;
 
+// 自動で進む限界位置
+var AUTO_RIGHT_LIMIT = (320 - 64) / 2 + 50;
+
 // クラス定義
 Fish = function (scene) {
 	this.scene = scene;
@@ -62,10 +65,21 @@ Fish = function (scene) {
 		// 自分のすぐ右のミルクを1個見つける (###シングルトンの相互参照に注意。今のところは大丈夫っぽいけど。。。)
 		// 先にX方向の判定補正を行うことで、めりこんだミルクに乗り上げてしまう現象は防げる、はず。
 		milk = man.findRightMilk(t);
+		var x_hit = false;
 		if (milk) {
 			// ミルクとの当たり判定
-			t.calcPositionByMilk(milk);
+			x_hit |= t.calcPositionByMilk(milk);
 			//console.log("milk x = " + milk.getX());
+		}
+
+		// 自動進行
+		if (!x_hit) {
+			if (t.sprite.x < AUTO_RIGHT_LIMIT) {
+				t.sprite.x += 1;
+				if (t.sprite.x > AUTO_RIGHT_LIMIT) {
+					t.sprite.x = AUTO_RIGHT_LIMIT;
+				}
+			}
 		}
 
 		// 足場のミルクを1個見つける
@@ -84,11 +98,12 @@ Fish = function (scene) {
 
 	// ミルクによる位置修正
 	// ※ここで指定されたミルクは魚より右に位置しているのが前提
+	// @return {Boolean} 補正されたかどうか
 	this.calcPositionByMilk = function (milk) {
 		// 高さチェック
 		if (this.getBottom() <= milk.getTop()) {
 			// ミルクを乗り越えている状態。何もしない。
-			return;
+			return false;
 		}
 
 		// X距離チェック
@@ -96,7 +111,9 @@ Fish = function (scene) {
 		//console.log("dist = " + dist);
 		if (dist < 0) { // 食い込んでいたら
 			this.setRight(milk.getLeft());
+			return true; // 補正した
 		}
+		return false;
 	};
 
 	// ミルクによる足場修正（Y関係は離れてるかもしれないし重なってるかもしれない)
