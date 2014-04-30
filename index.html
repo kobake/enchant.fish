@@ -9,9 +9,12 @@
 		<script type="text/javascript" src="ground.js"></script>
 		<script type="text/javascript" src="tichan.js"></script>
 		<script type="text/javascript" src="milk.js"></script>
+		<script type="text/javascript" src="milk_manager.js"></script>
 		<script type="text/javascript" src="background.js"></script>
 		<script type="text/javascript" src="fish.js"></script>
 		<script type="text/javascript" src="start.js"></script>
+		<!-- シーン -->
+		<script type="text/javascript" src="scenes/game.js"></script>
 	</script>
 </head>
 <body style="margin:0; padding: 0; background-color: #888;">
@@ -98,7 +101,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 
 		// 背景のフレーム処理
 		var ground_counter = 0;
-		var milks = [];
+		var milkManager = new MilkManager(scene);
 		scene.addEventListener(Event.ENTER_FRAME, function () {
 			// 地面
 			for (var i = 0; i < grounds.length; i++) {
@@ -116,25 +119,11 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 				var ground = new Ground(scene, 320);
 				grounds.push(ground);
 				// このタイミングでミルクの抽選を行う
-				if (CalcLottery(10)) {
-					console.log("new milk");
-					var milk = new Milk(scene, 320);
-					milks.push(milk);
-				}
+				milkManager.lottery();
 			}
 
 			// 牛乳フレーム処理
-			for (var i = 0; i < milks.length; i++) {
-				var milk = milks[i];
-				var ret = milk.frame();
-				if (ret != 0) {
-					// milk削除
-					console.log("delete milk");
-					milk.dispose();
-					milks.splice(i, 1);
-					i--;
-				}
-			}
+			milkManager.frame();
 		});
 		scene.backgroundColor = 'rgb(0, 107, 247)';
 

@@ -19,7 +19,6 @@ Milk = function (scene, x) {
 	// 戻り値0: 通常
 	// 戻り値0以外: オブジェクト削除
 	this.frame = function () {
-		var LOOP_SPEED = 4;
 		this.sprite.x -= LOOP_SPEED;
 		if (this.sprite.x <= -32) {
 			return 1; // 削除
@@ -34,7 +33,8 @@ Milk = function (scene, x) {
 	};
 };
 
-// 画像リスト
+// 画像リスト（ぎゅうにゅう）
 Milk.images = [
-	'img/milk64x80-z3.gif'	// ぎゅうにゅう
+	'img/milk64x80-z3.gif', // 中
+	'img/milk64x160-z3.gif' // 大
 ];

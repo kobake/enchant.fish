@@ -29,7 +29,6 @@ Ground = function (scene, x) {
 	// 戻り値0: 通常
 	// 戻り値0以外: オブジェクト削除
 	this.frame = function () {
-		var LOOP_SPEED = 4;
 		this.x -= LOOP_SPEED;
 		if (this.x <= -32) {
 			return 1; // 削除

@@ -13,13 +13,16 @@ Fish = function (scene) {
 	this.sprite.image = game.assets['img/fishkun64x64-z4.gif'];
 	// this.sprite.frame = [5, 4, 3, 2, 1, 0];   // select sprite frame
 	this.sprite.frame = GenerateFrameArray(7, 0, 1);   // select sprite frame
-	this.sprite.tl.moveBy(320 - 64, 0, 90)   // move right
-				.scaleTo(-1, 1, 10)      // turn left
-				.moveBy(-(320 - 64), 0, 90)     // move left
-				.scaleTo(1, 1, 10)       // turn right
-				.loop();                 // loop it
+	/*
+	this.sprite.tl.moveBy(320 - 64, 0, 90)	// move right
+				.scaleTo(-1, 1, 10)			// turn left
+				.moveBy(-(320 - 64), 0, 90)	// move left
+				.scaleTo(1, 1, 10)			// turn right
+				.loop();					// loop it
+	*/
 	group.addChild(this.sprite);
 	this.sprite.my = 0;
+	this.sprite.x = (320 - 64) / 2;
 
 	// ジャンプ処理
 	this.jump = function () {
