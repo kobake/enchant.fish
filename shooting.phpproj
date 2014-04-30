@@ -19,9 +19,14 @@
   <ItemGroup>
     <Folder Include="enchant" />
     <Folder Include="enchant\plugins" />
+    <Folder Include="img\" />
+    <Folder Include="underscore\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="chara1.png">
+    <Content Include=".gitignore">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="background.js">
       <SubType>Content</SubType>
     </Content>
     <Content Include="enchant\enchant.js">
@@ -81,7 +86,67 @@
     <Content Include="enchant\plugins\wiiu.enchant.js">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="ground.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\bg-back.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\bg-front.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\chara1.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\fishkun37x24.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\game.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\gameloop.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\ground320x32.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\ground32x32.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\groundb32x32.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\milk64x80.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\start.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\tichan96x208-back.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\tichan96x208.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\tiichan96x208-front.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\title.png">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="index.html">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="milk.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="tichan.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="underscore\underscore.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="_common.js">
       <SubType>Content</SubType>
     </Content>
   </ItemGroup>
