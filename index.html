@@ -32,6 +32,20 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 	// 処理開始
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	enchant(); // initialize
+
+	/*
+	http://jsdo.it/kitao/enchantjs-pixelart
+	CanvasLayer初期化後にcanvasのコンテキストを操作する
+	拡大時の処理をNearest Neighbor方式に切り替え
+	(※Chrome, FireFox のみ)
+	*/
+	var initCanvas = CanvasLayer.prototype.initialize;
+	CanvasLayer.prototype.initialize = function () {
+		initCanvas.call(this);
+		this.context.imageSmoothingEnabled = false;
+		this.context.webkitImageSmoothingEnabled = false;
+		this.context.mozImageSmoothingEnabled = false;
+	};
     
 	// 基本設定
 	var game = new Core(320, 240); // game stage // 画面サイズ
