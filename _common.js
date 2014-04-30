@@ -14,7 +14,7 @@ function PreloadImages(game) {
 	game.preload('img/groundb32x32.gif'); // 地面（緑）
 	game.preload('img/ground320x32.gif'); // 地面（長い版）
 	// 自キャラ
-	game.preload('img/fishkun37x24.gif'); // ふぃっしゅくん
+	game.preload('img/fishkun37x24-z3.gif'); // ふぃっしゅくん
 	// 敵
 	game.preload('img/tichan96x208.gif'); // ちーちゃん（左端）
 	game.preload('img/tichan96x208-back.gif');
