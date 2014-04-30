@@ -2,9 +2,17 @@
 	this.scene = scene;
 	this.milks = [];
 
+	this.counter = 0;
+
 	// 抽選
 	this.lottery = function () {
-		if (CalcLottery(30)) {
+		//var hit = CalcLottery(30);
+		var hit = false;
+		// 8回に1回
+		this.counter++;
+		hit = (this.counter % 8 == 1);
+
+		if (hit) {
 			console.log("new milk");
 			var milk = new Milk(scene, 320);
 			this.milks.push(milk);
