@@ -4,6 +4,8 @@
 function PreloadImages(game, classlist) {
 	game.preload('img/title.png'); // タイトル背景
 	game.preload('img/start.png'); // START 236x48
+	game.preload('img/title-z9.gif'); // タイトルテキスト
+	
 	// クラス依存
 	_.each(classlist, function (classdef) {
 		_.each(classdef.images, function (image) {

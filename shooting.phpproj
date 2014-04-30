@@ -143,6 +143,9 @@
     <Content Include="milk.js">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="start.js">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="tichan.js">
       <SubType>Content</SubType>
     </Content>

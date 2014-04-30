@@ -11,6 +11,7 @@
 		<script type="text/javascript" src="milk.js"></script>
 		<script type="text/javascript" src="background.js"></script>
 		<script type="text/javascript" src="fish.js"></script>
+		<script type="text/javascript" src="start.js"></script>
 	</script>
 </head>
 <body style="margin:0; padding: 0; background-color: #888;">
@@ -137,12 +138,12 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 		});
 		scene.backgroundColor = 'rgb(0, 107, 247)';
 
-		// キャラ（さかな）
-		var fish = new Fish(scene);
+		// メインキャラ
+		var fish = new Fish(scene); 	// さかなくんさん
+		var tichan = new Tichan(scene); // ちーちゃん
 
-
-		// ちーちゃん
-		var tichan = new Tichan(scene);
+		// オブジェクト
+		var start = new Start(scene);
 
 
 		// イベント（タッチしたらゲームオーバー）
