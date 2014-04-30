@@ -17,6 +17,31 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
     // 地面
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    function PreloadImages(game){
+        game.preload('img/chara1.png'); // preload image
+        game.preload('img/title.png'); // タイトル背景
+        game.preload('img/game.png'); // ゲーム背景
+        game.preload('img/bg-back.gif'); // ゲーム背景（奥）
+        game.preload('img/bg-front.gif'); // ゲーム背景（手前）
+        game.preload('img/gameloop.png'); // ゲーム背景ループ 320x50
+        game.preload('img/start.png'); // START 236x48
+        // 背景
+        game.preload('img/ground32x32.gif'); // 地面
+        game.preload('img/groundb32x32.gif'); // 地面（緑）
+        game.preload('img/ground320x32.gif'); // 地面（長い版）
+        // 自キャラ
+        game.preload('img/fishkun37x24.gif'); // ふぃっしゅくん
+        // 敵
+        game.preload('img/tichan96x208.gif'); // ちーちゃん（左端）
+        game.preload('img/tichan96x208-back.gif');
+        game.preload('img/tichan96x208-front.gif');
+        // 障害物
+        game.preload('img/milk64x80.gif'); // ぎゅうにゅう
+    }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+    // 地面
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
     Ground = function(scene, x){
         // 参照
         this.scene = scene;
@@ -292,19 +317,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
     game.fps = 20; // 20fps
     
     // リソース準備
-    game.preload('img/chara1.png'); // preload image
-    game.preload('img/title.png'); // タイトル背景
-    game.preload('img/game.png'); // ゲーム背景
-    game.preload('img/bg-back.gif'); // ゲーム背景（奥）
-    game.preload('img/bg-front.gif'); // ゲーム背景（手前）
-    game.preload('img/gameloop.png'); // ゲーム背景ループ 320x50
-    game.preload('img/start.png'); // START 236x48
-    game.preload('img/fishkun37x24.gif'); // ふぃっしゅくん
-    game.preload('img/ground32x32.gif'); // 地面
-    game.preload('img/groundb32x32.gif'); // 地面（緑）
-    game.preload('img/ground320x32.gif'); // 地面（長い版）
-    game.preload('img/tichan96x208.gif'); // ちーちゃん（左端）
-    game.preload('img/milk64x80.gif'); // ぎゅうにゅう
+    PreloadImages(game);
 
     // タイトルシーン
     var createTitleScene = function(){
