@@ -2,11 +2,11 @@
 
 Fish = function (scene) {
 	this.scene = scene;
-	group = scene.groups[3];
+	group = scene.groups[4];
 	this.group = group;
 	this.sprite = new Sprite(37, 24); // 1キャラのサイズ
 	this.sprite.y = LIMIT_Y;
-	this.sprite.image = game.assets['img/fishkun37x24-z3.gif'];
+	this.sprite.image = game.assets['img/fishkun37x24-z4.gif'];
 	this.sprite.frame = [0, 1, 2, 3, 4, 5];   // select sprite frame
 	this.sprite.tl.moveBy(288, 0, 90)   // move right
 				.scaleTo(-1, 1, 10)      // turn left
@@ -46,5 +46,5 @@ Fish = function (scene) {
 
 // 画像リスト
 Fish.images = [
-	'img/fishkun37x24-z3.gif'
+	'img/fishkun37x24-z4.gif'
 ];
