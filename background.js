@@ -43,3 +43,10 @@ Background = function (group, imagefilepath, width, height, speed) {
 		this.sprites = [];
 	};
 };
+
+// 画像リスト
+Background.images = [
+	'img/game.png',		// ゲーム背景
+	'img/bg-back.gif',	// ゲーム背景（奥）
+	'img/bg-front.gif',	// ゲーム背景（手前）
+];

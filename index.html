@@ -32,9 +32,9 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 	var game = new Core(320, 240); // game stage // 画面サイズ
 	game.scale = 1; // 拡大率
 	game.fps = 20; // 20fps
-    
+
 	// リソース準備
-	PreloadImages(game);
+	PreloadImages(game, [Background, Fish, Ground, Milk, Tichan]);
 
 	// タイトルシーン
 	var createTitleScene = function(){

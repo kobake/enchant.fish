@@ -36,3 +36,10 @@ var Tichan = function (scene) {
 		this.scene.removeChild(this.sprite);
 	}
 };
+
+// 画像リスト
+Tichan.images = [
+	'img/tichan96x208.gif', // ちーちゃん（左端）
+	'img/tichan96x208-back.gif',
+	'img/tichan96x208-front.gif'
+];

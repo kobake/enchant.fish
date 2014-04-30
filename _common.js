@@ -1,26 +1,17 @@
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 // リソース準備
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-function PreloadImages(game) {
+function PreloadImages(game, classlist) {
 	game.preload('img/chara1.png'); // preload image
 	game.preload('img/title.png'); // タイトル背景
-	game.preload('img/game.png'); // ゲーム背景
-	game.preload('img/bg-back.gif'); // ゲーム背景（奥）
-	game.preload('img/bg-front.gif'); // ゲーム背景（手前）
 	game.preload('img/gameloop.png'); // ゲーム背景ループ 320x50
 	game.preload('img/start.png'); // START 236x48
-	// 背景
-	game.preload('img/ground32x32.gif'); // 地面
-	game.preload('img/groundb32x32.gif'); // 地面（緑）
-	game.preload('img/ground320x32.gif'); // 地面（長い版）
-	// 自キャラ
-	game.preload('img/fishkun37x24-z3.gif'); // ふぃっしゅくん
-	// 敵
-	game.preload('img/tichan96x208.gif'); // ちーちゃん（左端）
-	game.preload('img/tichan96x208-back.gif');
-	game.preload('img/tichan96x208-front.gif');
-	// 障害物
-	game.preload('img/milk64x80.gif'); // ぎゅうにゅう
+	// クラス依存
+	_.each(classlist, function (classdef) {
+		_.each(classdef.images, function (image) {
+			game.preload(image);
+		});
+	});
 }
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //

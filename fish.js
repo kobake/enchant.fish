@@ -41,3 +41,8 @@ Fish = function (scene, group) {
 		t.jump();
 	});
 };
+
+// 画像リスト
+Fish.images = [
+	'img/fishkun37x24-z3.gif'
+];

@@ -31,3 +31,8 @@ Milk = function (group, x) {
 		delete this.sprite; // 変数をアンセット
 	};
 };
+
+// 画像リスト
+Milk.images = [
+	'img/milk64x80.gif'	// ぎゅうにゅう
+];
