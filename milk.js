@@ -2,13 +2,15 @@
 // 牛乳パック
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 // Usage: milk = new Milk(group, 10);
-Milk = function (group, x) {
+Milk = function (scene, x) {
+	group = scene.groups[3];
+
 	// 参照
 	this.group = group;
 
 	// スプライト
 	this.sprite = new Sprite(64, 80);
-	this.sprite.image = game.assets['img/milk64x80.gif'];
+	this.sprite.image = game.assets['img/milk64x80-z3.gif'];
 	this.sprite.x = x;
 	this.sprite.y = 240 - 32 - 80;
 	group.addChild(this.sprite);
@@ -34,5 +36,5 @@ Milk = function (group, x) {
 
 // 画像リスト
 Milk.images = [
-	'img/milk64x80.gif'	// ぎゅうにゅう
+	'img/milk64x80-z3.gif'	// ぎゅうにゅう
 ];

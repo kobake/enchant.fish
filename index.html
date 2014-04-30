@@ -77,8 +77,8 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 		var scene = GenerateScene();
 
 		// ゲームループ背景画像
-		var bg1 = new Background(scene.groups['bgb'], 'img/bg-back.gif', 160, 240, 0.5);
-		var bg2 = new Background(scene.groups['bgf'], 'img/bg-front.gif', 160, 240, 1);
+		var bg1 = new Background(scene.groups[0], 'img/bg-back-z0.gif', 160, 240, 0.5);
+		var bg2 = new Background(scene.groups[1], 'img/bg-front-z1.gif', 160, 240, 1);
 		scene.addEventListener(Event.ENTER_FRAME, function () {
 			bg1.frame();
 			bg2.frame();
@@ -117,7 +117,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 				// このタイミングでミルクの抽選を行う
 				if (CalcLottery(10)) {
 					console.log("new milk");
-					var milk = new Milk(scene.groups['chb'], 320);
+					var milk = new Milk(scene, 320);
 					milks.push(milk);
 				}
 			}
@@ -138,7 +138,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 		scene.backgroundColor = 'rgb(0, 107, 247)';
 
 		// キャラ（さかな）
-		var fish = new Fish(scene, scene.groups['ch']);
+		var fish = new Fish(scene);
 
 
 		// ちーちゃん

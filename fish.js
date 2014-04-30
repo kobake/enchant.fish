@@ -1,6 +1,8 @@
 ﻿var LIMIT_Y = 186;
 
-Fish = function (scene, group) {
+Fish = function (scene) {
+	this.scene = scene;
+	group = scene.groups[3];
 	this.group = group;
 	this.sprite = new Sprite(37, 24); // 1キャラのサイズ
 	this.sprite.y = LIMIT_Y;

@@ -2,9 +2,7 @@
 // リソース準備
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 function PreloadImages(game, classlist) {
-	game.preload('img/chara1.png'); // preload image
 	game.preload('img/title.png'); // タイトル背景
-	game.preload('img/gameloop.png'); // ゲーム背景ループ 320x50
 	game.preload('img/start.png'); // START 236x48
 	// クラス依存
 	_.each(classlist, function (classdef) {
@@ -58,6 +56,13 @@ function GenerateScene() {
 		chb: chgroup_back,
 		chf: chgroup_front
 	};
+
+	// 数字指定によるグループも提供（一番奥が0、一番手前が9）
+	for (var i = 0; i < 10; i++) {
+		var group = new Group();
+		scene.addChild(group);
+		scene.groups[i] = group;
+	}
 
 	return scene;
 }

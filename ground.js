@@ -54,7 +54,5 @@ Ground = function (scene, x) {
 
 // 画像リスト
 Ground.images = [
-	'img/ground32x32.gif', // 地面
-	'img/groundb32x32.gif', // 地面（緑）
-	'img/ground320x32.gif'	// 地面（長い版）
+	'img/ground32x32.gif' // 地面
 ];

@@ -46,7 +46,6 @@ Background = function (group, imagefilepath, width, height, speed) {
 
 // 画像リスト
 Background.images = [
-	'img/game.png',		// ゲーム背景
-	'img/bg-back.gif',	// ゲーム背景（奥）
-	'img/bg-front.gif',	// ゲーム背景（手前）
+	'img/bg-back-z0.gif',	// ゲーム背景（奥）
+	'img/bg-front-z1.gif',	// ゲーム背景（手前）
 ];
