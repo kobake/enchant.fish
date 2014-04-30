@@ -86,6 +86,9 @@
     <Content Include="enchant\plugins\wiiu.enchant.js">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="fish.js">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="ground.js">
       <SubType>Content</SubType>
     </Content>
