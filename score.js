@@ -12,7 +12,7 @@ Score = function (scene) {
 		sprite.image = game.assets['img/number7x7-z9.gif'];
 		sprite.x = 320 - 4 - 7 - 18 * (i + 1) - 7;
 		sprite.y = 4;
-		sprite.frame = 2;
+		sprite.frame = 0;
 
 		// 拡大
 		sprite.scaleX = 2;
@@ -38,11 +38,21 @@ Score = function (scene) {
 	this.sprite_m.originY = 0;
 	group.addChild(this.sprite_m);
 
+	// スコアの素（耐久距離）
+	this.score = 0;
+
 	// フレーム処理。
 	// 戻り値0: 通常
 	// 戻り値0以外: オブジェクト削除
 	this.frame = function () {
-		// 距離を進める
+		// 距離を進める（ピクセル）
+		this.score += LOOP_SPEED;
+		// スプライトへの反映
+		k = 1;
+		for (var i = 0; i < 6; i++) {
+			this.sprites[i].frame = Math.floor(this.score / k) % 10;
+			k *= 10;
+		}
 		return 0; // 継続
 	};
 
