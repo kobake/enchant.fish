@@ -1,8 +1,8 @@
 <!doctype html>
 <html>
-    <title>enchant.fish</title>
-    <head><script src="enchant/enchant.js"></script>
-    <head><script src="underscore/underscore.js"></script>
+	<title>enchant.fish</title>
+	<head><script src="enchant/enchant.js"></script>
+	<head><script src="underscore/underscore.js"></script>
 </head>
 <body style="margin:0; padding: 0; background-color: #888;">
 <!--
@@ -14,488 +14,488 @@ http://www.openspc2.org/reibun/enchant.js/v0.4.3/label/0004/index.html
 http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 -->
 <script>
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    // 地面
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    function PreloadImages(game){
-        game.preload('img/chara1.png'); // preload image
-        game.preload('img/title.png'); // タイトル背景
-        game.preload('img/game.png'); // ゲーム背景
-        game.preload('img/bg-back.gif'); // ゲーム背景（奥）
-        game.preload('img/bg-front.gif'); // ゲーム背景（手前）
-        game.preload('img/gameloop.png'); // ゲーム背景ループ 320x50
-        game.preload('img/start.png'); // START 236x48
-        // 背景
-        game.preload('img/ground32x32.gif'); // 地面
-        game.preload('img/groundb32x32.gif'); // 地面（緑）
-        game.preload('img/ground320x32.gif'); // 地面（長い版）
-        // 自キャラ
-        game.preload('img/fishkun37x24.gif'); // ふぃっしゅくん
-        // 敵
-        game.preload('img/tichan96x208.gif'); // ちーちゃん（左端）
-        game.preload('img/tichan96x208-back.gif');
-        game.preload('img/tichan96x208-front.gif');
-        // 障害物
-        game.preload('img/milk64x80.gif'); // ぎゅうにゅう
-    }
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	// 地面
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	function PreloadImages(game){
+		game.preload('img/chara1.png'); // preload image
+		game.preload('img/title.png'); // タイトル背景
+		game.preload('img/game.png'); // ゲーム背景
+		game.preload('img/bg-back.gif'); // ゲーム背景（奥）
+		game.preload('img/bg-front.gif'); // ゲーム背景（手前）
+		game.preload('img/gameloop.png'); // ゲーム背景ループ 320x50
+		game.preload('img/start.png'); // START 236x48
+		// 背景
+		game.preload('img/ground32x32.gif'); // 地面
+		game.preload('img/groundb32x32.gif'); // 地面（緑）
+		game.preload('img/ground320x32.gif'); // 地面（長い版）
+		// 自キャラ
+		game.preload('img/fishkun37x24.gif'); // ふぃっしゅくん
+		// 敵
+		game.preload('img/tichan96x208.gif'); // ちーちゃん（左端）
+		game.preload('img/tichan96x208-back.gif');
+		game.preload('img/tichan96x208-front.gif');
+		// 障害物
+		game.preload('img/milk64x80.gif'); // ぎゅうにゅう
+	}
     
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    // 地面
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    Ground = function(scene, x){
-        // 参照
-        this.scene = scene;
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	// 地面
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	Ground = function(scene, x){
+		// 参照
+		this.scene = scene;
         
-        // 位置
-        this.x = x;
-        this.y = 240 - 32;
+		// 位置
+		this.x = x;
+		this.y = 240 - 32;
         
-        // 高さは 1～5
-        this.height = 1; + Math.floor(Math.random() * 5);
+		// 高さは 1～5
+		this.height = 1; + Math.floor(Math.random() * 5);
         
-        // 高さ分だけスプライトを作る
-        this.sprites = [];
-        for(var i = 0; i < this.height; i++){
-            var sprite = new Sprite(32, 32);
-            sprite.image = game.assets['img/ground32x32.gif'];
-            sprite.x = this.x + 100;
-            sprite.y = this.y - (i * 32);
-            // シーンに追加
-            scene.groups['bg'].addChild(sprite);
-            // thisに追加
-            this.sprites.push(sprite);
-        }
+		// 高さ分だけスプライトを作る
+		this.sprites = [];
+		for(var i = 0; i < this.height; i++){
+			var sprite = new Sprite(32, 32);
+			sprite.image = game.assets['img/ground32x32.gif'];
+			sprite.x = this.x + 100;
+			sprite.y = this.y - (i * 32);
+			// シーンに追加
+			scene.groups['bg'].addChild(sprite);
+			// thisに追加
+			this.sprites.push(sprite);
+		}
 
-        // フレーム処理。
-        // 戻り値0: 通常
-        // 戻り値0以外: オブジェクト削除
-        this.frame = function(){
-            var LOOP_SPEED = 4;
-            this.x -= LOOP_SPEED;
-            if(this.x <= -32){
-                return 1; // 削除
-            }
-            // スプライト更新
-            var this_x = this.x;
-            _.each(this.sprites, function(sprite){
-                sprite.x = this_x;
-            });
-            return 0; // 継続
-        };
+		// フレーム処理。
+		// 戻り値0: 通常
+		// 戻り値0以外: オブジェクト削除
+		this.frame = function(){
+			var LOOP_SPEED = 4;
+			this.x -= LOOP_SPEED;
+			if(this.x <= -32){
+				return 1; // 削除
+			}
+			// スプライト更新
+			var this_x = this.x;
+			_.each(this.sprites, function(sprite){
+				sprite.x = this_x;
+			});
+			return 0; // 継続
+		};
         
-        // 削除
-        var scene = this.scene;
-        this.dispose = function(){
-            _.each(this.sprites, function(sprite){
-                scene.removeChild(sprite);
-            });
-            this.sprites = [];
-        };
-    };
-    
-    
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    // 背景
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    Background = function(group, imagefilepath, width, height, speed){
-        // 参照
-        this.group = group;
-        
-        // 属性
-        this.width = width;
-        this.height = height;
-        this.speed = speed;
-        
-        // 必要な数だけスプライトを作る
-        this.image_count = Math.floor(640 / width) + 1;
-        this.sprites = [];
-        for(var i = 0; i < this.image_count; i++){
-            var sprite = new Sprite(width, height);
-            sprite.image = game.assets[imagefilepath];
-            sprite.x = width * i;
-            sprite.y = 0;
-            group.addChild(sprite);
-            this.sprites.push(sprite);
-        }
-        
-        // フレーム処理
-        var this_width = this.width;
-        var this_speed = this.speed;
-        this.frame = function(){
-            _.each(this.sprites, function(sprite){
-                sprite.x -= this_speed;
-                if(sprite.x <= -this_width){
-                    sprite.x = 320; // 一番右端に移動
-                }
-            });
-        };
-
-        // 削除
-        var group = this.group;
-        this.dispose = function(){
-            _.each(this.sprites, function(sprite){
-                group.removeChild(sprite);
-            });
-            this.sprites = [];
-        };
-    };
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    // アニメーション用配列の生成
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    function GenerateFrameArray(from, to, framecount){
-        var a = [];
-        for(var i = from; i <= to; i++){
-            for(var j = 0; j < framecount; j++){
-                a.push(i);
-            }
-        }
-        return a;
-    }
-    
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    // ちーちゃん
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    var Tichan = function(scene){
-        // 参照
-        this.scene = scene;
-        
-        // スプライト
-        this.sprite = new Sprite(96, 208);
-        this.sprite.image = game.assets['img/tichan96x208.gif'];
-        this.sprite.x = 0;
-        this.sprite.y = 0;
-        this.sprite.frame = GenerateFrameArray(0, 5, 2);
-        
-        // シーンに追加
-        scene.groups['ch'].addChild(this.sprite);
-        
-        // フレーム処理
-        this.frame = function(){
-        };
-
-        // 削除
-        this.dispose = function(){
-            this.scene.removeChild(this.sprite);
-        }
-    };
-    
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    // 牛乳パック
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    // Usage: milk = new Milk(group, 10);
-    Milk = function(group, x){
-        // 参照
-        this.group = group;
-        
-        // スプライト
-        this.sprite = new Sprite(64, 80);
-        this.sprite.image = game.assets['img/milk64x80.gif'];
-        this.sprite.x = x;
-        this.sprite.y = 240 - 32 - 80;
-        group.addChild(this.sprite);
-
-        // フレーム処理。
-        // 戻り値0: 通常
-        // 戻り値0以外: オブジェクト削除
-        this.frame = function(){
-            var LOOP_SPEED = 4;
-            this.sprite.x -= LOOP_SPEED;
-            if(this.sprite.x <= -32){
-                return 1; // 削除
-            }
-            return 0; // 継続
-        };
-        
-        // 削除
-        this.dispose = function(){
-            this.group.removeChild(this.sprite);
-            delete this.sprite; // 変数をアンセット
-        };
-    };
+		// 削除
+		var scene = this.scene;
+		this.dispose = function(){
+			_.each(this.sprites, function(sprite){
+				scene.removeChild(sprite);
+			});
+			this.sprites = [];
+		};
+	};
     
     
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    // 背景
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    Background = function(group, imagefilepath, width, height, speed){
-        // 参照
-        this.group = group;
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	// 背景
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	Background = function(group, imagefilepath, width, height, speed){
+		// 参照
+		this.group = group;
         
-        // 属性
-        this.width = width;
-        this.height = height;
-        this.speed = speed;
+		// 属性
+		this.width = width;
+		this.height = height;
+		this.speed = speed;
         
-        // 必要な数だけスプライトを作る
-        this.image_count = Math.floor(640 / width) + 1;
-        this.sprites = [];
-        for(var i = 0; i < this.image_count; i++){
-            var sprite = new Sprite(width, height);
-            sprite.image = game.assets[imagefilepath];
-            sprite.x = width * i;
-            sprite.y = 0;
-            group.addChild(sprite);
-            this.sprites.push(sprite);
-        }
+		// 必要な数だけスプライトを作る
+		this.image_count = Math.floor(640 / width) + 1;
+		this.sprites = [];
+		for(var i = 0; i < this.image_count; i++){
+			var sprite = new Sprite(width, height);
+			sprite.image = game.assets[imagefilepath];
+			sprite.x = width * i;
+			sprite.y = 0;
+			group.addChild(sprite);
+			this.sprites.push(sprite);
+		}
         
-        // フレーム処理
-        var this_width = this.width;
-        var this_speed = this.speed;
-        this.frame = function(){
-            _.each(this.sprites, function(sprite){
-                sprite.x -= this_speed;
-                if(sprite.x <= -this_width){
-                    sprite.x = 320; // 一番右端に移動
-                }
-            });
-        };
+		// フレーム処理
+		var this_width = this.width;
+		var this_speed = this.speed;
+		this.frame = function(){
+			_.each(this.sprites, function(sprite){
+				sprite.x -= this_speed;
+				if(sprite.x <= -this_width){
+					sprite.x = 320; // 一番右端に移動
+				}
+			});
+		};
 
-        // 削除
-        var group = this.group;
-        this.dispose = function(){
-            _.each(this.sprites, function(sprite){
-                group.removeChild(sprite);
-            });
-            this.sprites = [];
-        };
-    };
+		// 削除
+		var group = this.group;
+		this.dispose = function(){
+			_.each(this.sprites, function(sprite){
+				group.removeChild(sprite);
+			});
+			this.sprites = [];
+		};
+	};
 
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    // シーン作成
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    function GenerateScene(){
-        var scene = new Scene();
-
-        // 背景用グループ
-        var bggroup = new Group(); // 背景用グループ
-        scene.addChild(bggroup);
-        var bggroup_back = new Group(); // 背景用グループ（奥）
-        bggroup.addChild(bggroup_back);
-        var bggroup_front = new Group(); // 背景用グループ（手前）
-        bggroup.addChild(bggroup_front);
-        
-        // キャラ用グループ
-        var chgroup = new Group(); // キャラ用グループ
-        scene.addChild(chgroup);
-        var chgroup_back = new Group();
-        chgroup.addChild(chgroup_back);
-        var chgroup_front = new Group();
-        chgroup.addChild(chgroup_front);
-
-        // グループには名前でアクセスできるようにしておく
-        scene.groups = {
-            bg:  bggroup,
-            bgb: bggroup_back,
-            bgf: bggroup_front,
-            ch:  chgroup,
-            chb: chgroup_back,
-            chf: chgroup_front
-        };
-        
-        return scene;
-    }
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	// アニメーション用配列の生成
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	function GenerateFrameArray(from, to, framecount){
+		var a = [];
+		for(var i = from; i <= to; i++){
+			for(var j = 0; j < framecount; j++){
+				a.push(i);
+			}
+		}
+		return a;
+	}
     
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    // 抽選関数
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    /* @param {Number} percent 確率（パーセント）
-     * @return {Boolean} 当選したかどうか
-     */
-    function CalcLottery(percent){
-        return percent >= Math.random() * 100;
-    }
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	// ちーちゃん
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	var Tichan = function(scene){
+		// 参照
+		this.scene = scene;
+        
+		// スプライト
+		this.sprite = new Sprite(96, 208);
+		this.sprite.image = game.assets['img/tichan96x208.gif'];
+		this.sprite.x = 0;
+		this.sprite.y = 0;
+		this.sprite.frame = GenerateFrameArray(0, 5, 2);
+        
+		// シーンに追加
+		scene.groups['ch'].addChild(this.sprite);
+        
+		// フレーム処理
+		this.frame = function(){
+		};
+
+		// 削除
+		this.dispose = function(){
+			this.scene.removeChild(this.sprite);
+		}
+	};
     
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    // 処理開始
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    enchant(); // initialize
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	// 牛乳パック
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	// Usage: milk = new Milk(group, 10);
+	Milk = function(group, x){
+		// 参照
+		this.group = group;
+        
+		// スプライト
+		this.sprite = new Sprite(64, 80);
+		this.sprite.image = game.assets['img/milk64x80.gif'];
+		this.sprite.x = x;
+		this.sprite.y = 240 - 32 - 80;
+		group.addChild(this.sprite);
+
+		// フレーム処理。
+		// 戻り値0: 通常
+		// 戻り値0以外: オブジェクト削除
+		this.frame = function(){
+			var LOOP_SPEED = 4;
+			this.sprite.x -= LOOP_SPEED;
+			if(this.sprite.x <= -32){
+				return 1; // 削除
+			}
+			return 0; // 継続
+		};
+        
+		// 削除
+		this.dispose = function(){
+			this.group.removeChild(this.sprite);
+			delete this.sprite; // 変数をアンセット
+		};
+	};
     
-    // 基本設定
-    var game = new Core(320, 240); // game stage // 画面サイズ
-    game.scale = 1; // 拡大率
-    game.fps = 20; // 20fps
     
-    // リソース準備
-    PreloadImages(game);
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	// 背景
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	Background = function(group, imagefilepath, width, height, speed){
+		// 参照
+		this.group = group;
+        
+		// 属性
+		this.width = width;
+		this.height = height;
+		this.speed = speed;
+        
+		// 必要な数だけスプライトを作る
+		this.image_count = Math.floor(640 / width) + 1;
+		this.sprites = [];
+		for(var i = 0; i < this.image_count; i++){
+			var sprite = new Sprite(width, height);
+			sprite.image = game.assets[imagefilepath];
+			sprite.x = width * i;
+			sprite.y = 0;
+			group.addChild(sprite);
+			this.sprites.push(sprite);
+		}
+        
+		// フレーム処理
+		var this_width = this.width;
+		var this_speed = this.speed;
+		this.frame = function(){
+			_.each(this.sprites, function(sprite){
+				sprite.x -= this_speed;
+				if(sprite.x <= -this_width){
+					sprite.x = 320; // 一番右端に移動
+				}
+			});
+		};
 
-    // タイトルシーン
-    var createTitleScene = function(){
-        var scene = GenerateScene();
+		// 削除
+		var group = this.group;
+		this.dispose = function(){
+			_.each(this.sprites, function(sprite){
+				group.removeChild(sprite);
+			});
+			this.sprites = [];
+		};
+	};
 
-        // タイトル背景画像
-        var back = new Sprite(320, 240);
-        back.image = game.assets['img/title.png'];
-        scene.groups['bg'].addChild(back);
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	// シーン作成
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	function GenerateScene(){
+		var scene = new Scene();
 
-        // ラベル
-        //var label = new Label('Welcome the enchant.fish world!');
-        //scene.addChild(label);
+		// 背景用グループ
+		var bggroup = new Group(); // 背景用グループ
+		scene.addChild(bggroup);
+		var bggroup_back = new Group(); // 背景用グループ（奥）
+		bggroup.addChild(bggroup_back);
+		var bggroup_front = new Group(); // 背景用グループ（手前）
+		bggroup.addChild(bggroup_front);
+        
+		// キャラ用グループ
+		var chgroup = new Group(); // キャラ用グループ
+		scene.addChild(chgroup);
+		var chgroup_back = new Group();
+		chgroup.addChild(chgroup_back);
+		var chgroup_front = new Group();
+		chgroup.addChild(chgroup_front);
 
-        // スタート画像
-        var start = new Sprite(236, 48);
-        start.x = (320 - 236) / 2;
-        start.y = (240 - 48) / 2;
-        start.textAlign = 'center';
-        start.image = game.assets['img/start.png'];
-        scene.groups['ch'].addChild(start);
+		// グループには名前でアクセスできるようにしておく
+		scene.groups = {
+			bg:  bggroup,
+			bgb: bggroup_back,
+			bgf: bggroup_front,
+			ch:  chgroup,
+			chb: chgroup_back,
+			chf: chgroup_front
+		};
+        
+		return scene;
+	}
+    
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	// 抽選関数
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	/* @param {Number} percent 確率（パーセント）
+		* @return {Boolean} 当選したかどうか
+		*/
+	function CalcLottery(percent){
+		return percent >= Math.random() * 100;
+	}
+    
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	// 処理開始
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	enchant(); // initialize
+    
+	// 基本設定
+	var game = new Core(320, 240); // game stage // 画面サイズ
+	game.scale = 1; // 拡大率
+	game.fps = 20; // 20fps
+    
+	// リソース準備
+	PreloadImages(game);
 
-        // スタート画像は点滅させる
-        start.addEventListener(Event.ENTER_FRAME, function(){
-           start.opacity = (new Date()).getMilliseconds() > 500 ? 1 : 0;
-        });
+	// タイトルシーン
+	var createTitleScene = function(){
+		var scene = GenerateScene();
 
-        // タッチイベント
-        scene.addEventListener(Event.TOUCH_START, function(e){
-            // ゲームシーンに切り替え
-            game.replaceScene(createGameScene());
-        });
+		// タイトル背景画像
+		var back = new Sprite(320, 240);
+		back.image = game.assets['img/title.png'];
+		scene.groups['bg'].addChild(back);
 
-        // 作成されたシーンを返す
-        return scene;
-    };
+		// ラベル
+		//var label = new Label('Welcome the enchant.fish world!');
+		//scene.addChild(label);
 
-    // ゲームシーン
-    var createGameScene = function(){
-        var scene = GenerateScene();
+		// スタート画像
+		var start = new Sprite(236, 48);
+		start.x = (320 - 236) / 2;
+		start.y = (240 - 48) / 2;
+		start.textAlign = 'center';
+		start.image = game.assets['img/start.png'];
+		scene.groups['ch'].addChild(start);
 
-        // ゲームループ背景画像
-        var bg1 = new Background(scene.groups['bgb'], 'img/bg-back.gif', 160, 240, 0.5);
-        var bg2 = new Background(scene.groups['bgf'], 'img/bg-front.gif', 160, 240, 1);
-        scene.addEventListener(Event.ENTER_FRAME, function(){
-            bg1.frame();
-            bg2.frame();
-        });
+		// スタート画像は点滅させる
+		start.addEventListener(Event.ENTER_FRAME, function(){
+			start.opacity = (new Date()).getMilliseconds() > 500 ? 1 : 0;
+		});
 
-        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-        // 地面
-        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-        // 地面リスト
-        var grounds = [];
-        for(var i = 0; i < 11; i++){
-            var ground = new Ground(scene, i * 32);
-            grounds.push(ground);
-            //scene.addChild(ground.sprite);
-        }
+		// タッチイベント
+		scene.addEventListener(Event.TOUCH_START, function(e){
+			// ゲームシーンに切り替え
+			game.replaceScene(createGameScene());
+		});
 
-        // 背景のフレーム処理
-        var ground_counter = 0;
-        var milks = [];
-        scene.addEventListener(Event.ENTER_FRAME, function(){
-            // 地面
-            for(var i = 0; i < grounds.length; i++){
-                var ground = grounds[i];
-                var ret = ground.frame();
-                if(ret != 0){
-                    // ground削除
-                    ground.dispose();
-                    grounds.splice(i, 1);
-                    i--;
-                }
-            }
-            // 地面が減っていたらもう1個足す
-            if(grounds.length <= 10){
-                var ground = new Ground(scene, 320);
-                grounds.push(ground);
-                // このタイミングでミルクの抽選を行う
-                if(CalcLottery(10)){
-                    console.log("new milk");
-                    var milk = new Milk(scene.groups['chb'], 320);
-                    milks.push(milk);
-                }
-            }
+		// 作成されたシーンを返す
+		return scene;
+	};
+
+	// ゲームシーン
+	var createGameScene = function(){
+		var scene = GenerateScene();
+
+		// ゲームループ背景画像
+		var bg1 = new Background(scene.groups['bgb'], 'img/bg-back.gif', 160, 240, 0.5);
+		var bg2 = new Background(scene.groups['bgf'], 'img/bg-front.gif', 160, 240, 1);
+		scene.addEventListener(Event.ENTER_FRAME, function(){
+			bg1.frame();
+			bg2.frame();
+		});
+
+		// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+		// 地面
+		// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+		// 地面リスト
+		var grounds = [];
+		for(var i = 0; i < 11; i++){
+			var ground = new Ground(scene, i * 32);
+			grounds.push(ground);
+			//scene.addChild(ground.sprite);
+		}
+
+		// 背景のフレーム処理
+		var ground_counter = 0;
+		var milks = [];
+		scene.addEventListener(Event.ENTER_FRAME, function(){
+			// 地面
+			for(var i = 0; i < grounds.length; i++){
+				var ground = grounds[i];
+				var ret = ground.frame();
+				if(ret != 0){
+					// ground削除
+					ground.dispose();
+					grounds.splice(i, 1);
+					i--;
+				}
+			}
+			// 地面が減っていたらもう1個足す
+			if(grounds.length <= 10){
+				var ground = new Ground(scene, 320);
+				grounds.push(ground);
+				// このタイミングでミルクの抽選を行う
+				if(CalcLottery(10)){
+					console.log("new milk");
+					var milk = new Milk(scene.groups['chb'], 320);
+					milks.push(milk);
+				}
+			}
             
-            // 牛乳フレーム処理
-            for(var i = 0; i < milks.length; i++){
-                var milk = milks[i];
-                var ret = milk.frame();
-                if(ret != 0){
-                    // milk削除
-                    console.log("delete milk");
-                    milk.dispose();
-                    milks.splice(i, 1);
-                    i--;
-                }
-            }
-        });
-        scene.backgroundColor = 'rgb(0, 107, 247)';
+			// 牛乳フレーム処理
+			for(var i = 0; i < milks.length; i++){
+				var milk = milks[i];
+				var ret = milk.frame();
+				if(ret != 0){
+					// milk削除
+					console.log("delete milk");
+					milk.dispose();
+					milks.splice(i, 1);
+					i--;
+				}
+			}
+		});
+		scene.backgroundColor = 'rgb(0, 107, 247)';
 
-        // キャラ（さかな）
-        var LIMIT_Y = 186;
-        var fish = new Sprite(37, 24); // 1キャラのサイズ
-        fish.y = LIMIT_Y;
-        fish.image = game.assets['img/fishkun37x24.gif'];
-        fish.frame = [0, 1, 2, 3, 4, 5];   // select sprite frame
-        fish.tl.moveBy(288, 0, 90)   // move right
-            .scaleTo(-1, 1, 10)      // turn left
-            .moveBy(-288, 0, 90)     // move left
-            .scaleTo(1, 1, 10)       // turn right
-            .loop();                 // loop it
-        scene.groups['ch'].addChild(fish);
-        fish.my = 0;
-        fish.jump = function(){
-            // 上方向への速度を設定
-            fish.my = -8;
-            console.log("jump");
-        };
+		// キャラ（さかな）
+		var LIMIT_Y = 186;
+		var fish = new Sprite(37, 24); // 1キャラのサイズ
+		fish.y = LIMIT_Y;
+		fish.image = game.assets['img/fishkun37x24.gif'];
+		fish.frame = [0, 1, 2, 3, 4, 5];   // select sprite frame
+		fish.tl.moveBy(288, 0, 90)   // move right
+			.scaleTo(-1, 1, 10)      // turn left
+			.moveBy(-288, 0, 90)     // move left
+			.scaleTo(1, 1, 10)       // turn right
+			.loop();                 // loop it
+		scene.groups['ch'].addChild(fish);
+		fish.my = 0;
+		fish.jump = function(){
+			// 上方向への速度を設定
+			fish.my = -8;
+			console.log("jump");
+		};
 
-        // さかなさんのフレーム処理
-        fish.addEventListener(Event.ENTER_FRAME, function(e){
-            // 加速度による速度計算
-            fish.my += 0.9;
-            if(fish.my >= 100)fish.my = 0;
+		// さかなさんのフレーム処理
+		fish.addEventListener(Event.ENTER_FRAME, function(e){
+			// 加速度による速度計算
+			fish.my += 0.9;
+			if(fish.my >= 100)fish.my = 0;
 
-            // 速度による位置計算
-            fish.y += fish.my;
+			// 速度による位置計算
+			fish.y += fish.my;
 
-            // 位置制限
-            if(fish.y >= LIMIT_Y)fish.y = LIMIT_Y;
-        });
+			// 位置制限
+			if(fish.y >= LIMIT_Y)fish.y = LIMIT_Y;
+		});
 
-        // タッチしたらジャンプ
-        scene.addEventListener(Event.TOUCH_START, function(e){
-            fish.jump();
-        });
+		// タッチしたらジャンプ
+		scene.addEventListener(Event.TOUCH_START, function(e){
+			fish.jump();
+		});
 
-        // ちーちゃん
-        var tichan = new Tichan(scene);
+		// ちーちゃん
+		var tichan = new Tichan(scene);
 
 
-        // イベント（タッチしたらゲームオーバー）
-        /*
-        scene.addEventListener(Event.TOUCH_START, function(e){
-            // 今のシーンの上に重ねてシーンを乗せる
-            game.pushScene(createGameoverScene());
-        });
-        */
+		// イベント（タッチしたらゲームオーバー）
+		/*
+		scene.addEventListener(Event.TOUCH_START, function(e){
+			// 今のシーンの上に重ねてシーンを乗せる
+			game.pushScene(createGameoverScene());
+		});
+		*/
 
-        // 盛り上がる地面・迫りくる壁・燃え尽きるハート・震えるビート
-        return scene;
-    };
+		// 盛り上がる地面・迫りくる壁・燃え尽きるハート・震えるビート
+		return scene;
+	};
 
-    // ゲームオーバーシーン
-    var createGameoverScene = function(){
-        var scene = GenerateScene();
-        var label = new Label('You died');
-        label.x = 0;
-        label.y = 20;
-        scene.addChild(label);
-        scene.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // 半透明な黒
-        scene.addEventListener(Event.TOUCH_START, function(e){
-            game.popScene();
-        });
-        return scene;
-    };
+	// ゲームオーバーシーン
+	var createGameoverScene = function(){
+		var scene = GenerateScene();
+		var label = new Label('You died');
+		label.x = 0;
+		label.y = 20;
+		scene.addChild(label);
+		scene.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // 半透明な黒
+		scene.addEventListener(Event.TOUCH_START, function(e){
+			game.popScene();
+		});
+		return scene;
+	};
 
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    // シーン開始
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-    game.onload = function(){
-        // 最初のシーン（タイトル）
-        //game.replaceScene(createTitleScene());
-        game.replaceScene(createGameScene());
-    };
-    game.start(); // start your game!
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	// シーン開始
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	game.onload = function(){
+		// 最初のシーン（タイトル）
+		//game.replaceScene(createTitleScene());
+		game.replaceScene(createGameScene());
+	};
+	game.start(); // start your game!
 </script>
 </body>
 </html>
