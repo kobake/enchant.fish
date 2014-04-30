@@ -168,6 +168,7 @@ Fish = function (scene) {
 	this.reset = function () {
 		this.deadFlag = 0;
 		this.sprite.x = FIRST_X;
+		window.g_score.reset(); // ### Observerで実装すべき
 	};
 };
 

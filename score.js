@@ -1,4 +1,5 @@
 Score = function (scene) {
+	window.g_score = this;
 	group = scene.groups[9];
 
 	// 参照
@@ -40,6 +41,11 @@ Score = function (scene) {
 
 	// スコアの素（耐久距離）
 	this.score = 0;
+
+	// リセット
+	this.reset = function () {
+		this.score = 0;
+	};
 
 	// フレーム処理。
 	// 戻り値0: 通常
