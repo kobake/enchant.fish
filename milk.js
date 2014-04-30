@@ -31,6 +31,32 @@ Milk = function (scene, x) {
 		this.group.removeChild(this.sprite);
 		delete this.sprite; // 変数をアンセット
 	};
+
+	// 基本的な属性
+	// ### プロパティ定義も使ってみたいが。
+	this.getX = function () {
+		return this.sprite.x;
+	}
+	// ###このへんは基底クラスを作りたい
+	this.getLeft = function () {
+		return this.sprite.x;
+	};
+	this.getRight = function () {
+		return this.sprite.x + this.sprite.width;
+	};
+	this.getTop = function () {
+		return this.sprite.y + 4; // 上部4ピクセルの隙間
+	};
+	this.getBottom = function () {
+		return this.sprite.y + this.sprite.height;
+	};
+
+	// 当たり判定（相手が getLeft(), getRight() を持っている前提)
+	this.intersectsX = function (obj) {
+		if (this.getRight() <= obj.getLeft()) return false; // 自分が左側にあるケース
+		if (obj.getRight() <= this.getLeft()) return false; // 自分が右側にあるケース
+		return true; // それ以外はどこかしら重なってる
+	};
 };
 
 // 画像リスト（ぎゅうにゅう）
