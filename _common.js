@@ -12,6 +12,7 @@ function PreloadImages(game, classlist) {
 
 	// サウンド
 	game.preload('sounds/looperman-t-0404662-0151402-scottb55-raise-hell-and-ptl.mp3');
+	game.preload('sounds/looperman-l-1048767-0068538-buffalonugaluss-drumstep-drums.wav');
 
 	// クラス依存
 	_.each(classlist, function (classdef) {

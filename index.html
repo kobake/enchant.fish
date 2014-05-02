@@ -106,8 +106,12 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 		});
 
 		// BGM
-		var sound = game.assets['sounds/looperman-t-0404662-0151402-scottb55-raise-hell-and-ptl.mp3'].clone();
-		sound.play();
+		//var sound = game.assets['sounds/looperman-t-0404662-0151402-scottb55-raise-hell-and-ptl.mp3'];
+		var sound = game.assets['sounds/looperman-l-1048767-0068538-buffalonugaluss-drumstep-drums.wav'];
+		//var bgm = Sound.load('sounds/looperman-t-0404662-0151402-scottb55-raise-hell-and-ptl.mp3');
+		scene.addEventListener(Event.ENTER_FRAME, function () {
+			sound.play();
+		});
 
 		// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 		// 地面
