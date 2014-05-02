@@ -10,6 +10,7 @@ var AUTO_X_LIMIT = (320 - 64) / 2 + 50;
 
 // 死ぬ位置
 var DEAD_X = 31;
+//DEAD_X = 200; // ゲームオーバー確認用
 
 // クラス定義
 Fish = function (scene) {

@@ -17,6 +17,14 @@ Gameover = function (scene) {
 	this.sprite.x = 0;
 	this.sprite.y = (240 - 38) / 2;
 	this.sprite.frame = GenerateFrameArray(0, 1, 8);
+
+	// アニメーション
+	this.sprite.x = 320;
+	this.sprite.tl.moveBy(-320, 0, 20)	// move right
+	//.scaleTo(-1, 1, 10)			// turn left
+	//.moveBy(-(320 - 64), 0, 90)	// move left
+	//.scaleTo(1, 1, 10)			// turn right
+	//.loop();					// loop it
 	scene.groups[9].addChild(this.sprite);
 
 	// フレーム処理。
@@ -33,6 +41,15 @@ Gameover = function (scene) {
 		t.sprite.parentNode.removeChild(t.sprite);
 		delete t.black;
 		delete t.sprite;
+	};
+
+	// ゆっくり削除
+	this.disposeSlow = function () {
+		t.sprite.tl.clear();
+		t.sprite.x = 0;
+		t.sprite.tl.moveBy(-320, 0, 5).then(function () {
+			t.dispose();
+		});
 	};
 };
 
