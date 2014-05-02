@@ -15,6 +15,7 @@
 		<script type="text/javascript" src="start.js"></script>
 		<script type="text/javascript" src="score.js"></script>
 		<script type="text/javascript" src="gameover.js"></script>
+		<script type="text/javascript" src="meter.js"></script>
 		<!-- シーン -->
 		<script type="text/javascript" src="scenes/game.js"></script>
 	</script>
@@ -54,7 +55,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 	game.fps = 20; // 20fps→15
 
 	// リソース準備
-	PreloadImages(game, [Background, Fish, Ground, Milk, Tichan, Start, Score, Gameover]);
+	PreloadImages(game, [Background, Fish, Ground, Milk, Tichan, Start, Score, Gameover, Meter]);
 
 	// タイトルシーン
 	var createTitleScene = function(){
@@ -117,14 +118,18 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 
 		// メインキャラ
 		var fish = new Fish(scene); 	// さかなくんさん
-		window.g_fish = fish; // グローバルアクセス
+		window.g_fish = fish; 		// グローバルアクセス
 		var tichan = new Tichan(scene); // ちーちゃん
+		window.g_tichan = tichan; 	// グローバルアクセス
 
 		// オブジェクト
 		var start = new Start(scene);
 
 		// スコア
 		var score = new Score(scene);
+
+		// 距離
+		var meter = new Meter(scene);
 
 		// 背景のフレーム処理
 		var ground_counter = 0;
@@ -152,6 +157,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 			// 各種フレーム処理
 			milkManager.frame(); // 牛乳群
 			score.frame(); // スコア
+			meter.frame(); // 距離
 
 			// さかなくんが死んでたらゲームオーバー表示
 			if (fish.deadFlag == 1) {

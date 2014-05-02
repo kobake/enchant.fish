@@ -169,4 +169,9 @@
       <SubType>Content</SubType>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="meter.js">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>
