@@ -38,9 +38,14 @@ Fish = function (scene) {
 	this.sprite.x = FIRST_X;
 
 	// ジャンプ処理
+	this.jumping = false;
 	this.jump = function () {
+		// 二段ジャンプの禁止（停止状態じゃないとダメ）
+		if (this.jumping) return;
 		// 上方向への速度を設定
-		this.sprite.my = -8;
+		//this.sprite.my = -8;
+		this.sprite.my = -16;
+		this.jumping = true;
 		console.log("jump");
 	};
 
@@ -61,6 +66,7 @@ Fish = function (scene) {
 		if (sprite.y >= LIMIT_Y) {
 			sprite.y = LIMIT_Y;
 			sprite.my = 0;
+			t.jumping = false;
 		}
 
 		// ミルクマネージャ
@@ -80,7 +86,7 @@ Fish = function (scene) {
 		// 自動進行
 		if (!x_hit) {
 			if (t.sprite.x < AUTO_X_LIMIT) {
-				t.sprite.x += 1;
+				t.sprite.x += 0.5;
 				if (t.sprite.x > AUTO_X_LIMIT) {
 					t.sprite.x = AUTO_X_LIMIT;
 				}
@@ -158,6 +164,7 @@ Fish = function (scene) {
 	this.setBottom = function (bottom) {
 		this.sprite.y = bottom - 64 + 11; // 下部11ピクセルの隙間
 		this.sprite.my = 0;
+		this.jumping = false;
 	}
 	// 当たり判定（相手が getLeft(), getRight() を持っている前提)
 	this.intersectsX = function (obj) {
