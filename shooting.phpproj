@@ -150,6 +150,9 @@
     <Content Include="milk_manager.js">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="remover.js">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="scenes\game.js">
       <SubType>Content</SubType>
     </Content>

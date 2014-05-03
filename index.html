@@ -16,6 +16,8 @@
 		<script type="text/javascript" src="score.js"></script>
 		<script type="text/javascript" src="gameover.js"></script>
 		<script type="text/javascript" src="meter.js"></script>
+		<!-- マネージャ -->
+		<script type="text/javascript" src="remover.js"></script>
 		<!-- シーン -->
 		<script type="text/javascript" src="scenes/game.js"></script>
 	</script>
@@ -57,45 +59,12 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 	// リソース準備
 	PreloadImages(game, [Background, Fish, Ground, Milk, Tichan, Start, Score, Gameover, Meter]);
 
-	// タイトルシーン
-	var createTitleScene = function(){
-		var scene = GenerateScene();
-
-		// タイトル背景画像
-		var back = new Sprite(320, 240);
-		back.image = game.assets['img/title.png'];
-		scene.groups['bg'].addChild(back);
-
-		// ラベル
-		//var label = new Label('Welcome the enchant.fish world!');
-		//scene.addChild(label);
-
-		// スタート画像
-		var start = new Sprite(236, 48);
-		start.x = (320 - 236) / 2;
-		start.y = (240 - 48) / 2;
-		start.textAlign = 'center';
-		start.image = game.assets['img/start.png'];
-		scene.groups['ch'].addChild(start);
-
-		// スタート画像は点滅させる
-		start.addEventListener(Event.ENTER_FRAME, function(){
-			start.opacity = (new Date()).getMilliseconds() > 500 ? 1 : 0;
-		});
-
-		// タッチイベント
-		scene.addEventListener(Event.TOUCH_START, function(e){
-			// ゲームシーンに切り替え
-			game.replaceScene(createGameScene());
-		});
-
-		// 作成されたシーンを返す
-		return scene;
-	};
-
 	// ゲームシーン
 	var createGameScene = function () {
 		var scene = GenerateScene();
+
+		// マネージャ
+		var remover = new Remover(scene);
 
 		// ゲームループ背景画像
 		var bg1 = new Background(scene.groups[0], 'img/bg-back-z0.gif', 160, 240, 0.5);
@@ -169,13 +138,14 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 			// さかなくんが死んでたらゲームオーバー表示
 			if (fish.deadFlag == 1) {
 				fish.deadFlag = 2;
-				//game.pushScene(window.createGameoverScene());
 
 				// 死に演出
 				window.g_gameover = new Gameover(scene);
 
 				// タッチしたら死に演出は削除してゲームリトライ
 				Retry = function (e) {
+					window.g_touch_skip = 1; // ### TOUCH_END が呼ばれないケースの暫定対処
+
 					// さかなくん復活
 					fish.reset();
 
@@ -191,33 +161,10 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 		});
 		scene.backgroundColor = 'rgb(0, 107, 247)';
 
-
-
-		// イベント（タッチしたらゲームオーバー）
-		/*
-		scene.addEventListener(Event.TOUCH_START, function(e){
-		// 今のシーンの上に重ねてシーンを乗せる
-		game.pushScene(createGameoverScene());
-		});
-		*/
-
 		// 盛り上がる地面・迫りくる壁・燃え尽きるハート・震えるビート
 		return scene;
 	};
 
-	// ゲームオーバーシーン
-	window.createGameoverScene = function () {
-		var scene = GenerateScene();
-		var label = new Label('You died');
-		label.x = 0;
-		label.y = 20;
-		scene.addChild(label);
-		scene.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // 半透明な黒
-		scene.addEventListener(Event.TOUCH_START, function(e){
-			game.popScene();
-		});
-		return scene;
-	};
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	// シーン開始
