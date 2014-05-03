@@ -23,7 +23,7 @@ Fish = function (scene) {
 	// this.sprite.frame = [0, 1, 2, 3, 4, 5];   // select sprite frame
 	this.sprite = new Sprite(64, 64); // 1キャラのサイズ
 	this.sprite.y = LIMIT_Y;
-	this.sprite.image = game.assets['img/fishkun64x64-z4.gif'];
+	this.sprite.image = game.assets['img/fish64x64-z4.gif'];
 	// this.sprite.frame = [5, 4, 3, 2, 1, 0];   // select sprite frame
 	this.sprite.frame = GenerateFrameArray(7, 0, 1);   // select sprite frame
 	/*
@@ -36,6 +36,26 @@ Fish = function (scene) {
 	group.addChild(this.sprite);
 	this.sprite.my = 0;
 	this.sprite.x = FIRST_X;
+
+	// 各種パラメータ
+	this.power = 10;
+
+	// デバッグ表示背景
+	var labelback = new Sprite(50, 20);
+	scene.groups[9].addChild(labelback);
+	labelback.backgroundColor = "#000";
+	labelback.x = 320 - labelback.width;
+	labelback.y = 240 - labelback.height;
+
+	// デバッグ表示
+	this.label = new Label();
+	this.label.text = "hoge";
+	this.label.x = 320 - labelback.width + 2;
+	this.label.y = 240 - labelback.height + 2;
+	this.label.color = "#fff";
+	this.label.font = "12px 'ＭＳ ゴシック'";
+	this.label.opacity = 1;
+	scene.groups[9].addChild(this.label);
 
 	// ジャンプ処理
 	this.jumping = false;
@@ -51,10 +71,14 @@ Fish = function (scene) {
 
 	// this を保存しとく
 	var t = this;
+	var fish = this;
 
 	// さかなさんのフレーム処理
 	var sprite = this.sprite;
 	group.addEventListener(Event.ENTER_FRAME, function (e) {
+		// 位置計算前の状態
+		var old_bottom = t.getBottom();
+
 		// 加速度による速度計算
 		sprite.my += 0.9;
 		if (sprite.my >= 100) sprite.my = 100;
@@ -73,14 +97,42 @@ Fish = function (scene) {
 		var man = window.milkManager;
 		var milk;
 
-		// 自分のすぐ右のミルクを1個見つける (###シングルトンの相互参照に注意。今のところは大丈夫っぽいけど。。。)
-		// 先にX方向の判定補正を行うことで、めりこんだミルクに乗り上げてしまう現象は防げる、はず。
+		// 当たり判定対象
+		var milks = [];
 		milk = man.findRightMilk(t);
-		var x_hit = false;
 		if (milk) {
-			// ミルクとの当たり判定
-			x_hit |= t.calcPositionByMilk(milk);
-			//console.log("milk x = " + milk.getX());
+			milks.push(milk);
+		}
+		milk = man.findUnderMilk(t);
+		if (milk) {
+			milks.push(milk);
+		}
+
+		// 当たり判定の実施
+		var x_hit = false;
+		for (var i = 0; i < milks.length; i++) {
+			milk = milks[i];
+			if (milk.intersects(fish)) {
+				// -- -- 高さチェック -- -- //
+				// ミルクを乗り越えている状態。または微妙～～に下にめり込んだ状態。
+				// ※「8」はめり込み具合の許容範囲。（重力加速度により下にめり込む場合がある）
+				if (old_bottom <= milk.getTop()) {
+					if (fish.getBottom() > milk.getTop()) {
+						// 下にめり込んでいる状態。
+						// 掘り起こす。
+						fish.setBottom(milk.getTop());
+					}
+				}
+				// ミルクより下にいる状態
+				else {
+					// X距離チェック
+					var dist = milk.getLeft() - fish.getRight();
+					if (dist < 0) { // 食い込んでいたら
+						fish.setRight(milk.getLeft()); // 補正する
+						x_hit = true;
+					}
+				}
+			}
 		}
 
 		// 自動進行
@@ -93,55 +145,21 @@ Fish = function (scene) {
 			}
 		}
 
-		// 足場のミルクを1個見つける
-		// （Y軸補正）
-		milk = man.findUnderMilk(t);
-		if (milk) {
-			// ミルクとの足場判定
-			t.calcPositionByUnderMilk(milk);
-		}
-
 		// 死に判定
 		if (t.sprite.x <= DEAD_X) {
 			if (t.deadFlag == 0) {
 				t.deadFlag = 1;
 			}
 		}
+
+		// デバッグ情報
+		t.label.text = "P:" + t.power;
 	});
 
 	// タッチしたらジャンプ
 	scene.addEventListener(Event.TOUCH_START, function (e) {
 		t.jump();
 	});
-
-	// ミルクによる位置修正
-	// ※ここで指定されたミルクは魚より右に位置しているのが前提
-	// @return {Boolean} 補正されたかどうか
-	this.calcPositionByMilk = function (milk) {
-		// 高さチェック
-		if (this.getBottom() <= milk.getTop()) {
-			// ミルクを乗り越えている状態。何もしない。
-			return false;
-		}
-
-		// X距離チェック
-		var dist = milk.getLeft() - this.getRight();
-		//console.log("dist = " + dist);
-		if (dist < 0) { // 食い込んでいたら
-			this.setRight(milk.getLeft());
-			return true; // 補正した
-		}
-		return false;
-	};
-
-	// ミルクによる足場修正（Y関係は離れてるかもしれないし重なってるかもしれない)
-	this.calcPositionByUnderMilk = function (milk) {
-		if (this.getBottom() > milk.getTop()) {
-			// 下にめり込んでいる状態。
-			// 掘り起こす。
-			this.setBottom(milk.getTop());
-		}
-	};
 
 	// 基本的な属性
 	// ###このへんは基底クラスを作りたい
@@ -182,6 +200,5 @@ Fish = function (scene) {
 
 // 画像リスト
 Fish.images = [
-	'img/fishkun37x24-z4.gif',
-	'img/fishkun64x64-z4.gif'
+	'img/fish64x64-z4.gif'
 ];

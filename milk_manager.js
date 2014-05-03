@@ -56,7 +56,8 @@
 			// if (milk.getRight() >= fish.getRight()) { //### ここを >= にするか > にするかは考えどころ
 			// 	return milk;
 			// }
-			if (milk.getLeft() + 4 >= fish.getRight()) { //### ここを >= にするか > にするかは考えどころ
+			// ここのプラス値が小さすぎると乗り上げることがある
+			if (milk.getLeft() + 10 >= fish.getRight()) { //### ここを >= にするか > にするかは考えどころ
 				return milk;
 			}
 		}

@@ -57,6 +57,16 @@ Milk = function (scene, x) {
 		if (obj.getRight() <= this.getLeft()) return false; // 自分が右側にあるケース
 		return true; // それ以外はどこかしら重なってる
 	};
+	// 当たり判定（相手が getTop(), getBottom() を持っている前提)
+	this.intersectsY = function (obj) {
+		if (this.getBottom() <= obj.getTop()) return false; // 自分が上側にあるケース
+		if (obj.getBottom() <= this.getTop()) return false; // 自分が下側にあるケース
+		return true; // それ以外はどこかしら重なってる
+	};
+	// 当たり判定（相手が getLeft(), getRight(), getTop(), getBottom() を持っている前提)
+	this.intersects = function (obj) {
+		return this.intersectsX(obj) && this.intersectsY(obj);
+	};
 };
 
 // 画像リスト（ぎゅうにゅう）
