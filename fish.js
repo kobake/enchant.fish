@@ -39,6 +39,7 @@ Fish = function (scene) {
 
 	// 各種パラメータ
 	this.power = 0;
+	this.power_frame = 0;
 	this.jumping = 0;
 
 	// デバッグ表示背景
@@ -85,12 +86,46 @@ Fish = function (scene) {
 		//this.sprite.my = -8;
 		this.sprite.my = -16;
 	};
+
+	frames = [];
+	frames[0] = GenerateFrameArray(7, 0, 1);
+	frames[1] = GenerateFrameArray(15, 8, 1);
+	frames[2] = GenerateFrameArray(23, 16, 1);
+	frames[3] = GenerateFrameArray(31, 24, 1);
+	frames[4] = GenerateFrameArray(39, 32, 1);
+
 	group.addEventListener(Event.ENTER_FRAME, function (e) {
 		if (t.jumping == 1) {
+			// スプライト切り替え
+			var GetPowerFrame = function (power) {
+				f = 0;
+				if (power < 6) f = 0;
+				else if (power < 12) f = 1;
+				else if (power < 18) f = 2;
+				else if (power < 24) f = 3;
+				else f = 4;
+				return f;
+			};
+			// パワー増強
+			//var old_f = GetPowerFrame(t.power);
 			t.power += 1;
+			var f = GetPowerFrame(t.power);
+			if (f != t.power_frame) {
+				t.power_frame = f;
+				t.sprite.frame = frames[t.power_frame];
+			}
+			//var new_f = GetPowerFrame(t.power);
+			// スプライト切り替え
+			//if (old_f != new_f) {
+			//	t.frame = frames[new_f];
+			//}
 		}
 		else {
 			t.power = 0;
+			if (t.power_frame != 0) {
+				t.power_frame = 0;
+				t.sprite.frame = frames[0];
+			}
 		}
 	});
 
@@ -192,7 +227,7 @@ Fish = function (scene) {
 		}
 
 		// デバッグ情報
-		t.label.text = "P:" + t.power;
+		t.label.text = "P:" + t.power + " F:" + t.power_frame;
 	});
 
 	// 基本的な属性
