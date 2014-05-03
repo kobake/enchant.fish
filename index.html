@@ -12,6 +12,7 @@
 		<script type="text/javascript" src="tichan.js"></script>
 		<script type="text/javascript" src="milk.js"></script>
 		<script type="text/javascript" src="milk_manager.js"></script>
+		<script type="text/javascript" src="crow.js"></script>
 		<script type="text/javascript" src="background.js"></script>
 		<script type="text/javascript" src="fish.js"></script>
 		<script type="text/javascript" src="start.js"></script>
@@ -73,7 +74,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 	game.fps = FPS; // 20fps→15
 
 	// リソース準備
-	PreloadImages(game, [Background, Fish, Ground, Milk, Tichan, Start, Score, Gameover, Meter]);
+	PreloadImages(game, [Background, Fish, Ground, Milk, Crow, Tichan, Start, Score, Gameover, Meter]);
 
 	// ゲームシーン
 	var createGameScene = function () {
@@ -140,12 +141,17 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 					i--;
 				}
 			}
+
 			// 地面が減っていたらもう1個足す
 			if (grounds.length <= 10) {
 				var ground = new Ground(scene, 320);
 				grounds.push(ground);
 				// このタイミングでミルクの抽選を行う
 				milkManager.lottery();
+				// このタイミングでカラスの抽選を行う
+				if (CalcLottery(20)) {
+					var crow = new Crow(scene, 320, 0);
+				}
 			}
 
 			// 各種フレーム処理

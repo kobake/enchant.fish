@@ -30,6 +30,9 @@
     <Content Include="background.js">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="crow.js">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="enchant\enchant.js">
       <SubType>Content</SubType>
     </Content>
