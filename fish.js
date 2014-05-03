@@ -41,6 +41,7 @@ Fish = function (scene) {
 	this.power = 0;
 	this.power_frame = 0;
 	this.jumping = 0;
+	this.charging = 0;
 
 	// デバッグ表示背景
 	var labelback = new Sprite(50, 20);
@@ -70,21 +71,23 @@ Fish = function (scene) {
 	// ジャンプ処理
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	this.jumpPrepare = function () {
-		// 二段ジャンプの禁止（停止状態じゃないとダメ）
-		if (this.jumping != 0) return;
-		// 上方向への速度を設定
-		//this.sprite.my = -8;
-		this.jumping = 1;
-		this.power = 0;
+		// チャージ開始
+		if (this.charging == 0) {
+			this.charging = 1;
+			this.power = 0;
+		}
 	};
 	this.jumpGo = function () {
-		// 準備状態じゃなければ何もしない
-		if (this.jumping != 1) return;
 		// ジャンプ
-		this.jumping = 2;
-		// 上方向への速度を設定
-		//this.sprite.my = -8;
-		this.sprite.my = -16;
+		if (this.jumping == 0) {
+			this.jumping = 1;
+			this.sprite.my = -16;
+			this.sprite.my = -8 - Math.pow(this.power, 0.6) * 2;
+		}
+
+		// チャージ終了
+		this.charging = 0;
+		this.power = 0;
 	};
 
 	frames = [];
@@ -94,15 +97,27 @@ Fish = function (scene) {
 	frames[3] = GenerateFrameArray(31, 24, 1);
 	frames[4] = GenerateFrameArray(39, 32, 1);
 
-	group.addEventListener(Event.ENTER_FRAME, function (e) {
-		if (t.jumping == 1) {
+	// タッチ開始
+	window.g_touch_skip = 0;
+	scene.addEventListener(Event.TOUCH_START, function (e) {
+		if (window.g_touch_skip == 1) {
+			window.g_touch_skip = 0;
+			return;
+		}
+		console.log("touch start");
+		t.jumpPrepare(); // ジャンプ準備
+	});
+
+	// フレーム処理
+	scene.addEventListener(Event.ENTER_FRAME, function (e) {
+		if (t.charging == 1) {
 			// スプライト切り替え
 			var GetPowerFrame = function (power) {
 				f = 0;
-				if (power < 6) f = 0;
-				else if (power < 12) f = 1;
-				else if (power < 18) f = 2;
-				else if (power < 24) f = 3;
+				if (power < 2) f = 0;
+				else if (power < 6) f = 1;
+				else if (power < 10) f = 2;
+				else if (power < 15) f = 3;
 				else f = 4;
 				return f;
 			};
@@ -129,17 +144,6 @@ Fish = function (scene) {
 		}
 	});
 
-	// タッチ開始
-	window.g_touch_skip = 0;
-	scene.addEventListener(Event.TOUCH_START, function (e) {
-		if (window.g_touch_skip == 1) {
-			window.g_touch_skip = 0;
-			return;
-		}
-		console.log("touch start");
-		t.jumpPrepare(); // ジャンプ準備
-	});
-
 	// タッチ終了
 	scene.addEventListener(Event.TOUCH_END, function (e) {
 		console.log("touch end");
@@ -164,7 +168,7 @@ Fish = function (scene) {
 		if (sprite.y >= LIMIT_Y) {
 			sprite.y = LIMIT_Y;
 			sprite.my = 0;
-			if (t.jumping == 2) t.jumping = 0;
+			if (t.jumping == 1) t.jumping = 0;
 		}
 
 		// ミルクマネージャ
@@ -251,7 +255,7 @@ Fish = function (scene) {
 	this.setBottom = function (bottom) {
 		this.sprite.y = bottom - 64 + 11; // 下部11ピクセルの隙間
 		this.sprite.my = 0;
-		if (this.jumping == 2) this.jumping = 0;
+		if (this.jumping == 1) this.jumping = 0;
 	}
 	// 当たり判定（相手が getLeft(), getRight() を持っている前提)
 	this.intersectsX = function (obj) {
