@@ -4,6 +4,8 @@
 	<head>
 		<script type="text/javascript" src="enchant/enchant.js"></script>
 		<script type="text/javascript" src="underscore/underscore.js"></script>
+		<!-- <script type="text/javascript" src="audiojs/audio.min.js"></script> -->
+		<script type="text/javascript" src="soundjs/soundjs-0.5.2.min.js"></script>
 		<!-- 部品クラス -->
 		<script type="text/javascript" src="_common.js"></script>
 		<script type="text/javascript" src="ground.js"></script>
@@ -31,11 +33,25 @@ http://www.openspc2.org/reibun/enchant.js/v0.4.3/label/0004/index.html
 背景スクロール
 http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 -->
+<!--
+<script type="text/javascript">
+	audiojs.events.ready(function () {
+		var as = audiojs.createAll();
+	});
+</script>
+<audio src="sounds/looperman-t-0404662-0151402-scottb55-raise-hell-and-ptl.mp3" preload="auto" />
+-->
+
 <script type="text/javascript">
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	// 処理開始
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	enchant(); // initialize
+
+	createjs.Sound.addEventListener("fileload", function () {
+		createjs.Sound.play("bgm");
+	});
+	createjs.Sound.registerSound("sounds/looperman-t-0404662-0151402-scottb55-raise-hell-and-ptl.mp3", "bgm");
 
 	/*
 	http://jsdo.it/kitao/enchantjs-pixelart
@@ -75,9 +91,9 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 		});
 
 		// BGM
-		var sound = game.assets['sounds/looperman-t-0404662-0151402-scottb55-raise-hell-and-ptl.mp3'];
+		//var sound = game.assets['sounds/looperman-t-0404662-0151402-scottb55-raise-hell-and-ptl.mp3'];
 		//var sound = game.assets['sounds/looperman-l-1048767-0068538-buffalonugaluss-drumstep-drums.wav'];
-		sound.play();
+		//sound.play();
 		//sound.src.loop = true;
 		//scene.addEventListener(Event.ENTER_FRAME, function () {
 		//	sound.play();
