@@ -97,7 +97,10 @@ Fish = function (scene) {
 		if (sprite.y >= LIMIT_Y) {
 			sprite.y = LIMIT_Y;
 			sprite.my = 0;
-			if (t.jumping == 1) t.jumping = 0;
+			// jumpingプロパティがあればそれをチェック
+			if (t.jumping) {
+				if (t.jumping == 1) t.jumping = 0;
+			}
 		}
 
 		// ミルクマネージャ
@@ -184,9 +187,10 @@ Fish = function (scene) {
 	this.setBottom = function (bottom) {
 		this.sprite.y = bottom - 64 + 11; // 下部11ピクセルの隙間
 		this.sprite.my = 0;
-		// jumpingプロパティがあればそれを参照
-		if (!this.jumping) return;
-		if (this.jumping == 1) this.jumping = 0;
+		// jumpingプロパティがあればそれを使う
+		if (!this.jumping) {
+			if (this.jumping == 1) this.jumping = 0;
+		}
 	}
 	// 当たり判定（相手が getLeft(), getRight() を持っている前提)
 	this.intersectsX = function (obj) {
