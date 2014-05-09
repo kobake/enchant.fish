@@ -17,9 +17,8 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="enchant" />
-    <Folder Include="enchant\plugins" />
     <Folder Include="img\" />
+    <Folder Include="objects" />
     <Folder Include="scenes" />
     <Folder Include="underscore\" />
   </ItemGroup>
@@ -31,66 +30,6 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="crow.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\avatar.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\box2d.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\collada.gl.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\extendMap.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\gl.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\memory.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\mixing.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\mmd.gl.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\nineleap.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\physics.gl.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\primitive.gl.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\socket.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\tl.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\twitter.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\ui.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\util.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\widget.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="enchant\plugins\wiiu.enchant.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="fish.js">
       <SubType>Content</SubType>
     </Content>
     <Content Include="gameover.js">
@@ -151,6 +90,15 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="milk_manager.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="objects\fish.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="objects\fish_bata.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="objects\fish_jump.js">
       <SubType>Content</SubType>
     </Content>
     <Content Include="remover.js">
