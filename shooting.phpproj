@@ -20,6 +20,7 @@
     <Folder Include="enchant" />
     <Folder Include="enchant\plugins" />
     <Folder Include="img\" />
+    <Folder Include="objects" />
     <Folder Include="scenes" />
     <Folder Include="underscore\" />
   </ItemGroup>
@@ -90,9 +91,6 @@
     <Content Include="enchant\plugins\wiiu.enchant.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="fish.js">
-      <SubType>Content</SubType>
-    </Content>
     <Content Include="gameover.js">
       <SubType>Content</SubType>
     </Content>
@@ -151,6 +149,15 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="milk_manager.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="objects\fish.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="objects\fish_bata.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="objects\fish_jump.js">
       <SubType>Content</SubType>
     </Content>
     <Content Include="remover.js">

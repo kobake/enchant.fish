@@ -37,11 +37,10 @@ Fish = function (scene) {
 	this.sprite.my = 0;
 	this.sprite.x = FIRST_X;
 
-	// 各種パラメータ
-	this.power = 0;
-	this.power_frame = 0;
-	this.jumping = 0;
-	this.charging = 0;
+	// 挙動コントローラ
+	Fish_Bata.initialize(this);
+	Fish_Jump.initialize(this);
+
 
 	// デバッグ表示背景
 	var labelback = new Sprite(50, 20);
@@ -71,28 +70,7 @@ Fish = function (scene) {
 	// 挙動定義
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	// 別スクリプトに委譲
-	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	// ジャンプ処理
-	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	this.jumpPrepare = function () {
-		// チャージ開始
-		if (this.charging == 0) {
-			this.charging = 1;
-			this.power = 0;
-		}
-	};
-	this.jumpGo = function () {
-		// ジャンプ
-		if (this.jumping == 0) {
-			this.jumping = 1;
-			this.sprite.my = -16;
-			this.sprite.my = -8 - Math.pow(this.power, 0.6) * 2;
-		}
-
-		// チャージ終了
-		this.charging = 0;
-		this.power = 0;
-	};
+	Fish_Jump.initialize(fish);
 
 	frames = [];
 	frames[0] = GenerateFrameArray(7, 0, 1);
