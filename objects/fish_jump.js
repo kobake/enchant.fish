@@ -42,7 +42,7 @@ Fish_Jump.initialize = function (fish) {
 	var t = fish;
 
 	// タッチ開始
-	window.g_touch_skip = 2;
+	window.g_touch_skip = 1;
 	scene.addEventListener(Event.TOUCH_START, function (e) {
 		console.log("skip = " + window.g_touch_skip);
 		if (window.g_touch_skip > 0) {

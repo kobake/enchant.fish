@@ -11,7 +11,7 @@ Start = function (scene) {
 	var t = this;
 	scene.addEventListener(Event.TOUCH_START, function (e) {
 		if (typeof t.sprite != 'undefined') {
-			window.g_touch_skip = 2; // ### TOUCH_END が呼ばれないケースの暫定対処
+			window.g_touch_skip = 1; // ### TOUCH_END が呼ばれないケースの暫定対処
 			t.sprite.parentNode.removeChild(t.sprite); // ### 何故かこれを実行すると TOUCH_END が呼ばれない
 			delete t.sprite;
 			delete window.g_start;

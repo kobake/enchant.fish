@@ -69,8 +69,6 @@ Fish = function (scene) {
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	// 挙動定義
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	// 別スクリプトに委譲
-	Fish_Jump.initialize(fish);
 
 	frames = [];
 	frames[0] = GenerateFrameArray(7, 0, 1);
@@ -79,7 +77,7 @@ Fish = function (scene) {
 	frames[3] = GenerateFrameArray(31, 24, 1);
 	frames[4] = GenerateFrameArray(39, 32, 1);
 
-	
+
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	// さかなさんのフレーム処理
@@ -162,7 +160,7 @@ Fish = function (scene) {
 		}
 
 		// デバッグ情報
-		t.label.text = "P:" + t.power + " F:" + t.power_frame;
+		//t.label.text = "P:" + t.power + " F:" + t.power_frame;
 	});
 
 	// 基本的な属性
@@ -186,6 +184,8 @@ Fish = function (scene) {
 	this.setBottom = function (bottom) {
 		this.sprite.y = bottom - 64 + 11; // 下部11ピクセルの隙間
 		this.sprite.my = 0;
+		// jumpingプロパティがあればそれを参照
+		if (!this.jumping) return;
 		if (this.jumping == 1) this.jumping = 0;
 	}
 	// 当たり判定（相手が getLeft(), getRight() を持っている前提)
