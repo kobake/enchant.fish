@@ -1,4 +1,4 @@
-﻿//var LIMIT_Y = 186;
+//var LIMIT_Y = 186;
 var LIMIT_Y = 240 - 32 - 64 + 12;
 
 // 初期位置
@@ -39,7 +39,7 @@ Fish = function (scene) {
 
 	// 挙動コントローラ
 	Fish_Bata.initialize(this);
-	Fish_Jump.initialize(this);
+	//Fish_Jump.initialize(this);
 
 
 	// デバッグ表示背景
