@@ -67,8 +67,10 @@ Fish_Bata.initialize = function (fish) {
 		if (self.sprite.y >= LIMIT_Y) {
 			self.sprite.y = LIMIT_Y;
 			self.sprite.my = 0;
-			self.running = 1;
 			self.new_animation = "running";
+		}
+		else if (self.getTop() < 0) {
+			self.setTop(0);
 		}
 
 		// アニメーション設定

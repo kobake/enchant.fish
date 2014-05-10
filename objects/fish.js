@@ -190,7 +190,7 @@ Fish = function (scene) {
 		return this.sprite.x + this.sprite.width - 1; // 右部1ピクセルの隙間
 	};
 	this.getTop = function () {
-		return this.sprite.y; // ここは計算に使うことはないので細かい補整はしない
+		return this.sprite.y + 5; // 天井当たり判定で使う
 	}
 	this.getBottom = function () {
 		return this.sprite.y + this.sprite.height - 11; // 下部11ピクセルの隙間
@@ -207,6 +207,11 @@ Fish = function (scene) {
 		if (!this.jumping) {
 			if (this.jumping == 1) this.jumping = 0;
 		}
+	}
+	this.setTop = function (bottom) {
+		this.sprite.y = -5; // 上部5ピクセルの隙間
+		this.sprite.my = 0;
+		//this.new_animation = "batabata";
 	}
 	// 当たり判定（相手が getLeft(), getRight() を持っている前提)
 	this.intersectsX = function (obj) {
