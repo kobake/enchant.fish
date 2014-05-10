@@ -27,14 +27,21 @@ Fish_Bata.initialize = function (fish) {
 			window.g_touch_skip--;
 			return;
 		}
-		console.log("touch start");
-		// 普通のジャンプしてみる
-		//self.sprite.my = -16;
-		self.touching = 1;
+		console.log("touch start " + self.animation + "," + self.new_animation);
+		// 地上からは普通のジャンプしてみる
+		if (self.animation == "running") {
+			self.sprite.my = -8;
+		}
+		else {
+			self.touching = 1;
+		}
 	});
 
 	// フレーム処理
 	fish.frameHandlers.push(function (_fish) {
+		// デバッグ情報
+		window.g_label.text = "t = " + self.touching;
+
 		// Y方向加速度
 		var ay = 0.9;
 		var ay = 0.7;
@@ -44,7 +51,7 @@ Fish_Bata.initialize = function (fish) {
 
 		// ユーザ操作による加速度調整
 		if (self.touching == 1) {
-			ay = -0.7;
+			ay = -0.5;
 		}
 		else {
 		}
@@ -60,8 +67,10 @@ Fish_Bata.initialize = function (fish) {
 		if (self.sprite.y >= LIMIT_Y) {
 			self.sprite.y = LIMIT_Y;
 			self.sprite.my = 0;
-			self.running = 1;
 			self.new_animation = "running";
+		}
+		else if (self.getTop() < 0) {
+			self.setTop(0);
 		}
 
 		// アニメーション設定
@@ -85,5 +94,6 @@ Fish_Bata.initialize = function (fish) {
 	scene.addEventListener(Event.TOUCH_END, function (e) {
 		console.log("touch end");
 		self.touching = 0;
+		self.new_animation = "falling";
 	});
 };
