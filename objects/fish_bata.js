@@ -39,6 +39,9 @@ Fish_Bata.initialize = function (fish) {
 		var ay = 0.9;
 		var ay = 0.7;
 
+		// スプライト切り替え
+		var new_frame_number = 0;
+
 		// ユーザ操作による加速度調整
 		if (self.touching == 1) {
 			ay = -0.7;
@@ -57,6 +60,24 @@ Fish_Bata.initialize = function (fish) {
 		if (self.sprite.y >= LIMIT_Y) {
 			self.sprite.y = LIMIT_Y;
 			self.sprite.my = 0;
+			self.running = 1;
+			self.new_animation = "running";
+		}
+
+		// アニメーション設定
+		if (self.touching == 1) {
+			self.new_animation = "batabata"; // バタバタ（押下中）
+		}
+		else {
+			if (self.new_animation != "running") {
+				self.new_animation = "falling"; // ピタッ（無操作。落下）
+			}
+		}
+		//self.new_animation = "running"; // 地上走り（無操作。地面）
+		if (self.new_animation != self.animation) {
+			console.log("animation old:" + self.animation + "new:" + self.new_animation);
+			self.animation = self.new_animation;
+			self.sprite.frame = frames[self.animation];
 		}
 	});
 

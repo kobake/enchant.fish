@@ -77,11 +77,17 @@ Fish = function (scene) {
 	frames[2] = GenerateFrameArray(23, 16, 1);
 	frames[3] = GenerateFrameArray(31, 24, 1);
 	frames[4] = GenerateFrameArray(39, 32, 1);
+	frames['running'] = GenerateFrameArray(7, 0, 1);
+	frames['batabata'] = GenerateFrameArray(7, 0, 1);
+	frames['falling'] = [2];
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	// さかなさんのフレーム処理
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	group.addEventListener(Event.ENTER_FRAME, function (e) {
+		// フレーム初期化
+		self.new_animation = "";
+
 		// 位置計算前の状態
 		var old_bottom = t.getBottom();
 
@@ -102,12 +108,12 @@ Fish = function (scene) {
 
 		// Y位置制限
 		if (sprite.y >= LIMIT_Y) {
-			sprite.y = LIMIT_Y;
-			sprite.my = 0;
-			// jumpingプロパティがあればそれをチェック
-			if (t.jumping) {
-				if (t.jumping == 1) t.jumping = 0;
-			}
+		sprite.y = LIMIT_Y;
+		sprite.my = 0;
+		// jumpingプロパティがあればそれをチェック
+		if (t.jumping) {
+		if (t.jumping == 1) t.jumping = 0;
+		}
 		}
 		*/
 
@@ -195,6 +201,7 @@ Fish = function (scene) {
 	this.setBottom = function (bottom) {
 		this.sprite.y = bottom - 64 + 11; // 下部11ピクセルの隙間
 		this.sprite.my = 0;
+		this.new_animation = "running";
 		// jumpingプロパティがあればそれを使う
 		if (!this.jumping) {
 			if (this.jumping == 1) this.jumping = 0;
