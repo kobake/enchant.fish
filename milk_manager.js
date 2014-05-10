@@ -8,6 +8,11 @@
 
 	// 抽選
 	this.lottery = function () {
+		// デバッグ用フラグ
+		if (window.g_debug_nomilk) {
+			return;
+		}
+
 		// スタート中は何もしない
 		if (window.g_start) {
 			return;

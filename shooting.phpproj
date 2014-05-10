@@ -18,6 +18,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="img\" />
+    <Folder Include="gimmick" />
     <Folder Include="objects" />
     <Folder Include="scenes" />
     <Folder Include="underscore\" />
@@ -33,6 +34,9 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="gameover.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="gimmick\pattern_manager.js">
       <SubType>Content</SubType>
     </Content>
     <Content Include="ground.js">
@@ -124,6 +128,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="gimmick\pattern.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="meter.js">
       <SubType>Code</SubType>
     </Compile>
