@@ -59,6 +59,7 @@ Fish = function (scene) {
 	this.label.color = "#fff";
 	this.label.font = "12px 'ＭＳ ゴシック'";
 	this.label.opacity = 1;
+	window.g_label = this.label;
 	scene.groups[9].addChild(this.label);
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
