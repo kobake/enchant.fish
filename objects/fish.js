@@ -37,10 +37,12 @@ Fish = function (scene) {
 	this.sprite.my = 0;
 	this.sprite.x = FIRST_X;
 
+	// ハンドラ
+	this.frameHandlers = [];
+
 	// 挙動コントローラ
 	Fish_Bata.initialize(this);
 	//Fish_Jump.initialize(this);
-
 
 	// デバッグ表示背景
 	var labelback = new Sprite(50, 20);
@@ -69,15 +71,12 @@ Fish = function (scene) {
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	// 挙動定義
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-
 	frames = [];
 	frames[0] = GenerateFrameArray(7, 0, 1);
 	frames[1] = GenerateFrameArray(15, 8, 1);
 	frames[2] = GenerateFrameArray(23, 16, 1);
 	frames[3] = GenerateFrameArray(31, 24, 1);
 	frames[4] = GenerateFrameArray(39, 32, 1);
-
-
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	// さかなさんのフレーム処理
@@ -86,6 +85,14 @@ Fish = function (scene) {
 		// 位置計算前の状態
 		var old_bottom = t.getBottom();
 
+		// フレーム
+		for (var i = 0; i < fish.frameHandlers.length; i++) {
+			var f = fish.frameHandlers[i];
+			f(fish);
+		}
+
+		// Y方向の処理はコントローラに委譲してみる
+		/*
 		// 加速度による速度計算
 		sprite.my += 0.9;
 		if (sprite.my >= 100) sprite.my = 100;
@@ -102,6 +109,7 @@ Fish = function (scene) {
 				if (t.jumping == 1) t.jumping = 0;
 			}
 		}
+		*/
 
 		// ミルクマネージャ
 		var man = window.milkManager;
