@@ -94,6 +94,27 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 			bg2.frame();
 		});
 
+		// 数字スプライト実験
+		/*
+		NumberSprite = function (image, w, h, ketas) {
+			this.group = new Group();
+
+			// 桁数分だけスプライトを作る
+			this.sprites = [];
+			for (var i = 0; i < ketas; i++) {
+				var sprite = new Sprite(w, h);
+				sprite.image = image;
+				sprite.frame = 0;
+				sprite.x = 0;
+				sprite.y = i * w;
+				this.group.addChild(sprite);
+			}
+		};
+		this.number = new NumberSprite('img/scnum8x8-z9.gif', 8, 8, 6);
+		scene.groups[9].addChild(this.number.group);
+		*/
+
+
 		// BGM
 		//var sound = game.assets['sounds/looperman-t-0404662-0151402-scottb55-raise-hell-and-ptl.mp3'];
 		//var sound = game.assets['sounds/looperman-l-1048767-0068538-buffalonugaluss-drumstep-drums.wav'];

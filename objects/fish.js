@@ -79,7 +79,7 @@ Fish = function (scene) {
 	frames[3] = GenerateFrameArray(31, 24, 1);
 	frames[4] = GenerateFrameArray(39, 32, 1);
 	frames['running'] = GenerateFrameArray(7, 0, 1);
-	frames['batabata'] = GenerateFrameArray(7, 0, 1);
+	frames['batabata'] = GenerateFrameArray(15, 8, 1);
 	frames['falling'] = [2];
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
