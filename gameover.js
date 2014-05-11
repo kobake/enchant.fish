@@ -14,8 +14,8 @@ Gameover = function (scene) {
 	// スプライト
 	//this.sprite = new Sprite(320, 38);
 	//this.sprite.image = game.assets['img/gameover320x38-z9.gif'];
-	this.sprite = new Sprite(256, 97);
-	this.sprite.image = game.assets['img/gover256x97-z8.gif'];
+	this.sprite = new Sprite(256, 96);
+	this.sprite.image = game.assets['img/gover256x96-z8.gif'];
 
 	this.sprite.x = 0;
 	this.sprite.y = (240 - this.sprite.height) / 2;
@@ -61,7 +61,7 @@ Gameover = function (scene) {
 // 画像リスト
 Gameover.images = [
 	'img/gameover320x38-z9.gif',
-	'img/gover256x97-z8.gif',
+	'img/gover256x96-z8.gif',
 	'img/scnum8x8-z9.gif'
 ];
 
