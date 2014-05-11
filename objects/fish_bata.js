@@ -30,7 +30,7 @@ Fish_Bata.initialize = function (fish) {
 		console.log("touch start " + self.animation + "," + self.new_animation);
 		// 地上からは普通のジャンプしてみる
 		if (self.animation == "running") {
-			self.sprite.my = -8;
+			self.sprite.my = -10;
 		}
 		else {
 			self.touching = 1;

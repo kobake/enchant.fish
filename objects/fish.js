@@ -80,7 +80,7 @@ Fish = function (scene) {
 	frames[4] = GenerateFrameArray(39, 32, 1);
 	frames['running'] = [0, 1, 2, 2, 3, 4, 5, 6, 7]; //GenerateFrameArray(7, 0, 1);
 	frames['batabata'] = GenerateFrameArray(16, 23, 1);
-	frames['falling'] = [3];
+	frames['falling'] = [4];
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	// さかなさんのフレーム処理

@@ -1,6 +1,6 @@
 // 全体のスクロール速度
 var LOOP_SPEED = 4;
-LOOP_SPEED = 4;
+LOOP_SPEED = 6;
 
 var FPS = 20;
 
