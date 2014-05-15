@@ -17,7 +17,7 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="gimmick" />
+    <Folder Include="stage" />
     <Folder Include="env" />
     <Folder Include="img\" />
     <Folder Include="img\patterns" />
@@ -27,9 +27,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="env\background.js">
       <SubType>Content</SubType>
     </Content>
     <Content Include="env\ground.js">
@@ -44,7 +41,10 @@
     <Content Include="env\remover.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="gimmick\pattern_manager.js">
+    <Content Include="stage\background.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="stage\pattern_manager.js">
       <SubType>Content</SubType>
     </Content>
     <Content Include="img\4tumb.bmp">
@@ -193,7 +193,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="gimmick\pattern.js">
+    <Compile Include="stage\pattern.js">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

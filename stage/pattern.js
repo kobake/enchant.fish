@@ -8,18 +8,7 @@
 //
 Pattern = function (imagefilepath, x, y, width, height, zorder, camera_rate) {
 	// オブジェクト管理
-	window.g_objectManager.add(this);
-
-	// 参照
-	this.camera_rate = camera_rate;
-
-	// 属性
-	this.x = x;
-	this.y = y;
-	this.width = width;
-	this.height = height;
-	this.zorder = zorder;
-	this.camera_rate = camera_rate;
+	ObjectManager.initAsObject(this, imagefilepath, x, y, width, height, zorder, camera_rate);
 
 	// 独自属性
 	// ### プロパティ定義も使ってみたいが。

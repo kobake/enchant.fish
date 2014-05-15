@@ -50,7 +50,7 @@
 		_.each(this.objects, function (obj) {
 			if (obj.sprite) {
 				obj.sprite.x = obj.x;
-				obj.sprite.x = obj.y;
+				obj.sprite.y = obj.y;
 			}
 		});
 	}
@@ -70,3 +70,7 @@ ObjectManager.initAsObject =
 		// オブジェクト管理
 		window.g_objectManager.add(obj);
 	};
+
+CommonObject = function (imagefilepath, x, y, width, height, zorder, camera_rate) {
+	ObjectManager.initAsObject(this, imagefilepath, x, y, width, height, zorder, camera_rate);
+};

@@ -30,12 +30,12 @@
 		<script type="text/javascript" src="ui/score.js"></script>
 		<script type="text/javascript" src="ui/meter.js"></script>
 		<script type="text/javascript" src="ui/gameover.js"></script>
-		<!-- ギミック（地形・背景・障害物） -->
-		<script type="text/javascript" src="gimmick/pattern.js"></script>
-		<script type="text/javascript" src="gimmick/pattern_manager.js"></script>
+		<!-- ステージ構成 -->
+		<script type="text/javascript" src="stage/background.js"></script>
+		<script type="text/javascript" src="stage/pattern.js"></script>
+		<script type="text/javascript" src="stage/pattern_manager.js"></script>
 		<!-- シーン・環境 -->
 		<script type="text/javascript" src="env/ground.js"></script>
-		<script type="text/javascript" src="env/background.js"></script>
 		<script type="text/javascript" src="env/camera.js"></script>
 		<script type="text/javascript" src="scenes/game.js"></script>
 	</script>
@@ -123,9 +123,11 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 		for (var i = 0; i < 20; i++) {
 			new Background('img/bg-front-z1.gif', i * 160, 0, 160, 240, 1, 0.5);
 		}
+		/*
 		for (var i = 0; i < 40; i++) { // ※ステージが導入されればこの地面は不要になる
-			new Background('img/ground32x32-z2.gif', i * 32, 240 - 32, 32, 32, 2, 1);
+			new CommonObject('img/ground32x32-z2.gif', i * 32, 240 - 32, 32, 32, 2, 1);
 		}
+		*/
 
 		// メインキャラ
 		var fish = new Fish(); 		// さかなくんさん
