@@ -130,16 +130,16 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 		}
 		*/
 
+		// UIオブジェクト
+		new Start(scene); // 開始
+		new Score(scene); // スコア
+		new Meter(scene); // 距離
+
 		// メインキャラ
 		var fish = new Fish(); 		// さかなくんさん
 		window.g_fish = fish; 			// グローバルアクセス
 		var tichan = new Tichan(scene); // ちーちゃん
 		window.g_tichan = tichan; 		// グローバルアクセス
-
-		// UIオブジェクト
-		new Start(scene); // 開始
-		new Score(scene); // スコア
-		new Meter(scene); // 距離
 
 		// マネージャ
 		//var milkManager = new MilkManager(scene);

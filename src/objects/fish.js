@@ -63,7 +63,7 @@ Fish = function () {
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	this.onFrame = function () {
 		// フレーム初期化
-		self.new_animation = "";
+		self.new_anm = "";
 
 		// 位置計算前の状態
 		var old_bottom = t.getBottom();
@@ -194,7 +194,7 @@ Fish = function () {
 		return this.x + this.width - 1; // 右部1ピクセルの隙間
 	};
 	this.getTop = function () {
-		return this.y + 5; // 天井当たり判定で使う
+		return this.y + 30; // 天井当たり判定で使う
 	}
 	this.getBottom = function () {
 		return this.y + this.height - 11; // 下部11ピクセルの隙間
@@ -206,16 +206,16 @@ Fish = function () {
 	this.setBottom = function (bottom) {
 		this.y = bottom - 64 + 11; // 下部11ピクセルの隙間
 		this.my = 0;
-		this.new_animation = "running";
+		this.new_anm = "running";
 		// jumpingプロパティがあればそれを使う
 		if (!this.jumping) {
 			if (this.jumping == 1) this.jumping = 0;
 		}
 	}
 	this.setTop = function (bottom) {
-		this.y = -5; // 上部5ピクセルの隙間
+		this.y = -30; // 上部5ピクセルの隙間
 		this.my = 0;
-		//this.new_animation = "batabata";
+		//this.new_anm = "batabata";
 	}
 	// 当たり判定（相手が getLeft(), getRight() を持っている前提)
 	this.intersectsX = function (obj) {

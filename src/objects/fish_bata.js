@@ -1,6 +1,3 @@
-// 速度制限
-LIMIT_MY = 10;
-
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 // バタ足コントローラ
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -18,8 +15,8 @@ Fish_Bata.initialize = function (fish) {
 
 	// タッチ開始
 	var fTouchStart = fish.onTouchStart;
-	fish.onTouchStart = function(){
-		if(fTouchStart)fTouchStart.call(fish);
+	fish.onTouchStart = function () {
+		if (fTouchStart) fTouchStart.call(fish);
 
 		if (window.g_touch_skip > 0) {
 			window.g_touch_skip--;
@@ -29,6 +26,7 @@ Fish_Bata.initialize = function (fish) {
 		// 地上からは普通のジャンプしてみる
 		if (self.anm == "running") {
 			self.my = -10;
+			self.touching = 1;
 		}
 		else {
 			self.touching = 1;
@@ -57,6 +55,7 @@ Fish_Bata.initialize = function (fish) {
 		// 加速度による速度計算
 		self.my += ay;
 		if (self.my >= LIMIT_MY) self.my = LIMIT_MY;
+		if (self.my <= -LIMIT_MY) self.my = -LIMIT_MY;
 
 		// 速度による位置計算
 		self.y += self.my;
@@ -67,7 +66,7 @@ Fish_Bata.initialize = function (fish) {
 			self.my = 0;
 			self.new_anm = "running";
 		}
-		else if (self.getTop() < 0) {
+		else if (self.getTop() <= 0) {
 			self.setTop(0);
 		}
 
@@ -90,8 +89,8 @@ Fish_Bata.initialize = function (fish) {
 
 	// タッチ終了
 	var fTouchEnd = fish.onTouchEnd;
-	fish.onTouchEnd = function(){
-		if(fTouchEnd)fTouchEnd.call(fish);
+	fish.onTouchEnd = function () {
+		if (fTouchEnd) fTouchEnd.call(fish);
 
 		console.log("touch end");
 		self.touching = 0;
