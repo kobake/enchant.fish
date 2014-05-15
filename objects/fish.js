@@ -139,12 +139,14 @@ Fish = function () {
 
 		// 自動進行
 		if (!x_hit) {
+			fish.x += SCROLL_SPEED;
+			/*
 			if (t.x < AUTO_X_LIMIT) {
-				t.x += 0.5;
-				if (t.x > AUTO_X_LIMIT) {
-					t.x = AUTO_X_LIMIT;
-				}
+			t.x += 0.5;
+			if (t.x > AUTO_X_LIMIT) {
+			t.x = AUTO_X_LIMIT;
 			}
+			}*/
 		}
 
 		// 死に判定
