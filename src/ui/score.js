@@ -1,24 +1,18 @@
 Score = function () {
 	// オブジェクト管理
-	window.g_objectManager.add(this);
+	ObjectManager.initAsGroup(this, 320 - 12 * 7 - 8, 4, 0);
 
 	window.g_score = this;
 
-	// スプライト（数字部分）
+	// スプライト（数字）
+	this.num = new Number(0, 0, 6);
 	this.objects = [];
-	for (var i = 0; i < 6; i++) {
-		var obj = new Background('img/number12x16-z9.gif', 0, 0, 12, 16, 9, 0);
-		obj.x = 320 - 4 - 7 - 18 * (i + 1) - 7;
-		obj.y = 4;
-		obj.animation = 0;
-		this.objects.push(obj);
-	}
+	this.objects.push(this.num);
 
 	// スプライト（単位部分）
-	this.object_m = new Background('img/number12x16-z9.gif', 0, 0, 12, 16, 9, 0);
-	this.object_m.x = 320 - 4 - 7 - 18 * 0 - 7;
-	this.object_m.y = 4;
-	this.object_m.animation = 10;
+	var m = new CommonObject('img/number12x16-z9.gif', this.num.width, 0, 12, 16, 9, 0);
+	m.animation = 10;
+	this.objects.push(m);
 
 	// スコアの素（耐久距離）
 	this.score = 0;
@@ -43,11 +37,7 @@ Score = function () {
 		// 距離を進める（ピクセル）
 		this.score += SCROLL_SPEED;
 		// スプライトへの反映
-		k = 1;
-		for (var i = 0; i < 6; i++) {
-			this.objects[i].animation = Math.floor(this.score / k) % 10;
-			k *= 10;
-		}
+		this.num.value = this.score;
 		return 0; // 継続
 	};
 };
