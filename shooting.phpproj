@@ -19,27 +19,31 @@
   <ItemGroup>
     <Folder Include="img\" />
     <Folder Include="gimmick" />
+    <Folder Include="env" />
+    <Folder Include="ui" />
     <Folder Include="objects" />
     <Folder Include="scenes" />
-    <Folder Include="underscore\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="background.js">
+    <Content Include="env\background.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="crow.js">
+    <Content Include="env\ground.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="gameover.js">
+    <Content Include="env\object_manager.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="env\camera.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="env\remover.js">
       <SubType>Content</SubType>
     </Content>
     <Content Include="gimmick\pattern_manager.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="ground.js">
       <SubType>Content</SubType>
     </Content>
     <Content Include="img\bg-back.gif">
@@ -90,10 +94,7 @@
     <Content Include="index.html">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="milk.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="milk_manager.js">
+    <Content Include="objects\crow.js">
       <SubType>Content</SubType>
     </Content>
     <Content Include="objects\fish.js">
@@ -105,22 +106,28 @@
     <Content Include="objects\fish_jump.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="remover.js">
+    <Content Include="objects\milk.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="objects\milk_manager.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="objects\tichan.js">
       <SubType>Content</SubType>
     </Content>
     <Content Include="scenes\game.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="score.js">
+    <Content Include="ui\gameover.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="start.js">
+    <Content Include="ui\meter.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="tichan.js">
+    <Content Include="ui\score.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="underscore\underscore.js">
+    <Content Include="ui\start.js">
       <SubType>Content</SubType>
     </Content>
     <Content Include="_common.js">
@@ -129,9 +136,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gimmick\pattern.js">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="meter.js">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

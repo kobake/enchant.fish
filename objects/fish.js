@@ -13,32 +13,23 @@ var DEAD_X = 31;
 //DEAD_X = 200; // ゲームオーバー確認用
 
 // クラス定義
-Fish = function (scene) {
-	this.scene = scene;
-	this.deadFlag = 0; // 死にフラグ(0:初期 1:死んだ 2:死に演出中)
-	group = scene.groups[4];
-	this.group = group;
-	// this.sprite = new Sprite(37, 24); // 1キャラのサイズ
-	// this.sprite.image = game.assets['img/fishkun37x24-z4.gif'];
-	// this.sprite.frame = [0, 1, 2, 3, 4, 5];   // select sprite frame
-	this.sprite = new Sprite(64, 64); // 1キャラのサイズ
-	this.sprite.y = LIMIT_Y;
-	this.sprite.image = game.assets['img/fish64x64-z4.gif'];
-	// this.sprite.frame = [5, 4, 3, 2, 1, 0];   // select sprite frame
-	this.sprite.frame = GenerateFrameArray(7, 0, 1);   // select sprite frame
-	/*
-	this.sprite.tl.moveBy(320 - 64, 0, 90)	// move right
-	.scaleTo(-1, 1, 10)			// turn left
-	.moveBy(-(320 - 64), 0, 90)	// move left
-	.scaleTo(1, 1, 10)			// turn right
-	.loop();					// loop it
-	*/
-	group.addChild(this.sprite);
-	this.sprite.my = 0;
-	this.sprite.x = FIRST_X;
+Fish = function () {
+	// オブジェクト管理
+	window.g_objectManager.add(this);
 
-	// ハンドラ
-	this.frameHandlers = [];
+	// 基本属性
+	this.imagepath = 'img/fish64x64-z4.gif';
+	this.x = FIRST_X;
+	this.y = LIMIT_Y;
+	this.width = 64;
+	this.height = 64;
+	this.zorder = 4;
+	this.camera_rate = 1;
+	this.animation = GenerateAnimationArray(7, 0, 1);
+
+	// 追加属性
+	this.deadFlag = 0; // 死にフラグ(0:初期 1:死んだ 2:死に演出中)
+	this.my = 0;
 
 	// 挙動コントローラ
 	Fish_Bata.initialize(this);
@@ -46,7 +37,7 @@ Fish = function (scene) {
 
 	// デバッグ表示背景
 	var labelback = new Sprite(50, 20);
-	scene.groups[9].addChild(labelback);
+	window.g_scene.groups[9].addChild(labelback);
 	labelback.backgroundColor = "#000";
 	labelback.x = 320 - labelback.width;
 	labelback.y = 240 - labelback.height;
@@ -60,57 +51,53 @@ Fish = function (scene) {
 	this.label.font = "12px 'ＭＳ ゴシック'";
 	this.label.opacity = 1;
 	window.g_label = this.label;
-	scene.groups[9].addChild(this.label);
+	window.g_scene.groups[9].addChild(this.label);
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	// フレーム処理用変数（thisが使えないので）
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	var t = this;
 	var fish = this;
-	var sprite = this.sprite;
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	// 挙動定義
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	frames = [];
-	frames[0] = GenerateFrameArray(7, 0, 1);
-	frames[1] = GenerateFrameArray(15, 8, 1);
-	frames[2] = GenerateFrameArray(23, 16, 1);
-	frames[3] = GenerateFrameArray(31, 24, 1);
-	frames[4] = GenerateFrameArray(39, 32, 1);
-	frames['running'] = [0, 1, 2, 2, 3, 4, 5, 6, 7]; //GenerateFrameArray(7, 0, 1);
-	frames['batabata'] = GenerateFrameArray(16, 23, 1);
-	frames['falling'] = [4];
+	animations = [];
+	animations[0] = GenerateAnimationArray(7, 0, 1);
+	animations[1] = GenerateAnimationArray(15, 8, 1);
+	animations[2] = GenerateAnimationArray(23, 16, 1);
+	animations[3] = GenerateAnimationArray(31, 24, 1);
+	animations[4] = GenerateAnimationArray(39, 32, 1);
+	animations['running'] = [0, 1, 2, 2, 3, 4, 5, 6, 7]; //GenerateAnimationArray(7, 0, 1);
+	animations['batabata'] = GenerateAnimationArray(16, 23, 1);
+	animations['falling'] = [4];
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	// さかなさんのフレーム処理
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	group.addEventListener(Event.ENTER_FRAME, function (e) {
+	this.onFrame = function () {
 		// フレーム初期化
 		self.new_animation = "";
 
 		// 位置計算前の状態
 		var old_bottom = t.getBottom();
 
-		// フレーム
-		for (var i = 0; i < fish.frameHandlers.length; i++) {
-			var f = fish.frameHandlers[i];
-			f(fish);
-		}
+		// 処理
+		this.onControllerFrame();
 
 		// Y方向の処理はコントローラに委譲してみる
 		/*
 		// 加速度による速度計算
-		sprite.my += 0.9;
-		if (sprite.my >= 100) sprite.my = 100;
+		this.my += 0.9;
+		if (this.my >= 100) this.my = 100;
 
 		// 速度による位置計算
-		sprite.y += sprite.my;
+		this.y += this.my;
 
 		// Y位置制限
-		if (sprite.y >= LIMIT_Y) {
-		sprite.y = LIMIT_Y;
-		sprite.my = 0;
+		if (this.y >= LIMIT_Y) {
+		this.y = LIMIT_Y;
+		this.my = 0;
 		// jumpingプロパティがあればそれをチェック
 		if (t.jumping) {
 		if (t.jumping == 1) t.jumping = 0;
@@ -118,6 +105,8 @@ Fish = function (scene) {
 		}
 		*/
 
+
+		/* ### いったん保留
 		// ミルクマネージャ
 		var man = window.milkManager;
 		var milk;
@@ -126,82 +115,109 @@ Fish = function (scene) {
 		var milks = [];
 		milk = man.findRightMilk(t);
 		if (milk) {
-			milks.push(milk);
+		milks.push(milk);
 		}
 		milk = man.findUnderMilk(t);
 		if (milk) {
-			milks.push(milk);
+		milks.push(milk);
 		}
 
 		// 当たり判定の実施
 		var x_hit = false;
 		for (var i = 0; i < milks.length; i++) {
-			milk = milks[i];
-			if (milk.intersects(fish)) {
-				// -- -- 高さチェック -- -- //
-				// ミルクを乗り越えている状態。または微妙～～に下にめり込んだ状態。
-				// ※「8」はめり込み具合の許容範囲。（重力加速度により下にめり込む場合がある）
-				if (old_bottom <= milk.getTop()) {
-					if (fish.getBottom() > milk.getTop()) {
-						// 下にめり込んでいる状態。
-						// 掘り起こす。
-						fish.setBottom(milk.getTop());
-					}
-				}
-				// ミルクより下にいる状態
-				else {
-					// X距離チェック
-					var dist = milk.getLeft() - fish.getRight();
-					if (dist < 0) { // 食い込んでいたら
-						fish.setRight(milk.getLeft()); // 補正する
-						x_hit = true;
-					}
-				}
-			}
+		milk = milks[i];
+		if (milk.intersects(fish)) {
+		// -- -- 高さチェック -- -- //
+		// ミルクを乗り越えている状態。または微妙～～に下にめり込んだ状態。
+		// ※「8」はめり込み具合の許容範囲。（重力加速度により下にめり込む場合がある）
+		if (old_bottom <= milk.getTop()) {
+		if (fish.getBottom() > milk.getTop()) {
+		// 下にめり込んでいる状態。
+		// 掘り起こす。
+		fish.setBottom(milk.getTop());
 		}
+		}
+		// ミルクより下にいる状態
+		else {
+		// X距離チェック
+		var dist = milk.getLeft() - fish.getRight();
+		if (dist < 0) { // 食い込んでいたら
+		fish.setRight(milk.getLeft()); // 補正する
+		x_hit = true;
+		}
+		}
+		}
+		}
+		*/
+		x_hit = false;
 
 		// 自動進行
 		if (!x_hit) {
-			if (t.sprite.x < AUTO_X_LIMIT) {
-				t.sprite.x += 0.5;
-				if (t.sprite.x > AUTO_X_LIMIT) {
-					t.sprite.x = AUTO_X_LIMIT;
+			if (t.x < AUTO_X_LIMIT) {
+				t.x += 0.5;
+				if (t.x > AUTO_X_LIMIT) {
+					t.x = AUTO_X_LIMIT;
 				}
 			}
 		}
 
 		// 死に判定
-		if (t.sprite.x <= DEAD_X) {
+		if (t.x <= DEAD_X) {
 			if (t.deadFlag == 0) {
 				t.deadFlag = 1;
 			}
 		}
 
+		// さかなくんが死んでたらゲームオーバー表示
+		if (fish.deadFlag == 1) {
+			fish.deadFlag = 2;
+
+			// 死に演出
+			window.g_gameover = new Gameover(scene);
+
+			// タッチしたら死に演出は削除してゲームリトライ
+			Retry = function (e) {
+				window.g_touch_skip = 1; // ### TOUCH_END が呼ばれないケースの暫定対処
+
+				// さかなくん復活
+				fish.reset();
+
+				// 死に演出削除
+				window.g_gameover.disposeSlow();
+				delete window.g_gameover;
+
+				// コールバック削除
+				scene.removeEventListener(Event.TOUCH_START, Retry);
+			};
+			scene.addEventListener(Event.TOUCH_START, Retry);
+		}
+
 		// デバッグ情報
 		//t.label.text = "P:" + t.power + " F:" + t.power_frame;
-	});
+		return 0;
+	};
 
 	// 基本的な属性
 	// ###このへんは基底クラスを作りたい
 	this.getLeft = function () {
-		return this.sprite.x + 8; // 左部8ピクセルの隙間（だいたい）
+		return this.x + 8; // 左部8ピクセルの隙間（だいたい）
 	};
 	this.getRight = function () {
-		return this.sprite.x + this.sprite.width - 1; // 右部1ピクセルの隙間
+		return this.x + this.width - 1; // 右部1ピクセルの隙間
 	};
 	this.getTop = function () {
-		return this.sprite.y + 5; // 天井当たり判定で使う
+		return this.y + 5; // 天井当たり判定で使う
 	}
 	this.getBottom = function () {
-		return this.sprite.y + this.sprite.height - 11; // 下部11ピクセルの隙間
+		return this.y + this.height - 11; // 下部11ピクセルの隙間
 	}
 	// 属性操作
 	this.setRight = function (right) {
-		this.sprite.x = right - 64 + 1; // 右部1ピクセルの隙間
+		this.x = right - 64 + 1; // 右部1ピクセルの隙間
 	};
 	this.setBottom = function (bottom) {
-		this.sprite.y = bottom - 64 + 11; // 下部11ピクセルの隙間
-		this.sprite.my = 0;
+		this.y = bottom - 64 + 11; // 下部11ピクセルの隙間
+		this.my = 0;
 		this.new_animation = "running";
 		// jumpingプロパティがあればそれを使う
 		if (!this.jumping) {
@@ -209,8 +225,8 @@ Fish = function (scene) {
 		}
 	}
 	this.setTop = function (bottom) {
-		this.sprite.y = -5; // 上部5ピクセルの隙間
-		this.sprite.my = 0;
+		this.y = -5; // 上部5ピクセルの隙間
+		this.my = 0;
 		//this.new_animation = "batabata";
 	}
 	// 当たり判定（相手が getLeft(), getRight() を持っている前提)
@@ -222,7 +238,7 @@ Fish = function (scene) {
 	// さかなくん復活
 	this.reset = function () {
 		this.deadFlag = 0;
-		this.sprite.x = FIRST_X;
+		this.x = FIRST_X;
 		window.g_score.reset(); // ### Observerで実装すべき
 	};
 };

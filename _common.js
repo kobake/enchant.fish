@@ -1,6 +1,6 @@
 // 全体のスクロール速度
-var LOOP_SPEED = 4;
-LOOP_SPEED = 6;
+var SCROLL_SPEED = 4;
+SCROLL_SPEED = 6;
 
 var FPS = 20;
 
@@ -27,7 +27,7 @@ function PreloadImages(game, classlist) {
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 // アニメーション用配列の生成
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-function GenerateFrameArray(from, to, framecount) {
+function GenerateAnimationArray(from, to, framecount) {
 	var a = [];
 	if (from < to) {
 		for (var i = from; i <= to; i++) {

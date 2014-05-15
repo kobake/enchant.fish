@@ -72,19 +72,19 @@ Fish_Jump.initialize = function (fish) {
 			var f = GetPowerFrame(t.power);
 			if (f != t.power_frame) {
 				t.power_frame = f;
-				t.sprite.frame = frames[t.power_frame];
+				t.animation = animations[t.power_frame];
 			}
 			//var new_f = GetPowerFrame(t.power);
 			// スプライト切り替え
 			//if (old_f != new_f) {
-			//	t.frame = frames[new_f];
+			//	t.animation = animations[new_f];
 			//}
 		}
 		else {
 			t.power = 0;
 			if (t.power_frame != 0) {
 				t.power_frame = 0;
-				t.sprite.frame = frames[0];
+				t.animation = animations[0];
 			}
 		}
 	});

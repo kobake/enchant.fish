@@ -1,5 +1,8 @@
 // スタート表示
 Start = function (scene) {
+	// オブジェクト管理
+	window.g_objectManager.add(this);
+
 	window.g_start = this;
 	this.sprite = new Sprite(320, 240);
 	this.sprite.image = game.assets['img/title-z9.gif'];

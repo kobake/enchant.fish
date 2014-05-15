@@ -2,13 +2,12 @@
 // 牛乳パック
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 // Usage: milk = new Milk(group, 10);
-Milk = function (scene, x) {
-	group = scene.groups[3];
-
+Milk = function (x) {
 	// 参照
 	this.group = group;
 
 	// スプライト
+	this.x = 0;
 	this.sprite = new Sprite(64, 120);
 	this.sprite.image = game.assets['img/milk64x120-z3.gif'];
 	this.sprite.x = x;
@@ -18,8 +17,8 @@ Milk = function (scene, x) {
 	// フレーム処理。
 	// 戻り値0: 通常
 	// 戻り値0以外: オブジェクト削除
-	this.frame = function () {
-		this.sprite.x -= LOOP_SPEED;
+	this.onFrame = function () {
+		this.sprite.x -= SCROLL_SPEED;
 		if (this.sprite.x <= -64) {
 			return 1; // 削除
 		}

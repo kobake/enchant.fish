@@ -4,15 +4,10 @@ LIMIT_MY = 10;
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 // バタ足コントローラ
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-Fish_Bata = function () {
+Fish_Bata = function(){
 };
-
 Fish_Bata.initialize = function (fish) {
-	var scene = fish.scene;
-
 	// 各種パラメータ
-	//fish.jumping = 0;
-	//fish.charging = 0;
 	fish.touching = 0;
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -22,23 +17,26 @@ Fish_Bata.initialize = function (fish) {
 	var self = fish; // こっちの変数名のほうがかっこよさげ
 
 	// タッチ開始
-	scene.addEventListener(Event.TOUCH_START, function (e) {
+	var fTouchStart = fish.onTouchStart;
+	fish.onTouchStart = function(){
+		if(fTouchStart)fTouchStart.call(fish);
+
 		if (window.g_touch_skip > 0) {
 			window.g_touch_skip--;
 			return;
 		}
-		console.log("touch start " + self.animation + "," + self.new_animation);
+		console.log("touch start " + self.anm + "," + self.new_anm);
 		// 地上からは普通のジャンプしてみる
-		if (self.animation == "running") {
-			self.sprite.my = -10;
+		if (self.anm == "running") {
+			self.my = -10;
 		}
 		else {
 			self.touching = 1;
 		}
-	});
+	};
 
 	// フレーム処理
-	fish.frameHandlers.push(function (_fish) {
+	fish.onControllerFrame = function () {
 		// デバッグ情報
 		window.g_label.text = "t = " + self.touching;
 
@@ -57,17 +55,17 @@ Fish_Bata.initialize = function (fish) {
 		}
 
 		// 加速度による速度計算
-		self.sprite.my += ay;
-		if (self.sprite.my >= LIMIT_MY) self.sprite.my = LIMIT_MY;
+		self.my += ay;
+		if (self.my >= LIMIT_MY) self.my = LIMIT_MY;
 
 		// 速度による位置計算
-		self.sprite.y += self.sprite.my;
+		self.y += self.my;
 
 		// Y位置制限
-		if (self.sprite.y >= LIMIT_Y) {
-			self.sprite.y = LIMIT_Y;
-			self.sprite.my = 0;
-			self.new_animation = "running";
+		if (self.y >= LIMIT_Y) {
+			self.y = LIMIT_Y;
+			self.my = 0;
+			self.new_anm = "running";
 		}
 		else if (self.getTop() < 0) {
 			self.setTop(0);
@@ -75,25 +73,28 @@ Fish_Bata.initialize = function (fish) {
 
 		// アニメーション設定
 		if (self.touching == 1) {
-			self.new_animation = "batabata"; // バタバタ（押下中）
+			self.new_anm = "batabata"; // バタバタ（押下中）
 		}
 		else {
-			if (self.new_animation != "running") {
-				self.new_animation = "falling"; // ピタッ（無操作。落下）
+			if (self.new_anm != "running") {
+				self.new_anm = "falling"; // ピタッ（無操作。落下）
 			}
 		}
-		//self.new_animation = "running"; // 地上走り（無操作。地面）
-		if (self.new_animation != self.animation) {
-			console.log("animation old:" + self.animation + "new:" + self.new_animation);
-			self.animation = self.new_animation;
-			self.sprite.frame = frames[self.animation];
+		//self.new_anm = "running"; // 地上走り（無操作。地面）
+		if (self.new_anm != self.anm) {
+			console.log("anm old:" + self.anm + "new:" + self.new_anm);
+			self.anm = self.new_anm;
+			self.animation = animations[self.anm];
 		}
-	});
+	};
 
 	// タッチ終了
-	scene.addEventListener(Event.TOUCH_END, function (e) {
+	var fTouchEnd = fish.onTouchEnd;
+	fish.onTouchEnd = function(){
+		if(fTouchEnd)fTouchEnd.call(fish);
+
 		console.log("touch end");
 		self.touching = 0;
-		self.new_animation = "falling";
-	});
+		self.new_anm = "falling";
+	};
 };

@@ -1,68 +1,44 @@
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-// カラス
+// 地形パターン
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-Crow = function (scene, x, y) {
-	group = scene.groups[5];
+// Usage: pattern = new Pattern(group, 10);
+// プロパティ
+// ・world_x … 変動することは無い。camera_xにより実際の見た目位置が変動
+// ・world_y … 変動することは無い
+//
+Pattern = function (imagefilepath, x, y, width, height, zorder, camera_rate) {
+	// オブジェクト管理
+	window.g_objectManager.add(this);
 
 	// 参照
-	this.group = group;
+	this.camera_rate = camera_rate;
 
-	// スプライト
-	this.sprite = new Sprite(80, 80);
-	this.sprite.image = game.assets['img/crow80x80-z5.png'];
-	this.sprite.x = x;
-	this.sprite.y = y;
-	this.sprite.scaleX = 0.5;
-	this.sprite.scaleY = 0.5;
-	group.addChild(this.sprite);
+	// 属性
+	this.x = x;
+	this.y = y;
+	this.width = width;
+	this.height = height;
+	this.zorder = zorder;
+	this.camera_rate = camera_rate;
 
-	// フレーム処理。
-	// 戻り値0: 通常
-	// 戻り値0以外: オブジェクト削除
-	this.frame = function () {
-		this.sprite.x -= LOOP_SPEED;
-		if (this.sprite.x <= -80) {
-			return 1; // 削除
-		}
-		return 0; // 継続
-	};
-	var t = this;
-	this.f = function () {
-		var ret = t.frame();
-		if (ret != 0) {
-			t.dispose();
-			scene.removeEventListener(Event.ENTER_FRAME, t.f);
-		}
-	};
-	scene.addEventListener(Event.ENTER_FRAME, this.f);
-
-	// 削除
-	this.dispose = function () {
-		if (this.sprite) {
-			this.group.removeChild(this.sprite);
-			delete this.sprite; // 変数をアンセット
-		}
-	};
-
-	// 基本的な属性
+	// 独自属性
 	// ### プロパティ定義も使ってみたいが。
 	this.getX = function () {
-		return this.sprite.x;
+		return this.x;
 	}
 	// ###このへんは基底クラスを作りたい
 	this.getLeft = function () {
-		return this.sprite.x + 5;
+		return this.x;
 	};
 	this.getRight = function () {
-		return this.sprite.x + this.sprite.width - 5;
+		return this.x + this.width;
 	};
 	this.getTop = function () {
-		return this.sprite.y + 5;
+		return this.y + 4; // 上部4ピクセルの隙間
 	};
 	this.getBottom = function () {
-		return this.sprite.y + this.sprite.height - 5;
+		return this.y + this.height;
 	};
-
 	// 当たり判定（相手が getLeft(), getRight() を持っている前提)
 	this.intersectsX = function (obj) {
 		if (this.getRight() <= obj.getLeft()) return false; // 自分が左側にあるケース
@@ -82,6 +58,7 @@ Crow = function (scene, x, y) {
 };
 
 // 画像リスト
-Crow.images = [
-	'img/crow80x80-z5.png'
+Pattern.images = [
+	'patterns/pt01.gif',
+	'patterns/pt02.gif'
 ];

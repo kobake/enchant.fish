@@ -36,21 +36,6 @@
 		}
 	};
 
-	// フレーム処理
-	this.frame = function () {
-		for (var i = 0; i < this.milks.length; i++) {
-			var milk = this.milks[i];
-			var ret = milk.frame();
-			if (ret != 0) {
-				// milk削除
-				console.log("delete milk");
-				milk.dispose();
-				this.milks.splice(i, 1);
-				i--;
-			}
-		}
-	};
-
 	/**
 	* ミルク探し (fish.getRight()より右にある直近のミルクを返す。ただし重なってるものも対象に含める)
 	* @return {Milk} 見つかったミルク。見つからなければnull。

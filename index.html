@@ -3,36 +3,40 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>running fish</title>
+		<!-- ライブラリ -->
 		<script type="text/javascript" src="enchant/enchant.js"></script>
 		<script type="text/javascript" src="underscore/underscore.js"></script>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 		<script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-		<!-- <script type="text/javascript" src="audiojs/audio.min.js"></script> -->
-		<script type="text/javascript" src="soundjs/soundjs-0.5.2.min.js"></script>
-		<!-- 部品クラス -->
-		<script type="text/javascript" src="_common.js"></script>
-		<script type="text/javascript" src="ground.js"></script>
-		<script type="text/javascript" src="tichan.js"></script>
-		<script type="text/javascript" src="crow.js"></script>
-		<script type="text/javascript" src="background.js"></script>
-		<script type="text/javascript" src="start.js"></script>
-		<script type="text/javascript" src="score.js"></script>
-		<script type="text/javascript" src="gameover.js"></script>
-		<script type="text/javascript" src="meter.js"></script>
-		<!-- ギミック（地形・背景・障害物） -->
-		<script type="text/javascript" src="milk.js"></script>
-		<script type="text/javascript" src="milk_manager.js"></script>
+		<!-- なんかダメっぽ → <script type="text/javascript" src="audiojs/audio.min.js"></script> -->
 		<!--
-		<script type="text/javascript" src="gimmick/pattern.js"></script>
-		<script type="text/javascript" src="gimmick/pattern_manager.js"></script>
+		他デバッグのため一旦保留
+		<script type="text/javascript" src="soundjs/soundjs-0.5.2.min.js"></script>
 		-->
-		<!-- オブジェクト -->
+		<!-- 根幹 -->
+		<script type="text/javascript" src="_common.js"></script>
+		<script type="text/javascript" src="env/object_manager.js"></script>
+		<script type="text/javascript" src="env/remover.js"></script>
+		<!-- ワールドオブジェクト -->
+		<script type="text/javascript" src="objects/tichan.js"></script>
+		<script type="text/javascript" src="objects/crow.js"></script>
+		<script type="text/javascript" src="objects/milk.js"></script>
+		<script type="text/javascript" src="objects/milk_manager.js"></script>
 		<script type="text/javascript" src="objects/fish.js"></script>
 		<script type="text/javascript" src="objects/fish_jump.js"></script>
 		<script type="text/javascript" src="objects/fish_bata.js"></script>
-		<!-- マネージャ -->
-		<script type="text/javascript" src="remover.js"></script>
-		<!-- シーン -->
+		<!-- UI -->
+		<script type="text/javascript" src="ui/start.js"></script>
+		<script type="text/javascript" src="ui/score.js"></script>
+		<script type="text/javascript" src="ui/meter.js"></script>
+		<script type="text/javascript" src="ui/gameover.js"></script>
+		<!-- ギミック（地形・背景・障害物） -->
+		<script type="text/javascript" src="gimmick/pattern.js"></script>
+		<script type="text/javascript" src="gimmick/pattern_manager.js"></script>
+		<!-- シーン・環境 -->
+		<script type="text/javascript" src="env/ground.js"></script>
+		<script type="text/javascript" src="env/background.js"></script>
+		<script type="text/javascript" src="env/camera.js"></script>
 		<script type="text/javascript" src="scenes/game.js"></script>
 	</script>
 </head>
@@ -56,15 +60,19 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 
 <script type="text/javascript">
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-	// 処理開始
+	// ライブラリ設定等
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	enchant(); // initialize
 
+	// BGM
+	/* 他デバッグのため一旦保留
 	createjs.Sound.addEventListener("fileload", function () {
 		createjs.Sound.play("bgm");
 	});
 	createjs.Sound.registerSound("sounds/looperman-t-0404662-0151402-scottb55-raise-hell-and-ptl.mp3", "bgm");
+	*/
 
+	// キャンバス自動拡大防止
 	/*
 	http://jsdo.it/kitao/enchantjs-pixelart
 	CanvasLayer初期化後にcanvasのコンテキストを操作する
@@ -78,153 +86,84 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 		this.context.webkitImageSmoothingEnabled = false;
 		this.context.mozImageSmoothingEnabled = false;
 	};
-    
+
 	// 基本設定
 	var game = new Core(320, 240); // game stage // 画面サイズ
 	game.scale = 1; // 拡大率
-	game.fps = FPS; // 20fps→15
+	game.fps = FPS;
 
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	// リソース準備
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	PreloadImages(
 		game,
 		[Background, Fish, Ground, Milk, Crow,
-		Tichan, Start, Score, Gameover, Meter/*, Pattern*/]
+		Tichan, Start, Score, Gameover, Meter, Pattern]
 	);
 
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	// シーン
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	// ゲームシーン
 	var createGameScene = function () {
+		// シーン
 		var scene = GenerateScene();
+		scene.backgroundColor = 'rgb(0, 107, 247)';
+		window.g_scene = scene;
 
-		// マネージャ
+		// 基本マネージャ
 		var remover = new Remover(scene);
+		var objectManager = new ObjectManager(scene);
+		var camera = new Camera();
 
-		// ゲームループ背景画像
-		var bg1 = new Background(scene.groups[0], 'img/bg-back-z0.gif', 160, 240, 0.5);
-		var bg2 = new Background(scene.groups[1], 'img/bg-front-z1.gif', 160, 240, 1);
-		scene.addEventListener(Event.ENTER_FRAME, function () {
-			bg1.frame();
-			bg2.frame();
-		});
-
-		// 数字スプライト実験
-		/*
-		NumberSprite = function (image, w, h, ketas) {
-			this.group = new Group();
-
-			// 桁数分だけスプライトを作る
-			this.sprites = [];
-			for (var i = 0; i < ketas; i++) {
-				var sprite = new Sprite(w, h);
-				sprite.image = image;
-				sprite.frame = 0;
-				sprite.x = 0;
-				sprite.y = i * w;
-				this.group.addChild(sprite);
-			}
-		};
-		this.number = new NumberSprite('img/scnum8x8-z9.gif', 8, 8, 6);
-		scene.groups[9].addChild(this.number.group);
-		*/
-
-
-		// BGM
-		//var sound = game.assets['sounds/looperman-t-0404662-0151402-scottb55-raise-hell-and-ptl.mp3'];
-		//var sound = game.assets['sounds/looperman-l-1048767-0068538-buffalonugaluss-drumstep-drums.wav'];
-		//sound.play();
-		//sound.src.loop = true;
-		//scene.addEventListener(Event.ENTER_FRAME, function () {
-		//	sound.play();
-		//});
-
-		// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-		// 地面
-		// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
-		// 地面リスト
-		var grounds = [];
-		for (var i = 0; i < 11; i++) {
-			var ground = new Ground(scene, i * 32);
-			grounds.push(ground);
-			//scene.addChild(ground.sprite);
+		// 背景と地面 (生成する枚数は今のところ適当。本来はステージ長に合わせる)
+		for (var i = 0; i < 10; i++) {
+			new Background('img/bg-back-z0.gif', i * 160, 0, 160, 240, 0, 0.25);
+		}
+		for (var i = 0; i < 20; i++) {
+			new Background('img/bg-front-z1.gif', i * 160, 0, 160, 240, 1, 0.5);
+		}
+		for (var i = 0; i < 40; i++) { // ※ステージが導入されればこの地面は不要になる
+			new Background('img/ground32x32-z2.gif', i * 32, 240 - 32, 32, 32, 2, 1);
 		}
 
 		// メインキャラ
-		var fish = new Fish(scene); 	// さかなくんさん
-		window.g_fish = fish; 		// グローバルアクセス
+		var fish = new Fish(); 		// さかなくんさん
+		window.g_fish = fish; 			// グローバルアクセス
 		var tichan = new Tichan(scene); // ちーちゃん
-		window.g_tichan = tichan; 	// グローバルアクセス
+		window.g_tichan = tichan; 		// グローバルアクセス
 
-		// オブジェクト
-		var start = new Start(scene);
+		// UIオブジェクト
+		var start = new Start(scene); // 開始
+		var score = new Score(scene); // スコア
+		var meter = new Meter(scene); // 距離
 
-		// スコア
-		var score = new Score(scene);
+		// マネージャ
+		//var milkManager = new MilkManager(scene);
+		var patternManager = new PatternManager(scene);
 
-		// 距離
-		var meter = new Meter(scene);
-
-		// 背景のフレーム処理
-		var ground_counter = 0;
-		var milkManager = new MilkManager(scene);
-		scene.addEventListener(Event.ENTER_FRAME, function () {
-			// 地面
-			for (var i = 0; i < grounds.length; i++) {
-				var ground = grounds[i];
-				var ret = ground.frame();
-				if (ret != 0) {
-					// ground削除
-					ground.dispose();
-					grounds.splice(i, 1);
-					i--;
-				}
-			}
-
-			// 地面が減っていたらもう1個足す
-			if (grounds.length <= 10) {
-				var ground = new Ground(scene, 320);
-				grounds.push(ground);
-				// このタイミングでミルクの抽選を行う
-				milkManager.lottery();
-				// このタイミングでカラスの抽選を行う
-				if (CalcLottery(20)) {
-					var crow = new Crow(scene, 320, 0);
-				}
-			}
-
-			// 各種フレーム処理
-			milkManager.frame(); // 牛乳群
-			score.frame(); // スコア
-			meter.frame(); // 距離
-
-			// さかなくんが死んでたらゲームオーバー表示
-			if (fish.deadFlag == 1) {
-				fish.deadFlag = 2;
-
-				// 死に演出
-				window.g_gameover = new Gameover(scene);
-
-				// タッチしたら死に演出は削除してゲームリトライ
-				Retry = function (e) {
-					window.g_touch_skip = 1; // ### TOUCH_END が呼ばれないケースの暫定対処
-
-					// さかなくん復活
-					fish.reset();
-
-					// 死に演出削除
-					window.g_gameover.disposeSlow();
-					delete window.g_gameover;
-
-					// コールバック削除
-					scene.removeEventListener(Event.TOUCH_START, Retry);
-				};
-				scene.addEventListener(Event.TOUCH_START, Retry);
-			}
+		// タッチ開始
+		scene.addEventListener(Event.TOUCH_START, function (e) {
+			objectManager.invokeTouch();
 		});
-		scene.backgroundColor = 'rgb(0, 107, 247)';
+
+		// タッチ終了
+		scene.addEventListener(Event.TOUCH_END, function (e) {
+			objectManager.invokeEnd();
+		});
+
+		// フレーム処理
+		scene.addEventListener(Event.ENTER_FRAME, function () {
+			// 全オブジェクトのフレーム処理
+			objectManager.invokeFrame();
+
+			// オブジェクトの実際の表示位置を計算
+			objectManager.calcRender();
+		});
 
 		// 盛り上がる地面・迫りくる壁・燃え尽きるハート・震えるビート
 		return scene;
 	};
-
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	// シーン開始
