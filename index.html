@@ -30,6 +30,7 @@
 		<script type="text/javascript" src="src/ui/score.js"></script>
 		<script type="text/javascript" src="src/ui/meter.js"></script>
 		<script type="text/javascript" src="src/ui/gameover.js"></script>
+		<script type="text/javascript" src="src/ui/number.js"></script>
 		<!-- ステージ構成 -->
 		<script type="text/javascript" src="src/stage/background.js"></script>
 		<script type="text/javascript" src="src/stage/pattern.js"></script>
@@ -98,7 +99,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 	PreloadImages(
 		game,
 		[Background, Fish, Ground, Milk, Crow,
-		Tichan, Start, Score, Gameover, Meter, Pattern]
+		Tichan, Start, Score, Gameover, Meter, Number, Pattern]
 	);
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -136,9 +137,9 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 		window.g_tichan = tichan; 		// グローバルアクセス
 
 		// UIオブジェクト
-		var start = new Start(scene); // 開始
-		var score = new Score(scene); // スコア
-		var meter = new Meter(scene); // 距離
+		new Start(scene); // 開始
+		new Score(scene); // スコア
+		new Meter(scene); // 距離
 
 		// マネージャ
 		//var milkManager = new MilkManager(scene);

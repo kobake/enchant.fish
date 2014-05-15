@@ -1,15 +1,12 @@
 Meter = function () {
 	// オブジェクト管理
-	window.g_objectManager.add(this);
+	ObjectManager.initAsGroup(this);
+	this.x = DEAD_X;
+	this.y = 220 - 12;
 
 	window.g_meter = this;
 
 	// スプライト作成共通部分
-	var newNumObject = function (pos) {
-		var obj = new CommonObject('img/number12x16-z9.gif', 0, 0, 12, 16, 9, 0);
-		obj.animation = pos;
-		return obj;
-	};
 	var newMeterObject = function (width, pos) {
 		var obj = new CommonObject('img/meter4x12-z9.gif', 0, 0, width, 12, 9, 0);
 		obj.animation = pos;
@@ -17,30 +14,24 @@ Meter = function () {
 	};
 
 	// スプライト（線部分）
-	this.line_objects = [];
-	this.line_objects[1] = newMeterObject(1, 4); // 奥
-	this.line_objects[0] = newMeterObject(4, 0);
-	this.line_objects[2] = newMeterObject(4, 2);
+	this.objects = [null, null, null];
+	this.objects[1] = newMeterObject(1, 4); // 奥
+	this.objects[0] = newMeterObject(4, 0);
+	this.objects[2] = newMeterObject(4, 2);
 	for (var i = 0; i < 3; i++) {
-		this.line_objects[i].y = 210 + 16;
+		this.objects[i].y = 18;
 	}
 
-	// 数字の場所
-	var NUM_X = DEAD_X + 3 * 12 - 4;
+	// スプライト（数字）
+	var num = new Number(0, 0, 3);
+	this.objects.push(num);
 
-	// スプライト（数字部分）
-	this.num_objects = [];
-	for (var i = 0; i < 3; i++) {
-		var obj = newNumObject(0);
-		obj.x = NUM_X - 12 * (i + 1);
-		obj.y = 220 - 12;
-		this.num_objects.push(obj);
-	}
-
-	// スプライト（単位部分）
-	this.object_m = newNumObject(10);
-	this.object_m.x = NUM_X + 4;
-	this.object_m.y = 220 - 12;
+	// スプライト（単位）
+	var m = new CommonObject('img/number12x16-z9.gif', 0, 0, 12, 16, 9, 0);
+	m.animation = 10;
+	m.x = num.width;
+	m.y = 0;
+	this.objects.push(m);
 
 	// 距離値
 	this.meter = 0;
@@ -56,27 +47,18 @@ Meter = function () {
 	this.onFrame = function () {
 		// 距離を測る
 		this.left = DEAD_X;
-		this.right = window.g_fish.getLeft() - window.g_camera.x;
-		if (this.right < this.left) this.right = this.left;
-		this.meter = Math.max(0, this.right - this.left);
-		//console.log(this.left + "," + this.right + "," + this.meter);
+		this.meter = Math.max(0, (window.g_fish.getLeft() - window.g_camera.x - DEAD_X));
 
 		// 線スプライトへの反映
-		this.line_objects[0].x = this.left;
-		this.line_objects[1].x = this.left;
-		this.line_objects[1].scaleX = this.meter;
-		this.line_objects[1].originX = 0;
-		this.line_objects[2].x = this.right;
+		this.objects[1].scaleX = this.meter;
+		this.objects[1].originX = 0;
+		this.objects[2].x = this.meter;
 
 		// 数字スプライトへの反映
-		k = 1;
-		for (var i = 0; i < 3; i++) {
-			this.num_objects[i].animation = Math.floor(this.meter / k) % 10;
-			k *= 10;
-		}
+		num.value = this.meter;
 
-		// 
-		return 0; // 継続
+		// 継続
+		return 0;
 	};
 };
 

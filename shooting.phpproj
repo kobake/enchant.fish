@@ -186,6 +186,9 @@
     <Content Include="src\ui\meter.js">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="src\ui\number.js">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="src\ui\score.js">
       <SubType>Content</SubType>
     </Content>
