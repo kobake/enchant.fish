@@ -46,6 +46,9 @@
 		});
 	};
 
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+	// オフセット計算（カメラ計算）適用
+	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 	this.calcRender = function () {
 		// 全オブジェクトについてグループの子座標計算を行う
 		offsetObjects(this.objects, 0, 0);
@@ -54,7 +57,7 @@
 		_.each(this.objects, function (obj) {
 			if (obj.sprite) {
 				// 位置
-				obj.sprite.x = obj.x + obj.offx - camera_x;
+				obj.sprite.x = obj.x + obj.offx - camera_x * obj.camera_rate;
 				obj.sprite.y = obj.y + obj.offy;
 				// スケール
 				if (obj.scaleX) {
@@ -66,6 +69,9 @@
 	}
 };
 
+// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+// オフセット計算（カメラ計算）内部処理
+// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 function _clearOffsets(objects) {
 	for (var i = 0; i < objects.length; i++) {
 		var obj = objects[i];
@@ -90,7 +96,9 @@ function offsetObjects(objects) {
 }
 
 
-
+// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+// 汎用オブジェクト化
+// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 ObjectManager.initAsObject = function (obj,
 		imagepath, x, y, width, height, zorder, camera_rate) {
 	obj.type = 'object';
@@ -119,6 +127,9 @@ ObjectManager.initAsGroup = function (obj,
 	window.g_objectManager.add(obj);
 };
 
+// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
+// 汎用オブジェクト
+// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 CommonObject = function (imagefilepath, x, y, width, height, zorder, camera_rate) {
 	ObjectManager.initAsObject(this, imagefilepath, x, y, width, height, zorder, camera_rate);
 };
