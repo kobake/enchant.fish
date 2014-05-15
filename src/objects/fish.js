@@ -188,7 +188,7 @@ Fish = function () {
 	// 基本的な属性
 	// ###このへんは基底クラスを作りたい
 	this.getLeft = function () {
-		return this.x + 8; // 左部8ピクセルの隙間（だいたい）
+		return this.x + 33; // 左部33ピクセルの隙間（だいたい）
 	};
 	this.getRight = function () {
 		return this.x + this.width - 1; // 右部1ピクセルの隙間

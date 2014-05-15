@@ -56,7 +56,7 @@ Meter = function () {
 	this.onFrame = function () {
 		// 距離を測る
 		this.left = DEAD_X;
-		this.right = window.g_fish.getLeft();
+		this.right = window.g_fish.getLeft() - window.g_camera.x;
 		if (this.right < this.left) this.right = this.left;
 		this.meter = Math.max(0, this.right - this.left);
 		//console.log(this.left + "," + this.right + "," + this.meter);
