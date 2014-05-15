@@ -49,8 +49,14 @@
 		// 全オブジェクトの座標をカメラ値により計算する
 		_.each(this.objects, function (obj) {
 			if (obj.sprite) {
+				// 位置
 				obj.sprite.x = obj.x;
 				obj.sprite.y = obj.y;
+				// スケール
+				if (obj.scaleX) {
+					obj.sprite.scaleX = obj.scaleX;
+					obj.sprite.originX = obj.originX;
+				}
 			}
 		});
 	}
