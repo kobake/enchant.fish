@@ -17,9 +17,10 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="img\" />
     <Folder Include="gimmick" />
     <Folder Include="env" />
+    <Folder Include="img\" />
+    <Folder Include="img\patterns" />
     <Folder Include="ui" />
     <Folder Include="objects" />
     <Folder Include="scenes" />
@@ -46,49 +47,106 @@
     <Content Include="gimmick\pattern_manager.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="img\bg-back.gif">
+    <Content Include="img\4tumb.bmp">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="img\bg-front.gif">
+    <Content Include="img\bg-back-z0.gif">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="img\chara1.png">
+    <Content Include="img\bg-front-z1.gif">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="img\fishkun37x24.gif">
+    <Content Include="img\crow40x40-z5.png">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="img\game.png">
+    <Content Include="img\fish64x64-z4.gif">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="img\gameloop.png">
+    <Content Include="img\gameover320x38-z9.gif">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="img\ground320x32.gif">
+    <Content Include="img\gover256x96-z8.gif">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="img\ground32x32.gif">
+    <Content Include="img\gover256x97-z8.txt">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="img\groundb32x32.gif">
+    <Content Include="img\ground32x32-z2.gif">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="img\milk64x80.gif">
+    <Content Include="img\house128x128-z3.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\item01-64x64-z3.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\jihan64x80-z3.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\ki-sita160x128z3.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\ki-ue160x96z4.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\meter4x12-z9.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\milk64x120-z3.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\milk64x160-z3.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\milk64x80-z3.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\number12x16-z9.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\number7x7-z9.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\patterns\pt01.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\patterns\pt01.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\patterns\pt02.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\patterns\pt02.txt">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\power4x12-z9.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\scnum8x8-z9.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\situ64x32-z3.gif">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\stage1.gif">
       <SubType>Content</SubType>
     </Content>
     <Content Include="img\start.png">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="img\tichan96x208-back.gif">
+    <Content Include="img\tichan96x208-z2.gif">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="img\tichan96x208.gif">
+    <Content Include="img\tichan96x208-z4.gif">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="img\tiichan96x208-front.gif">
+    <Content Include="img\title-z9.gif">
       <SubType>Content</SubType>
     </Content>
     <Content Include="img\title.png">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="img\共通パレット.pal">
       <SubType>Content</SubType>
     </Content>
     <Content Include="index.html">

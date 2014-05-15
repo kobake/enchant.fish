@@ -12,7 +12,7 @@ PatternManager = function () {
 	// Patternクラス自体は内部的に画像が必要になりそうなタイミングで画像を生成するので
 	// あまり無駄は起きない。はず。
 	for (var i = 0; i < 3; i++) {
-		var pattern = new Pattern('patterns/pt01.gif', i * 1056, 0, 1056, 256, 3, 1);
+		var pattern = new Pattern('img/patterns/pt01.gif', i * 1056, 0, 1056, 256, 3, 1);
 		this.patterns.push(pattern);
 	}
 };

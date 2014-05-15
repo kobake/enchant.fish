@@ -59,6 +59,6 @@ Pattern = function (imagefilepath, x, y, width, height, zorder, camera_rate) {
 
 // 画像リスト
 Pattern.images = [
-	'patterns/pt01.gif',
-	'patterns/pt02.gif'
+	'img/patterns/pt01.gif',
+	'img/patterns/pt02.gif'
 ];
