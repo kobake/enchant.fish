@@ -47,10 +47,11 @@
 	};
 	this.calcRender = function () {
 		// 全オブジェクトの座標をカメラ値により計算する
+		var camera_x = window.g_camera.x;
 		_.each(this.objects, function (obj) {
 			if (obj.sprite) {
 				// 位置
-				obj.sprite.x = obj.x;
+				obj.sprite.x = obj.x - camera_x;
 				obj.sprite.y = obj.y;
 				// スケール
 				if (obj.scaleX) {
