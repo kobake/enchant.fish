@@ -17,34 +17,17 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="stage" />
-    <Folder Include="env" />
     <Folder Include="img\" />
     <Folder Include="img\patterns" />
-    <Folder Include="ui" />
-    <Folder Include="objects" />
-    <Folder Include="scenes" />
+    <Folder Include="src\" />
+    <Folder Include="src\env\" />
+    <Folder Include="src\objects\" />
+    <Folder Include="src\scenes\" />
+    <Folder Include="src\stage\" />
+    <Folder Include="src\ui\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".gitignore">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="env\ground.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="env\object_manager.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="env\camera.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="env\remover.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="stage\background.js">
-      <SubType>Content</SubType>
-    </Content>
-    <Content Include="stage\pattern_manager.js">
       <SubType>Content</SubType>
     </Content>
     <Content Include="img\4tumb.bmp">
@@ -152,49 +135,65 @@
     <Content Include="index.html">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="objects\crow.js">
+    <Content Include="src\env\camera.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="objects\fish.js">
+    <Content Include="src\env\ground.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="objects\fish_bata.js">
+    <Content Include="src\env\object_manager.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="objects\fish_jump.js">
+    <Content Include="src\env\remover.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="objects\milk.js">
+    <Content Include="src\objects\crow.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="objects\milk_manager.js">
+    <Content Include="src\objects\fish.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="objects\tichan.js">
+    <Content Include="src\objects\fish_bata.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="scenes\game.js">
+    <Content Include="src\objects\fish_jump.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="ui\gameover.js">
+    <Content Include="src\objects\milk.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="ui\meter.js">
+    <Content Include="src\objects\milk_manager.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="ui\score.js">
+    <Content Include="src\objects\tichan.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="ui\start.js">
+    <Content Include="src\scenes\game.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="_common.js">
+    <Content Include="src\stage\background.js">
       <SubType>Content</SubType>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="stage\pattern.js">
-      <SubType>Code</SubType>
-    </Compile>
+    <Content Include="src\stage\pattern.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="src\stage\pattern_manager.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="src\ui\gameover.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="src\ui\meter.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="src\ui\score.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="src\ui\start.js">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="src\_common.js">
+      <SubType>Content</SubType>
+    </Content>
   </ItemGroup>
 </Project>
