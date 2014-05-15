@@ -6,12 +6,12 @@ Meter = function () {
 
 	// スプライト作成共通部分
 	var newNumObject = function (pos) {
-		var obj = new Background('img/number12x16-z9.gif', 0, 0, 12, 16, 9, 0);
+		var obj = new CommonObject('img/number12x16-z9.gif', 0, 0, 12, 16, 9, 0);
 		obj.animation = pos;
 		return obj;
 	};
 	var newMeterObject = function (width, pos) {
-		var obj = new Background('img/meter4x12-z9.gif', 0, 0, width, 12, 9, 0);
+		var obj = new CommonObject('img/meter4x12-z9.gif', 0, 0, width, 12, 9, 0);
 		obj.animation = pos;
 		return obj;
 	};
@@ -22,7 +22,7 @@ Meter = function () {
 	this.line_objects[0] = newMeterObject(4, 0);
 	this.line_objects[2] = newMeterObject(4, 2);
 	for (var i = 0; i < 3; i++) {
-		this.line_objects[i].y = 210;
+		this.line_objects[i].y = 210 + 16;
 	}
 
 	// 数字の場所
@@ -33,14 +33,14 @@ Meter = function () {
 	for (var i = 0; i < 3; i++) {
 		var obj = newNumObject(0);
 		obj.x = NUM_X - 12 * (i + 1);
-		obj.y = 220;
+		obj.y = 220 - 12;
 		this.num_objects.push(obj);
 	}
 
 	// スプライト（単位部分）
 	this.object_m = newNumObject(10);
 	this.object_m.x = NUM_X + 4;
-	this.object_m.y = 220;
+	this.object_m.y = 220 - 12;
 
 	// 距離値
 	this.meter = 0;
