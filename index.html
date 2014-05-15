@@ -147,12 +147,12 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 
 		// タッチ開始
 		scene.addEventListener(Event.TOUCH_START, function (e) {
-			objectManager.invokeTouch();
+			objectManager.invokeTouchStart();
 		});
 
 		// タッチ終了
 		scene.addEventListener(Event.TOUCH_END, function (e) {
-			objectManager.invokeEnd();
+			objectManager.invokeTouchEnd();
 		});
 
 		// フレーム処理
