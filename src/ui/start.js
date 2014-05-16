@@ -4,7 +4,6 @@ Start = function (scene) {
 
 	window.g_start = this;
 
-	this.objects = [];
 	var obj = new CommonObject('img/title-z9.gif', 0, 0, 320, 240, 9, 0);
 	this.objects.push(obj);
 

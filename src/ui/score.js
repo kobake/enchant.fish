@@ -6,7 +6,6 @@ Score = function () {
 
 	// スプライト（数字）
 	this.num = new Number(0, 0, 6);
-	this.objects = [];
 	this.objects.push(this.num);
 
 	// スプライト（単位部分）
@@ -28,11 +27,11 @@ Score = function () {
 	this.onFrame = function () {
 		// スタート中は何もしない
 		if (window.g_start) {
-			return;
+			return 0;
 		}
 		// さかなくんが死んでる場合は何もしない
 		if (window.g_fish.deadFlag >= 1) {
-			return;
+			return 0;
 		}
 		// 距離を進める（ピクセル）
 		this.score += SCROLL_SPEED;

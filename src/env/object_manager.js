@@ -18,7 +18,7 @@
 		});
 	};
 	this.invokeFrame = function () {
-		for(var i = 0; i < this.objects.length; i++){
+		for (var i = 0; i < this.objects.length; i++) {
 			var obj = this.objects[i];
 
 			// オブジェクトのスプライトを生成する
@@ -45,12 +45,16 @@
 			}
 
 			// オブジェクトのハンドラを呼ぶ
-			if (obj.onFrame){
+			if (obj.onFrame) {
 				var ret = obj.onFrame();
+				if (typeof ret != 'number') {
+					// only in debug mode
+					alert("Warning: onFrame return value is not number. Object.name: " + obj.name);
+				}
 				// フレーム処理が0以外を返したら対象オブジェクトを削除する
 				// ※グループを消すときに子要素も消したほうが良いはず
-				if(ret != 0){
-					if(obj.dispose){
+				if (ret != 0) {
+					if (obj.dispose) {
 						obj.dispose();
 						this.objects.splice(i, 1);
 						i--;
@@ -116,6 +120,7 @@ function offsetObjects(objects) {
 ObjectManager.initAsObject = function (obj,
 		imagepath, x, y, width, height, zorder, camera_rate) {
 	obj.type = 'object';
+	obj.name = 'unknown';
 
 	// スプライト
 	obj.imagepath = imagepath;
@@ -144,6 +149,8 @@ ObjectManager.initAsGroup = function (obj,
 ObjectManager._initCommon = function(obj){
 	// オブジェクト管理
 	window.g_objectManager.add(obj);
+	// 子要素
+	obj.objects = [];
 	// 削除メソッド
 	obj.dispose = function(){
 		// まず自身のスプライトを削除

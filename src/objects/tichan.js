@@ -3,9 +3,7 @@
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
 var Tichan = function () {
 	ObjectManager.initAsGroup(this, 0, 0, 1);
-
-	// スプライトリスト
-	this.objects = [];
+	this.name = "Tichan";
 
 	// スプライト
 	var obj = new CommonObject('img/tichan96x208-z2.gif', 0, 0, 96, 208, 2, 1);
@@ -22,6 +20,7 @@ var Tichan = function () {
 	self.y = 16;
 	this.onFrame = function () {
 		self.x += SCROLL_SPEED;
+		return 0;
 	};
 };
 
