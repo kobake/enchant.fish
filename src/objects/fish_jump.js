@@ -42,13 +42,13 @@ Fish_Jump.initialize = function (fish) {
 	var t = fish;
 
 	// タッチ開始
-	window.g_touch_skip = 1;
+	//window.g_touch_skip = 1;
 	scene.addEventListener(Event.TOUCH_START, function (e) {
-		console.log("skip = " + window.g_touch_skip);
+		/*console.log("skip = " + window.g_touch_skip);
 		if (window.g_touch_skip > 0) {
 			window.g_touch_skip--;
 			return;
-		}
+		}*/
 		console.log("touch start");
 		t.jumpPrepare(); // ジャンプ準備
 	});

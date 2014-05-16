@@ -165,7 +165,7 @@ Fish = function () {
 
 			// タッチしたら死に演出は削除してゲームリトライ
 			Retry = function (e) {
-				window.g_touch_skip = 1; // ### TOUCH_END が呼ばれないケースの暫定対処
+				//window.g_touch_skip = 1; // ### TOUCH_END が呼ばれないケースの暫定対処
 
 				// さかなくん復活
 				fish.reset();

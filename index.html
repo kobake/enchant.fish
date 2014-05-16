@@ -126,7 +126,7 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 		}
 		/*
 		for (var i = 0; i < 40; i++) { // ※ステージが導入されればこの地面は不要になる
-			new CommonObject('img/ground32x32-z2.gif', i * 32, 240 - 32, 32, 32, 2, 1);
+		new CommonObject('img/ground32x32-z2.gif', i * 32, 240 - 32, 32, 32, 2, 1);
 		}
 		*/
 
@@ -147,11 +147,13 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 
 		// タッチ開始
 		scene.addEventListener(Event.TOUCH_START, function (e) {
+			console.log("---- touch start ----");
 			objectManager.invokeTouchStart();
 		});
 
 		// タッチ終了
 		scene.addEventListener(Event.TOUCH_END, function (e) {
+			console.log("---- touch end ----");
 			objectManager.invokeTouchEnd();
 		});
 

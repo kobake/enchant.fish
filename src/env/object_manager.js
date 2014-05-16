@@ -18,7 +18,9 @@
 		});
 	};
 	this.invokeFrame = function () {
-		_.each(this.objects, function (obj) {
+		for(var i = 0; i < this.objects.length; i++){
+			var obj = this.objects[i];
+
 			// オブジェクトのスプライトを生成する
 			if (!obj.sprite && !!obj.imagepath) {
 				console.log("adding sprite " + obj.imagepath);
@@ -41,9 +43,21 @@
 				// グループへの追加
 				scene.groups[obj.zorder].addChild(obj.sprite);
 			}
+
 			// オブジェクトのハンドラを呼ぶ
-			if (obj.onFrame) obj.onFrame();
-		});
+			if (obj.onFrame){
+				var ret = obj.onFrame();
+				// フレーム処理が0以外を返したら対象オブジェクトを削除する
+				// ※グループを消すときに子要素も消したほうが良いはず
+				if(ret != 0){
+					if(obj.dispose){
+						obj.dispose();
+						this.objects.splice(i, 1);
+						i--;
+					}
+				}
+			}
+		}
 	};
 
 	// -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
@@ -112,8 +126,8 @@ ObjectManager.initAsObject = function (obj,
 	obj.zorder = zorder;
 	obj.camera_rate = camera_rate;
 
-	// オブジェクト管理
-	window.g_objectManager.add(obj);
+	// その他共通
+	ObjectManager._initCommon(obj);
 };
 
 ObjectManager.initAsGroup = function (obj,
@@ -123,8 +137,28 @@ ObjectManager.initAsGroup = function (obj,
 	obj.y = y;
 	obj.camera_rate = camera_rate;
 
+	// その他共通
+	ObjectManager._initCommon(obj);
+};
+
+ObjectManager._initCommon = function(obj){
 	// オブジェクト管理
 	window.g_objectManager.add(obj);
+	// 削除メソッド
+	obj.dispose = function(){
+		// まず自身のスプライトを削除
+		if(obj.sprite){
+			obj.sprite.parentNode.removeChild(obj.sprite);
+			delete obj.sprite;
+		}
+		// 子があれば子も削除
+		if(obj.objects){
+			for(var i = 0; i < obj.objects; i++){
+				obj.objects[i].dispose();
+			}
+		}
+		obj.objects = [];
+	};
 };
 
 // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- //
