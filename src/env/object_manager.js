@@ -55,9 +55,9 @@
 				// ※グループを消すときに子要素も消したほうが良いはず
 				if (ret != 0) {
 					if (obj.dispose) {
-						obj.dispose();
-						this.objects.splice(i, 1);
-						i--;
+						var disposed_count = obj.dispose();
+						this.objects.splice(i, disposed_count);
+						i -= disposed_count;
 					}
 				}
 			}
@@ -146,25 +146,27 @@ ObjectManager.initAsGroup = function (obj,
 	ObjectManager._initCommon(obj);
 };
 
-ObjectManager._initCommon = function(obj){
+ObjectManager._initCommon = function (obj) {
 	// オブジェクト管理
 	window.g_objectManager.add(obj);
 	// 子要素
 	obj.objects = [];
-	// 削除メソッド
-	obj.dispose = function(){
+	// 削除メソッド (削除されたオブジェクト数を返す)
+	obj.dispose = function () {
+		var ret = 1;
 		// まず自身のスプライトを削除
-		if(obj.sprite){
+		if (obj.sprite) {
 			obj.sprite.parentNode.removeChild(obj.sprite);
 			delete obj.sprite;
 		}
 		// 子があれば子も削除
-		if(obj.objects){
-			for(var i = 0; i < obj.objects; i++){
-				obj.objects[i].dispose();
+		if (obj.objects) {
+			for (var i = 0; i < obj.objects.length; i++) {
+				ret += obj.objects[i].dispose();
 			}
 		}
 		obj.objects = [];
+		return ret;
 	};
 };
 

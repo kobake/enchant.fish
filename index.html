@@ -23,7 +23,6 @@
 		<script type="text/javascript" src="src/objects/milk.js"></script>
 		<script type="text/javascript" src="src/objects/milk_manager.js"></script>
 		<script type="text/javascript" src="src/objects/fish.js"></script>
-		<script type="text/javascript" src="src/objects/fish_jump.js"></script>
 		<script type="text/javascript" src="src/objects/fish_bata.js"></script>
 		<!-- UI -->
 		<script type="text/javascript" src="src/ui/start.js"></script>
@@ -145,6 +144,15 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 		//var milkManager = new MilkManager(scene);
 		var patternManager = new PatternManager(scene);
 
+		// フレーム処理
+		scene.addEventListener(Event.ENTER_FRAME, function () {
+			// 全オブジェクトのフレーム処理
+			objectManager.invokeFrame();
+
+			// オブジェクトの実際の表示位置を計算
+			objectManager.calcRender();
+		});
+
 		// タッチ開始
 		scene.addEventListener(Event.TOUCH_START, function (e) {
 			console.log("---- touch start ----");
@@ -155,15 +163,6 @@ http://www.atmarkit.co.jp/ait/articles/1306/25/news026_2.html
 		scene.addEventListener(Event.TOUCH_END, function (e) {
 			console.log("---- touch end ----");
 			objectManager.invokeTouchEnd();
-		});
-
-		// フレーム処理
-		scene.addEventListener(Event.ENTER_FRAME, function () {
-			// 全オブジェクトのフレーム処理
-			objectManager.invokeFrame();
-
-			// オブジェクトの実際の表示位置を計算
-			objectManager.calcRender();
 		});
 
 		// 盛り上がる地面・迫りくる壁・燃え尽きるハート・震えるビート

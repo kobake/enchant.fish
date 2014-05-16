@@ -18,10 +18,10 @@ Fish_Bata.initialize = function (fish) {
 	fish.onTouchStart = function () {
 		if (fTouchStart) fTouchStart.call(fish);
 
-		/*if (window.g_touch_skip > 0) {
+		if (window.g_touch_skip > 0) {
 			window.g_touch_skip--;
 			return;
-		}*/
+		}
 		console.log("touch start " + self.anm + "," + self.new_anm);
 		// 地上からは普通のジャンプしてみる
 		if (self.anm == "running") {

@@ -156,9 +156,6 @@
     <Content Include="src\objects\fish_bata.js">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="src\objects\fish_jump.js">
-      <SubType>Content</SubType>
-    </Content>
     <Content Include="src\objects\milk.js">
       <SubType>Content</SubType>
     </Content>

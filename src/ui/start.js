@@ -11,6 +11,7 @@ Start = function (scene) {
 	this.endflag = 0;
 	this.onTouchStart = function () {
 		this.endflag = 1;
+		window.g_touch_skip = 1; // ### TOUCH_END が呼ばれないケースの暫定対処
 	};
 	this.onFrame = function () {
 		if (this.endflag) {
