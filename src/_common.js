@@ -24,7 +24,6 @@ var LIMIT_MY = 8;
 function PreloadImages(game, classlist) {
 	game.preload('img/title.png'); // タイトル背景
 	game.preload('img/start.png'); // START 236x48
-	game.preload('img/title-z9.gif'); // タイトルテキスト
 
 	// サウンド
 	//game.preload('sounds/looperman-t-0404662-0151402-scottb55-raise-hell-and-ptl.mp3');

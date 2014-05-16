@@ -23,4 +23,5 @@ Start = function (scene) {
 
 // 画像リスト
 Start.images = [
+	'img/title-z9.gif'
 ];

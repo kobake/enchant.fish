@@ -16,3 +16,9 @@ PatternManager = function () {
 		this.patterns.push(pattern);
 	}
 };
+
+// 画像リスト
+PatternManager.images = [
+	'img/patterns/pt01.gif',
+	'img/patterns/pt02.gif'
+];
